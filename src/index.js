@@ -3,11 +3,41 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import 'mdb-react-ui-kit/dist/css/mdb.min.css';
+import "@fortawesome/fontawesome-free/css/all.min.css";
+import { createBrowserRouter as  Route, RouterProvider, Routes, createBrowserRouter,      } from 'react-router-dom';
+import './Components/Style.css';
+import { store } from './Redux/app/Store';
+import { Provider } from 'react-redux';
+import ProductDetail from './Components/ProductDetail';
+import Header from './Components/Header';
+import Footer from './Components/Footer';
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: (<App/>  ),
+  },
+  {
+    path: "about",
+    element: <div>About</div>,
+  },
+  {
+    path: "/productdetail/:id",
+    element: (<ProductDetail/>),
+  },
+]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <Provider store={store}>
+      <Header/>
+    <RouterProvider router={router} />
+    <Footer/>
+    </Provider>
+    
+  
   </React.StrictMode>
 );
 
