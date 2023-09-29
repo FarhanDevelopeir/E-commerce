@@ -1,5 +1,6 @@
 import React from 'react'
 import logo from '../Images/bluelogo.png';
+import { Link } from 'react-router-dom';
 
 const Header = () => {
   return (
@@ -19,11 +20,15 @@ const Header = () => {
           <div className="d-flex float-end">
             <a  className="me-1 border rounded py-1 px-3 nav-link d-flex align-items-center" > <i className="fas fa-user-alt m-1 me-md-2"></i><p className="d-none d-md-block mb-0">Sign in</p> </a>
             <a  className="me-1  py-1 px-3 nav-link d-flex align-items-center" > <i className="fas fa-heart m-1 me-md-2"></i><p className="d-none d-md-block mb-0">Wishlist</p> </a>
-           <a class="py-1 px-3 nav-link d-flex "  >
+          <Link to={'/cart'}>
+          <a class="py-2 px-3  text-white hover-shadow    nav-link d-flex "  >
           <span><i class="fas fa-shopping-cart  me-md-2"></i></span>
           <span class="badge rounded-pill badge-notification bg-primary">0</span>
           <span className='d-none d-md-block '>My Cart</span>
            </a>
+           </Link>
+          
+           
       
           </div>
         </div>

@@ -3,7 +3,7 @@ import { useSelector , useDispatch} from 'react-redux'
 import axios from 'axios'
 
 import { Link } from 'react-router-dom';
-import { displayproducts } from '../Redux/features/counter/ProductSlice'
+import { addtocart, displayproducts } from '../Redux/features/counter/ProductSlice'
 
 const Products = () => {
     const products = useSelector((state) => state.product.products)
@@ -72,7 +72,7 @@ const Products = () => {
                     </div>
                     </Link>
                     <div className='w-100 mb-3' style={{textAlign:'center'}} >
-                    <button type="button" className=" btn btn-primary " >Add to Cart</button>
+                    <button type="button" className=" btn btn-primary " onClick={()=>{dispatch(addtocart(item))}} >Add to Cart</button>
                     </div>
                 </div>
                 

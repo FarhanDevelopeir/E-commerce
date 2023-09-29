@@ -12,6 +12,7 @@ import { Provider } from 'react-redux';
 import ProductDetail from './Components/ProductDetail';
 import Header from './Components/Header';
 import Footer from './Components/Footer';
+import Cart from './Components/Cart';
 
 const router = createBrowserRouter([
   {
@@ -26,13 +27,17 @@ const router = createBrowserRouter([
     path: "/productdetail/:id",
     element: (<ProductDetail/>),
   },
+  {
+    path: "/cart",
+    element: (<Cart/>),
+  },
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <Header/>
+      {/* <Header/> */}
     <RouterProvider router={router} />
     <Footer/>
     </Provider>

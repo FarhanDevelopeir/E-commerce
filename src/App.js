@@ -8,7 +8,7 @@ import Slider from './Components/Slider'
 function App() {
   return (
     <div className="">
-      {/* <Header/> */}
+      <Header/>
      <div className='container'>
       <Slider/>
       <Products/>
