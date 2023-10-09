@@ -1,21 +1,18 @@
 
 import './App.css';
-import Header from './Components/Header';
 import Products from './Components/Products';
 import Slider from './Components/Slider'
+import Toptopage from './Components/Toptopage';
 
 
 function App() {
   return (
-    <div className="">
-      <Header/>
-     <div className='container'>
-      <Slider/>
-      <Products/>
-     </div>
-      {/* <Slider/> */}
-
-    </div>
+    
+      <div className='container'>
+        <Slider />
+        <Products />
+      </div>
+    
   );
 }
 

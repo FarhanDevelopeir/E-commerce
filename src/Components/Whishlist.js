@@ -1,49 +1,21 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import axios from 'axios'
-
 import { Link } from 'react-router-dom';
-import { addtocart, addtowishlist, displayproducts, updateAddedToCart } from '../Redux/features/counter/ProductSlice'
+import { addtocart, updateAddedToCart } from '../Redux/features/counter/ProductSlice'
 
 
-const Products = () => {
-    const products = useSelector((state) => state.product.products);
-    const cart = useSelector((state) => state.product.cart)
-    const { id } = cart
-    console.log(id, products)
-    // const [btn, setbtn] = useState(false);
-
-    const dispatch = useDispatch()
-    // const {price, id, name, image}=products
-
-    const fetchproducts = async () => {
-        const res = await axios
-            .get('https://fakestoreapi.com/products?limit=8')
-            .catch((error) => {
-                console.log('err', error)
-            })
-        dispatch(displayproducts(res.data));
-        console.log(res.data)
-
-    }
-
-    useEffect(() => {
-        fetchproducts();
-    }, [])
-
-    const displaydata = products.map((item) => {
+const Whishlist = () => {
+    // const products = useSelector((state) => state.product.products);
+    // const cart = useSelector((state) => state.product.cart)
+    const wishlist=useSelector(state=>state.product.wishlist);
+    console.log(wishlist);
+    const dispatch=useDispatch()
+    const displaywishlist = wishlist.map((item) => {
         return (
-            <div className=" col-sm-6 col-md-4 col-lg-3 mb-4 mt-3 mb-lg-0">
+            <div className=" col-sm-6 col-md-4 col-lg-3 mb-4 mt-3 mb-lg-0 ">
 
-                <div className="card pt-3 hover-shadow bg-image  hover-zoom">
-                    {/* <div className="d-flex justify-content-between p-3">
-                        <p className="lead mb-0">Today's Combo Offer</p>
-                        <div
-                            className="bg-info rounded-circle d-flex align-items-center justify-content-center shadow-1-strong"
-                            style={{ width: "35px", height: "35px" }}>
-                            <p className="text-white mb-0 small">x4</p>
-                        </div>
-                    </div> */}
+                <div className="card pt-3 hover-shadow bg-image border hover-zoom">
+                   
                     <Link to={`/productdetail/${item.id}`}>
                         <div style={{ textAlign: 'center' }}>
 
@@ -79,7 +51,7 @@ const Products = () => {
 
                         </div>
                     </Link>
-                    <div className='w-75 mb-3 d-flex justify-content-between' style={{ margin:'auto' }} >
+                    <div className='w-100 mb-3' style={{ textAlign: 'center' }} >
 
                         {!item.addedToCart ? (
                             <button
@@ -101,11 +73,8 @@ const Products = () => {
                             </button>
                             </Link>
                         )}
-                        <button className='btn btn-warning' onClick={()=>{dispatch(addtowishlist(item))}} > 
-                        <i className="fas fa-heart m-1 me-md-2"></i>
-                         </button>
 
-                       
+                      
 
                     </div>
                 </div>
@@ -113,20 +82,16 @@ const Products = () => {
             </div>
         )
     })
-
-    return (
-        <div className='mb-5 '>
-            <h1 className='mt-4  text-center '>Luxury Bags</h1>
-            <section style={{ backgroundColor: '#eee' }}>
-                <div className="container  border mt-3 rounded  ">
+  return (
+    <div >
+        <div className="container  border  rounded pt-5 ">
                     <div className="row mb-3">
-                        {/* {products.id===''? <h1>sorry data is not </h1>: <div>{displaydata}</div>} */}
-                        {displaydata}
+                        {wishlist.length===0? <h1>Sorry there is no Product that you are add to wishlish </h1>: <div className="row mb-3">{displaywishlist}</div>}
+                       
                     </div>
                 </div>
-            </section>
-        </div>
-    )
+    </div>
+  )
 }
 
-export default Products
+export default Whishlist

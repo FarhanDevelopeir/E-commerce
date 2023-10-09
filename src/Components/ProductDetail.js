@@ -1,11 +1,15 @@
 import axios from 'axios'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { productview } from '../Redux/features/counter/ProductSlice'
+import { addtocart, productview } from '../Redux/features/counter/ProductSlice'
+import { increasequantity, decreasequantity } from '../Redux/features/counter/ProductSlice'
 
-const ProductDetail = () => {
+const ProductDetail = ({item}) => {
   const singleproduct = useSelector((state) => state.product.singleproduct);
+  const cart=useSelector((state)=>state.product.cart);
+  const quantity=useSelector((state)=>state.product.quantity);
+
   const {price, image, title, description,rating, }=singleproduct
   console.log(price)
   const {id}=useParams();
@@ -115,19 +119,35 @@ const ProductDetail = () => {
           
             <div className="col-md-4 col-6 mb-3">
               <label className="mb-2 d-block">Quantity</label>
-              <div className="input-group mb-3" style={{width:'170px'}}>
-                <button className="btn btn-white border border-secondary px-3" type="button" id="button-addon1" data-mdb-ripple-color="dark">
+              <div className="input-group " style={{width:'170px'}}>
+                <button onClick={()=>dispatch(decreasequantity({item}))}
+                 className="btn btn-white border border-secondary px-3" 
+                 type="button" 
+                 id="button-addon1"
+                  data-mdb-ripple-color="dark"
+                  >
                   <i className="fas fa-minus"></i>
                 </button>
-                <input type="text" className="form-control text-center border border-secondary" placeholder="14" aria-label="Example text with button addon" aria-describedby="button-addon1" />
-                <button className="btn btn-white border border-secondary px-3" type="button" id="button-addon2" data-mdb-ripple-color="dark">
+                
+                  <h4 className='form-control text-center  '>
+                    {quantity}
+                  </h4>
+                <button
+                onClick={() => {
+                  dispatch(increasequantity(item));
+                  
+                }}
+                 className="btn btn-white border border-secondary px-3"
+                  type="button"
+                   id="button-addon2" 
+                   data-mdb-ripple-color="dark">
                   <i className="fas fa-plus"></i>
                 </button>
               </div>
             </div>
           </div>
           <a href="#" className="btn btn-warning shadow-0"> Buy now </a>
-          <a href="#" className="btn btn-primary shadow-0"> <i className="me-1 fa fa-shopping-basket"></i> Add to cart </a>
+          <a href="#" onClick={()=>{dispatch(addtocart(item))}} className="btn btn-primary shadow-0"> <i className="me-1 fa fa-shopping-basket"></i> Add to cart </a>
           <a href="#" className="btn btn-light border border-secondary py-2 icon-hover px-3"> <i className="me-1 fa fa-heart fa-lg"></i> Save </a>
         </div>
       </main>
