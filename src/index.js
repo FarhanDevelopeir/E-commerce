@@ -17,7 +17,8 @@ import Whishlist from './Components/Whishlist';
 import PageNotFound from './Components/PageNotFound';
 import ScrollToTopOnNavigate from './Components/ScrolltoTop';
 import Toptopage from './Components/Toptopage';
-import Addressform from './Components/Checkout/Addressform';
+// import Addressform from './Components/Checkout/Addressform';
+import Addressform from './Components/Checkout/BasicDetails';
 
 // const router = createBrowserRouter([
 //   {

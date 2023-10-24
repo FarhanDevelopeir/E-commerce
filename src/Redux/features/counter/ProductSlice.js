@@ -13,7 +13,9 @@ const initialState = {
   wishlist:[],
   originalPrice: 0,
   quantity: 1,
-  cartbtn:false
+  cartbtn:false,
+  addressdetail:[],
+  contactdetail:[]
 }
 
 
@@ -23,8 +25,8 @@ export const productSlice = createSlice({
   name: 'products',
   initialState,
   reducers: {
-    displayproducts: (state, actions) => {
-      state.products = actions.payload;
+    displayproducts: (state, action) => {
+      state.products = action.payload;
     },
     productview: (state, action) => {
       state.singleproduct = action.payload
@@ -33,7 +35,7 @@ export const productSlice = createSlice({
     addtocart: (state, action) => {
       const find = state.cart.findIndex((item) => item.id === action.payload.id)
       if (find >= 0) {
-        // state.cart[find].quantity += 1
+        
        
       } else {
         const tempvar = { ...action.payload, quantity: 1, originalPrice: action.payload.price,addedToCart: false }
@@ -76,11 +78,7 @@ export const productSlice = createSlice({
         product.quantity -= 1;
         product.price -= product.originalPrice;
       } 
-      // else if (product && product.quantity === 1) {
-      //   // If the quantity is 1, decrement quantity and reset the price to original price
-      //   product.quantity -= 1;
-      //   product.price = product.originalPrice;
-      // }
+  
     },
     
     removefromcart: (state, action) => {
@@ -96,6 +94,12 @@ export const productSlice = createSlice({
       if (product) {
         product.addedToCart = addedToCart;
       }
+    },
+    addressdetails:(state, action)=>{
+      state.addressdetail = action.payload;
+    },
+    contactdetails:(state, action)=>{
+      state.contactdetail = action.payload;
     },
     
   },
@@ -113,6 +117,8 @@ export const {
   productPrice,
   clearcart,
   updateAddedToCart,
+  contactdetails,
+  addressdetails,
 } = productSlice.actions
 
 

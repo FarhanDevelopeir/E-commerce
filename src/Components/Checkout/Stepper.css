@@ -1,0 +1,33 @@
+.stepper-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  .step-content {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+  
+  .step {
+    flex: 1;
+    text-align: center;
+    padding: 10px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .step.active {
+    background-color: #007bff;
+    color: #fff;
+  }
+  
+  .button-container {
+    margin-top: 20px;
+  }
+  

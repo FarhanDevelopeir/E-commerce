@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import axios from 'axios'
 
@@ -11,6 +11,7 @@ const Products = () => {
     const cart = useSelector((state) => state.product.cart)
     const { id } = cart
     console.log(id, products)
+    const [loading, setloading] = useState(true)
     // const [btn, setbtn] = useState(false);
 
     const dispatch = useDispatch()
@@ -23,6 +24,7 @@ const Products = () => {
                 console.log('err', error)
             })
         dispatch(displayproducts(res.data));
+        setloading(false)
         console.log(res.data)
 
     }
@@ -79,7 +81,7 @@ const Products = () => {
 
                         </div>
                     </Link>
-                    <div className='w-75 mb-3 d-flex justify-content-between' style={{ margin:'auto' }} >
+                    <div className='w-75 mb-3 d-flex justify-content-between' style={{ margin: 'auto' }} >
 
                         {!item.addedToCart ? (
                             <button
@@ -94,18 +96,18 @@ const Products = () => {
                                 Add to Cart
                             </button>
                         ) : (
-          <Link to={'/cart'}>
-                            
-                            <button type="button" className="btn btn-warning">
-                                View Cart
-                            </button>
+                            <Link to={'/cart'}>
+
+                                <button type="button" className="btn btn-warning">
+                                    View Cart
+                                </button>
                             </Link>
                         )}
-                        <button className='btn btn-warning' onClick={()=>{dispatch(addtowishlist(item))}} > 
-                        <i className="fas fa-heart m-1 me-md-2"></i>
-                         </button>
+                        <button className='btn btn-warning' onClick={() => { dispatch(addtowishlist(item)) }} >
+                            <i className="fas fa-heart m-1 me-md-2"></i>
+                        </button>
 
-                       
+
 
                     </div>
                 </div>
@@ -120,8 +122,20 @@ const Products = () => {
             <section style={{ backgroundColor: '#eee' }}>
                 <div className="container  border mt-3 rounded  ">
                     <div className="row mb-3">
-                        {/* {products.id===''? <h1>sorry data is not </h1>: <div>{displaydata}</div>} */}
-                        {displaydata}
+
+
+                        {loading ? (
+                            // <h1 className='text-center'>...loading</h1>
+                            <>
+                            <div class="spinner-border text-danger m-auto d-inline" role="status">
+                                <span class="visually-hidden ">Loading...</span>
+                            </div>
+                                <h1 className='text-center'>...loading</h1>
+                                </>
+
+                        ) : (
+                            <>{displaydata}</>
+                        )}
                     </div>
                 </div>
             </section>

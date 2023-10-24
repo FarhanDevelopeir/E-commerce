@@ -1,6 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import {
+  MDBRow,
+  MDBCol,
+  MDBInput,
+  MDBCheckbox,
+  MDBBtn
+} from 'mdb-react-ui-kit';
 import { decreasequantity, increasequantity, removefromcart, productPrice, updateTotalAmount, clearcart } from '../Redux/features/counter/ProductSlice';
+import Addressform from './Checkout/BasicDetails';
+import Stepper from './Checkout/Stepper';
 
 const Cart = () => {
     const cart=useSelector((state)=>state.product.cart);
@@ -8,6 +17,13 @@ const Cart = () => {
     const totalQuantity = cart.reduce((total, item) => total + item.quantity, 0);
     const totalAmount = cart.reduce((total, item) => total + item.price, 0);
     const dispatch= useDispatch()
+    const [checkout, setcheckout]=useState(false);
+
+    const handleCheckout=()=>{
+      setcheckout(true)
+    }
+    
+    
     
 
 
@@ -77,29 +93,28 @@ const Cart = () => {
 
   return (
     <div>
-        <section className="h-100 gradient-custom bg-primary ">
+        <section className="h-100 gradient-custom bg-grey ">
             {cart.length===0?<h1>Your cart is empty </h1>:
              <div className="container py-5">
              <div className="row d-flex justify-content-center my-4">
+               {checkout===true? 
+              <>
+                  <Stepper/>
+                
+              </>
+               :
                <div className="col-md-8">
-                 <div className="card mb-4">
-                   <div className="card-header d-flex justify-content-between py-3">
-                     <h5 className="mb-0">Cart - {cart.length} items</h5>
-                     <button className='btn btn-danger' onClick={()=>{dispatch(clearcart())}}>Clear Cart</button>
-                   </div>
-                   <div className="card-body">
-                     {/* <!-- Single item --''> */}
-                     {displaycart}
-         
-                    
-         
-                 
-                   
-                   </div>
+               <div className="card mb-4">
+                 <div className="card-header d-flex justify-content-between py-3">
+                   <h5 className="mb-0">Cart - {cart.length} items</h5>
+                   <button className='btn btn-danger' onClick={()=>{dispatch(clearcart())}}>Clear Cart</button>
                  </div>
-                 
-                 
+                 <div className="card-body">
+                   {/* <!-- Single item --''> */}
+                   {displaycart}
+                 </div>
                </div>
+             </div>}
                <div className="col-md-4">
                  <div className="card mb-4">
                    <div className="card-header py-3">
@@ -128,7 +143,7 @@ const Cart = () => {
                        </li>
                      </ul>
          
-                     <button type="button" className="btn btn-primary btn-lg btn-block">
+                     <button type="button" onClick={handleCheckout} className="btn btn-primary btn-lg btn-block">
                        Go to checkout
                      </button>
                    </div>
