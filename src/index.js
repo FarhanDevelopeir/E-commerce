@@ -19,6 +19,10 @@ import ScrollToTopOnNavigate from './Components/ScrolltoTop';
 import Toptopage from './Components/Toptopage';
 // import Addressform from './Components/Checkout/Addressform';
 import Addressform from './Components/Checkout/BasicDetails';
+import Completeorder from './Components/Checkout/Completeorder';
+import Filterproducts from './Components/Category/Filterproducts';
+import SignUp from './Components/UserAuthentication/SignUp';
+import Login from './Components/UserAuthentication/Login';
 
 // const router = createBrowserRouter([
 //   {
@@ -60,6 +64,10 @@ root.render(
           <Route path='/cart' element={<Cart />} />
           <Route path='/wishlist' element={<Whishlist />} />
           <Route path='/checkout' element={<Addressform />} />
+          <Route path='/ordercomplete' element={<Completeorder />} />
+          <Route path='/filterproducts' element={ <Filterproducts/>} />
+          <Route path='/signup' element={ <SignUp/>} />
+          <Route path='/login' element={ <Login/>} />
           <Route path='*' element={<PageNotFound />} />
           <Route />
           <Route />

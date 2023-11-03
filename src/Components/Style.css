@@ -90,9 +90,9 @@
 }
 
 .FormRow {
-	display: -ms-flexbox;
-	display: flex;
-	-ms-flex-align: center;
+	/* display: -ms-flexbox; */
+	/* display: flex; */
+	/* -ms-flex-align: center; */
 	align-items: center;
 	margin-left: 15px;
 	border-top: 1px solid #819efc;
@@ -107,3 +107,39 @@
 	padding: 11px 15px 11px 0;
 }
 /* close payment-method */
+
+/* Category Open */
+@media screen and (max-width:991px){
+  .cate-img{
+    height: 80px !important;
+  }
+  .cate-text{
+    font-size: 15px;
+  }
+}
+@media screen and (max-width:767px){
+  .cate-img{
+    height: 50px !important;
+  }
+  .cate-text{
+    font-size: 15px;
+  }
+}
+@media screen and (max-width:391px){
+  .cate-img{
+    height: 40px !important;
+  }
+  .cate-text{
+    font-size: 10px;
+  }
+}
+@media screen and (max-width:321px){
+  .cate-img{
+    height: 30px !important;
+  }
+  .cate-text{
+    font-size: 10px;
+  }
+}
+
+/* Category Close */

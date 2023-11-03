@@ -19,7 +19,7 @@ const Products = () => {
 
     const fetchproducts = async () => {
         const res = await axios
-            .get('https://fakestoreapi.com/products?limit=8')
+            .get('https://fakestoreapi.com/products')
             .catch((error) => {
                 console.log('err', error)
             })
@@ -35,30 +35,20 @@ const Products = () => {
 
     const displaydata = products.map((item) => {
         return (
-            <div className=" col-sm-6 col-md-4 col-lg-3 mb-4 mt-3 mb-lg-0">
+            <div className=" col-sm-6 col-md-4 col-lg-3 mb-4 mt-3 mb-lg-0 ">
 
-                <div className="card pt-3 hover-shadow bg-image  hover-zoom">
-                    {/* <div className="d-flex justify-content-between p-3">
-                        <p className="lead mb-0">Today's Combo Offer</p>
-                        <div
-                            className="bg-info rounded-circle d-flex align-items-center justify-content-center shadow-1-strong"
-                            style={{ width: "35px", height: "35px" }}>
-                            <p className="text-white mb-0 small">x4</p>
-                        </div>
-                    </div> */}
+                <div className="card pt-3 shadow border rounded hover-zoom ">
+                   
                     <Link to={`/productdetail/${item.id}`}>
                         <div style={{ textAlign: 'center' }}>
 
 
-                            <img src={item.image}
-                                className="card-img-top   " style={{ height: '150px', width: '150px', margin: 'auto' }} alt="Laptop" />
+                           <div className='hover-zoom'>
+                           <img src={item.image}
+                                className="card-img-top    " style={{ height: '150px', width: '150px', margin: 'auto' }} alt="Laptop" />
+                           </div>
 
                             <div className="card-body">
-                                {/* <div className="d-flex justify-content-between">
-                            <p className="small"><a href="#!" className="text-muted">Laptops</a></p>
-                            <p className="small text-danger"><s>$ {item.price}</s></p>
-                        </div> */}
-
                                 <div className="d-flex justify-content-between mb-2">
                                     <h5 className="mb-0">{ }</h5>
                                     <h5 className="text-dark mb-0">${item.price}</h5>
@@ -118,14 +108,14 @@ const Products = () => {
 
     return (
         <div className='mb-5 '>
-            <h1 className='mt-4  text-center '>Luxury Bags</h1>
-            <section style={{ backgroundColor: '#eee' }}>
-                <div className="container  border mt-3 rounded  ">
-                    <div className="row mb-3">
+            <h2 className='mt-4   '>For You</h2>
+            <section style={{ backgroundColor: '#fff' }}>
+                <div className="container  order mt-3 rounded  ">
+                    <div className="row mb-3 ">
 
 
                         {loading ? (
-                            // <h1 className='text-center'>...loading</h1>
+                           
                             <>
                             <div class="spinner-border text-danger m-auto d-inline" role="status">
                                 <span class="visually-hidden ">Loading...</span>

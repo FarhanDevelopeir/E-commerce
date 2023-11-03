@@ -10,7 +10,7 @@ const ProductDetail = ({item}) => {
   const cart=useSelector((state)=>state.product.cart);
   const quantity=useSelector((state)=>state.product.quantity);
 
-  const {price, image, title, description,rating, }=singleproduct
+  const {price, image, title, description,rating, }=singleproduct || {}
   console.log(price)
   const {id}=useParams();
   const dispatch=useDispatch();
@@ -29,6 +29,10 @@ const ProductDetail = ({item}) => {
     if(id && id !== '') fetchproducts();
   },[id])
 
+  useEffect(() => {
+    dispatch(productview({})); // Pass an empty object to reset the state
+  }, []);
+
   // console.log(products);
   return (
     <div>
@@ -43,7 +47,7 @@ const ProductDetail = ({item}) => {
             <img style={{maxWidth: "100%", maxHeight: '50vh', margin: 'auto'}} className="rounded-4 fit" src={image} />
           </a>
         </div>
-        <div className="d-flex justify-content-center mb-3">
+        {/* <div className="d-flex justify-content-center mb-3">
           <a data-fslightbox="mygalley" className="border mx-1 rounded-2 item-thumb" target="_blank" data-type="image" href="#" >
             <img width="60" height="60" className="rounded-2" src="https://bootstrap-ecommerce.com/bootstrap5-ecommerce/images/items/detail1/big1.webp" />
           </a>
@@ -59,7 +63,7 @@ const ProductDetail = ({item}) => {
           <a data-fslightbox="mygalley" className="border mx-1 rounded-2 item-thumb" target="_blank" data-type="image" href="#" >
             <img width="60" height="60" className="rounded-2" src="https://bootstrap-ecommerce.com/bootstrap5-ecommerce/images/items/detail1/big.webp" />
           </a>
-        </div>
+        </div> */}
        
       </aside>
       <main className="col-lg-6">
@@ -68,7 +72,7 @@ const ProductDetail = ({item}) => {
            {title}
           </h4>
           <div className="d-flex flex-row my-3">
-            <div className="text-warning mb-1 me-2">
+            {/* <div className="text-warning mb-1 me-2">
               <i className="fa fa-star"></i>
               <i className="fa fa-star"></i>
               <i className="fa fa-star"></i>
@@ -79,7 +83,19 @@ const ProductDetail = ({item}) => {
               </span>
             </div>
             <span className="text-muted"><i className="fas fa-shopping-basket fa-sm mx-1"></i>{rating.count} orders</span>
-            <span className="text-success ms-2">In stock</span>
+            <span className="text-success ms-2">In stock</span> */}
+             {rating && rating.count ? (
+            <div className="text-warning mb-1 me-2">
+              <i className="fa fa-star"></i>
+              <i className="fa fa-star"></i>
+              <i className="fa fa-star"></i>
+              <i className="fa fa-star"></i>
+              <i className="fas fa-star-half-alt"></i>
+              <span className="ms-1">{rating.count}</span>
+            </div>
+          ) : (
+            <div className="text-muted">No rating available</div>
+          )}
           </div>
 
           <div className="mb-3">

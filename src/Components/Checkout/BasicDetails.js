@@ -3,8 +3,8 @@ import { TextField, Button } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux';
 import {  contactdetails } from '../../Redux/features/counter/ProductSlice';
 
-const Addressform = () => {
-    const billingdetailss=useSelector((state)=>state.product.shipmentdetail)
+const Addressform = (props) => {
+    const billingdetailss = useSelector((state)=>state.product.shipmentdetail)
     const dispatch=useDispatch();
     const [firstname, setfirstname] = useState('');
     const [lastname, setlastname] = useState('');
@@ -22,6 +22,8 @@ const Addressform = () => {
         // Use a regular expression to remove any non-numeric characters
         const numericInput = input.replace(/\D/g, '');
         setphone(numericInput);
+
+        dispatch(contactdetails(phone))
     }
 
 
@@ -82,7 +84,7 @@ const Addressform = () => {
                                 <TextField
                                     label='First Name *'
                                     style={{ width: '100%' }}
-                                    onChange={(e) => setfirstname(e.target.value)}
+                                    onChange={(e) => {setfirstname(e.target.value); dispatch(contactdetails(firstname))} }
                                     value={firstname}
                                     error={firstnameError}
                                 />
@@ -92,7 +94,7 @@ const Addressform = () => {
                                 <TextField
                                     label='Last Name *'
                                     style={{ width: '100%' }}
-                                    onChange={(e) => setlastname(e.target.value)}
+                                    onChange={(e) => {setlastname(e.target.value); dispatch(contactdetails(lastname))}}
                                     value={lastname}
                                     error={lastnameError}
                                 />
@@ -139,7 +141,7 @@ const Addressform = () => {
                             type='email'
                             fullWidth
                             className='mt-3'
-                            onChange={(e) => setemail(e.target.value)}
+                            onChange={(e) => {setemail(e.target.value); dispatch(contactdetails(email))}}
                             error={emailError}
                         />
                         {emailError ? <span style={{ dislay: 'block', color: 'red' }}>{emailError}</span> : null}
@@ -171,7 +173,13 @@ const Addressform = () => {
 
 
 
-                        <Button variant="contained" className='mt-4' color="primary" type="submit"  >Next</Button>
+                        <Button 
+                        onClick={props.handleNext}
+                        variant="contained" 
+                        disabled={firstname==='' || lastname==='' || email==='' || phone==='' }  
+                        className='mt-4' color="primary" 
+                        type="submit"
+                        >Next</Button>
                     </form>
                 </div>
             </div>

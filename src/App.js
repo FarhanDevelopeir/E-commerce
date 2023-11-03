@@ -1,5 +1,6 @@
 
 import './App.css';
+import Category from './Components/Category/Category';
 import Products from './Components/Products';
 import Slider from './Components/Slider'
 import Toptopage from './Components/Toptopage';
@@ -13,6 +14,7 @@ function App() {
 
       <div className='container'>
         <Slider />
+        <Category/>
         <Products />
       </div>
     

@@ -103,13 +103,13 @@ export default function HorizontalLinearStepper() {
         </React.Fragment>
       ) : (
         <React.Fragment>
-            {activeStep === 0 && <Addressform/>}
-        {activeStep === 1 && <Contactformdetails/>}
+            {activeStep === 0 && <Addressform handleNext={handleNext}/>}
+        {activeStep === 1 && <Contactformdetails handleNext={handleNext}/>}
         {activeStep === 2 && <Paymentmethod/>}
           {/* <Typography sx={{ mt: 2, mb: 1 }}>Step {activeStep + 1}</Typography> */}
           <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
             <Button
-              color="warning"
+              color="success"
               variant="contained"
               disabled={activeStep === 0}
               onClick={handleBack}
@@ -123,11 +123,11 @@ export default function HorizontalLinearStepper() {
                 Skip
               </Button>
             )} */}
-            <Button disabled={contactdetail === ''} onClick={handleNext} className='btn' variant="contained" color="primary" > 
+            {/* <Button  onClick={handleNext} className='btn' variant="contained" color="primary" > 
               {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-            </Button>
+            </Button> */}
           
-
+  
           </Box>
         </React.Fragment>
       )}

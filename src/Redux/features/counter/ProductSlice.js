@@ -6,8 +6,12 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
   
+  allproductsinfilterComponent:[],
   products: [],
+  filterproducts:[],
   singleproduct: [],
+  productcategory:[],
+  categoryNames:[],
   removesingleproduct:[],
   cart: [],
   wishlist:[],
@@ -18,9 +22,7 @@ const initialState = {
   contactdetail:[]
 }
 
-
 export const productSlice = createSlice({
-  
   
   name: 'products',
   initialState,
@@ -28,8 +30,25 @@ export const productSlice = createSlice({
     displayproducts: (state, action) => {
       state.products = action.payload;
     },
+    allproductsinfilter: (state,action)=>{
+      state.allproductsinfilterComponent = action.payload;
+    },
     productview: (state, action) => {
       state.singleproduct = action.payload
+    },
+    category: (state, action)=>{
+      state.productcategory= action.payload;
+    },   
+    filter: (state, action) => {
+     state.filterproducts=action.payload
+    
+    },
+    
+    namecategory:(state, action)=>{
+      state.categoryNames= action.payload
+    },
+    imagecategory:(state, action)=>{
+      state.categoryPictures= action.payload
     },
 
     addtocart: (state, action) => {
@@ -108,6 +127,7 @@ export const productSlice = createSlice({
 // Action creators are generated for each case reducer function
 export const {
   displayproducts,
+  allproductsinfilter,
   productview,
   addtocart,
   addtowishlist,
@@ -119,6 +139,10 @@ export const {
   updateAddedToCart,
   contactdetails,
   addressdetails,
+  category,
+  namecategory,
+  imagecategory,
+  filter
 } = productSlice.actions
 
 

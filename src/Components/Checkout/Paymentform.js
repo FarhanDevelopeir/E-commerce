@@ -14,7 +14,7 @@ const CARD_OPTIONS={
             fontSize:'16px',
             fontSmoothing:'antialiased',
             ':-webkit-autofill':{color:'#fce883'},
-            '::placeholder':{color:'#87bbfd'}
+            '::placeholder':{color:'#FFF'}
         },
         invalid: {
             iconColor: '#ffc7ee',
@@ -63,10 +63,11 @@ const Paymentform = () => {
             <fieldset className='FormGroup mt-3'>
                 <div className='FormRow'>
                     <CardElement options={CARD_OPTIONS}/>
+                 
                 </div>
             </fieldset>
             
-            <Button variant='contained' type='submit' style={{margin:'auto'}} >Pay</Button>
+            <Button disabled={!stripe} variant='contained' type='submit' style={{margin:'auto'}} >Pay</Button>
         </form>   :
         <div>
             <h2>You bought a book .. Congrats this is the best decision of you're life</h2>

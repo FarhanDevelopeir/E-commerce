@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addressdetails } from '../../Redux/features/counter/ProductSlice';
 
 
-const Contactformdetails = () => {
+const Contactformdetails = (props) => {
     const billingdetailss=useSelector((state)=>state.product.shipmentdetail)
     const dispatch=useDispatch();
 
@@ -122,7 +122,14 @@ const Contactformdetails = () => {
 
 
 
-                        <Button variant="contained" className='mt-4' color="primary" type="submit" >Place Order</Button>
+                        <Button 
+                        variant="contained" 
+                        className='mt-4' 
+                        color="primary" 
+                        type="submit"
+                        disabled={province==='' || address==='' }
+                        onClick={props.handleNext}
+                         >Next</Button>
                     </form>
                 </div>
             </div>
