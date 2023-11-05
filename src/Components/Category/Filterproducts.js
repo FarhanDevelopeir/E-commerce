@@ -1,12 +1,14 @@
 import axios, { all } from 'axios'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useLocation, useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom'
 import { addtocart, addtowishlist, allproductsinfilter, displayproducts, category, filter, updateAddedToCart, namecategory } from '../../Redux/features/counter/ProductSlice'
 import { Button } from '@mui/material'
 import { MDBInput } from 'mdb-react-ui-kit'
 
 const Filterproducts = () => {
+    const { category } = useParams(); // Use useParams to get the category from the URL
     const dispatch = useDispatch()
     const allfilterproducts = useSelector((state) => state.product.allproductsinfilterComponent)
     const filterproduct = useSelector((state) => state.product.filterproducts)
@@ -16,12 +18,15 @@ const Filterproducts = () => {
 
     const [searchInput, setSearchInput] = useState(''); // Step 1
 
-    const checkprice = allfilterproducts.map((item) => {
-        console.log(item.price);
-        return (
-            <></>
-        )
-    })
+
+    // Use useLocation to get the current location object
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
+    const selectedCategory = searchParams.get('category'); // Get the category parameter from the URL
+
+    // ...
+
+
     // console.log(checkprice);
 
     const fetchproducts = async () => {
@@ -42,11 +47,18 @@ const Filterproducts = () => {
 
     }
 
+    // useEffect(() => {
+    //     fetchproducts();
+
+
+    // }, [])
     useEffect(() => {
         fetchproducts();
-
-
-    }, [])
+        // Check if the category exists and apply the category filter
+        if (selectedCategory) {
+            filtercategory(selectedCategory);
+        }
+    }, [category]);
 
     const searchdata = (e) => {
         setSearchInput(e.target.value)

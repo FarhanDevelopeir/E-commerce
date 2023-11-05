@@ -143,3 +143,26 @@
 }
 
 /* Category Close */
+          
+/* login & SignUp  */
+
+@media screen and (max-width:991px){
+  .signup{
+    margin-top: 45px;
+  }
+}
+@media screen and (max-width:500px){
+  .signup-icon {
+    display: none;
+  }
+}
+@media screen and (min-width:700px){
+  .loginsignupbox{
+    width: 75%;
+  }
+}
+
+
+
+/* login & SignUp Close */
+
