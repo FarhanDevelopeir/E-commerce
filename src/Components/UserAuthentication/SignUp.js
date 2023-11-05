@@ -2,6 +2,7 @@ import { TextField } from '@mui/material'
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import signuppic from '../../Images/signuppic3.png'
+import axios from 'axios'
 
 
 const SignUp = () => {
@@ -38,7 +39,23 @@ const SignUp = () => {
     else {
       
       console.log(formData);
+      signupform(formData)
     }
+
+    
+      
+    }
+
+  const signupform = async(user)=>{
+    try{
+      const res = await axios.post('/users', user)
+      console.log(res);
+    } catch (error){
+      console.log('err', error)
+    }
+
+
+    
     
     
   }
