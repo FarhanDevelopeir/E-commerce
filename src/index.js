@@ -65,7 +65,7 @@ root.render(
           <Route path='/wishlist' element={<Whishlist />} />
           <Route path='/checkout' element={<Addressform />} />
           <Route path='/ordercomplete' element={<Completeorder />} />
-          <Route path='/filterproducts/:category' element={ <Filterproducts/>} />
+          <Route path='/filterproducts' element={ <Filterproducts/>} />
           <Route path='/signup' element={ <SignUp/>} />
           <Route path='/login' element={ <Login/>} />
           <Route path='*' element={<PageNotFound />} />

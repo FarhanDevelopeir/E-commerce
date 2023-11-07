@@ -44,7 +44,7 @@ const Category = () => {
 
             
                <div className='hover-shadow w-25 rounded'>
-                <Link to={`/filterproducts?category=${item}`}>
+                <Link to={`/filterproducts`}>
                     <div key={item} className=' p-1 w-100 rounded   text-center'>
 
                         <img src={categoryPics[i]} className='cate-img rounded mb-2' alt={item} height="120" />

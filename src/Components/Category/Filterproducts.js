@@ -20,9 +20,9 @@ const Filterproducts = () => {
 
 
     // Use useLocation to get the current location object
-    const location = useLocation();
-    const searchParams = new URLSearchParams(location.search);
-    const selectedCategory = searchParams.get('category'); // Get the category parameter from the URL
+    // const location = useLocation();
+    // const searchParams = new URLSearchParams(location.search);
+    // const selectedCategory = searchParams.get('category'); // Get the category parameter from the URL
 
     // ...
 
@@ -36,12 +36,12 @@ const Filterproducts = () => {
                 console.log('err', error)
             })
         dispatch(allproductsinfilter(res.data));
-        const rescate = await axios
-            .get('https://fakestoreapi.com/products/categories')
-            .catch((error) => {
-                console.log('err', error)
-            })
-        dispatch(namecategory(rescate.data));
+        // const rescate = await axios
+        //     .get('https://fakestoreapi.com/products/categories')
+        //     .catch((error) => {
+        //         console.log('err', error)
+        //     })
+        // dispatch(namecategory(rescate.data));
 
 
 
@@ -55,9 +55,9 @@ const Filterproducts = () => {
     useEffect(() => {
         fetchproducts();
         // Check if the category exists and apply the category filter
-        if (selectedCategory) {
-            filtercategory(selectedCategory);
-        }
+        // if (selectedCategory) {
+        //     filtercategory(selectedCategory);
+        // }
     }, [category]);
 
     const searchdata = (e) => {
@@ -176,7 +176,7 @@ const Filterproducts = () => {
             <div className='container d-flex'>
                 <div className='' style={{ width: '20%', marginTop: '10px' }}>
                     <h3 className='mb-4'>Filters</h3>
-                    <h4 className='mb-2'>Category</h4>
+                    <h5 className='mb-2'>Category</h5>
                     {Category.map((item) => {
                         return (<>
                             <label>
@@ -188,7 +188,7 @@ const Filterproducts = () => {
                     })}
 
                     {/* price filter */}
-                    <h4 className='mt-3 mb-2'>Price</h4>
+                    <h5 className='mt-3 mb-2'>Price</h5>
                     <form class="multi-range-field ">
                         <input id="multi6" class="multi-range" type="range" min='0' max='1500' step='250'  />
                     </form>
@@ -210,6 +210,9 @@ const Filterproducts = () => {
                                     label='Search products'
                                     onChange={searchdata}
                                 />
+                            </div>
+                            <div>
+                                <h5>Total products {filteredProducts.length}</h5>
                             </div>
 
 
