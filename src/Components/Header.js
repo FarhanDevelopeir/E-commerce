@@ -7,6 +7,9 @@ import { MDBInput } from 'mdb-react-ui-kit';
 const Header = () => {
   const cart = useSelector((state) => state.product.cart)
   const wishlist = useSelector(state => state.product.wishlist)
+  const userdata=useSelector((state)=>state.product.Usersdata)
+  console.log(userdata.password);
+
 
   return (
     <div className='mb-5'>
@@ -25,8 +28,11 @@ const Header = () => {
 
             <div className="order-lg-last col-lg-5 col-sm-8 col-8">
               <div className="d-flex float-end">
-                <Link to={'/login'}>
-                  <a className="me-1 border rounded py-1 px-3 nav-link d-flex align-items-center " > <i className="fas fa-user-alt m-1 me-md-2 text-white"></i><p className="text-white d-none d-md-block mb-0">Login</p> </a></Link>
+                {userdata && userdata.length === 1 ?
+                   ( <h4>{userdata.name}</h4>):
+                 ( <Link to={'/login'}>
+                  <a className="me-1 border rounded py-1 px-3 nav-link d-flex align-items-center " > <i className="fas fa-user-alt m-1 me-md-2 text-white"></i><p className="text-white d-none d-md-block mb-0">Login</p> </a>
+                  </Link>)}
                 <Link to={'/wishlist'}>
                   <a className="me-1  py-2 px-3 nav-link d-flex text-white hover-shadow  align-items-center" >
 

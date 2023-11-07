@@ -1,19 +1,24 @@
 import { TextField } from '@mui/material'
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux'
+import { Link , useNavigate} from 'react-router-dom'
 import signuppic from '../../Images/signuppic3.png'
 import axios from 'axios'
+import { Userdata } from '../../Redux/features/counter/ProductSlice'
+
 
 
 const SignUp = () => {
+  const userdata=useSelector((state)=>state.product.Usersdata)
+  const dispatch=useDispatch()
   const [formData, setFormData] = useState({ name: '', email: '' , password: ''});
-
+  const navigate=useNavigate()
   const [Errorname, setErrorName]=useState(false)
   const [Erroremail, setErrorEmail]=useState(false)
   const [Errorpassword, setErrorPassword]=useState(false)
 
   const handleChange = (e) => {
-    console.log(e)
+    
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
@@ -41,25 +46,19 @@ const SignUp = () => {
       console.log(formData);
       signupform(formData)
     }
-
-    
-      
     }
 
-  const signupform = async(user)=>{
+  const signupform = async(user,token)=>{
     try{
-      const res = await axios.post('/users', user)
+      const res = await axios.post('http://localhost:3000/users', user)
       console.log(res);
+      navigate('/');
+     
+      dispatch(Userdata( res.data.user,res.data.token ));
     } catch (error){
       console.log('err', error)
     }
-
-
-    
-    
-    
   }
-
   return (
    
     <div className=''>

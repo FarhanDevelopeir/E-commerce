@@ -19,7 +19,10 @@ const initialState = {
   quantity: 1,
   cartbtn:false,
   addressdetail:[],
-  contactdetail:[]
+  contactdetail:[],
+  Usersdata:{
+  
+  },
 }
 
 export const productSlice = createSlice({
@@ -120,6 +123,10 @@ export const productSlice = createSlice({
     contactdetails:(state, action)=>{
       state.contactdetail = action.payload;
     },
+    Userdata:(state, action)=>{
+      state.Usersdata = action.payload;
+      
+    }
     
   },
 })
@@ -142,7 +149,8 @@ export const {
   category,
   namecategory,
   imagecategory,
-  filter
+  filter,
+  Userdata
 } = productSlice.actions
 
 
