@@ -59,7 +59,7 @@ const Login = () => {
                   </div> */}
                                                 <div class="text-center text-lg-start mt-5 d-flex justify-content-center ">
                                                     <button type="button" class="btn btn-primary btn-lg m-auto "
-                                                        style={{ paddingLeft: '2.5rem', paddingRight: '2.5rem' }}>Login</button>
+                                                        style={{ paddingLeft: '2.5rem', paddingRight:'2.5rem' }}>Login</button>
 
                                                 </div>
                                                 <p class="small fw-bold text-center mt-1 w-100 pt-1 mb-0">Don't have an account?

@@ -64,9 +64,9 @@ const Paymentmethod = () => {
           
           >Finish</Button>
         </Link>}
-          {isformopen &&
+          {/* {isformopen &&
             <StripeContainer/>
-          }
+          } */}
           
 
        

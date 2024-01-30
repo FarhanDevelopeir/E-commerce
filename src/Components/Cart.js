@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+// import React, { useState } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   MDBRow,
@@ -10,6 +11,7 @@ import {
 import { decreasequantity, increasequantity, removefromcart, productPrice, updateTotalAmount, clearcart } from '../Redux/features/counter/ProductSlice';
 import Addressform from './Checkout/BasicDetails';
 import Stepper from './Checkout/Stepper';
+import { useState } from 'react';
 
 const Cart = () => {
     const cart=useSelector((state)=>state.product.cart);

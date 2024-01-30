@@ -1,9 +1,10 @@
 
 import './App.css';
 import Category from './Components/Category/Category';
+
 import Products from './Components/Products';
 import Slider from './Components/Slider'
-import Toptopage from './Components/Toptopage';
+
 import {loadStripe} from '@stripe/stripe-js'
 
 
@@ -13,6 +14,7 @@ function App() {
   return (
 
       <div className='container'>
+       
         <Slider />
         <Category/>
         <Products />

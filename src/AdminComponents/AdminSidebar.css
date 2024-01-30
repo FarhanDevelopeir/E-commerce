@@ -1,0 +1,16 @@
+.styleOnHover:hover{
+    color: black !important;
+}
+.styleOnHover.active{
+    background-color: rgb(236, 230, 230) !important;
+    color: black !important;
+}
+@media screen and (max-width:1150px) {
+    .position{
+       position:fixed;
+    }
+    .dashboard{
+        /* background-color: blue; */
+        margin-left: 65px !important;
+    }
+}
