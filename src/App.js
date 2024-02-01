@@ -1,9 +1,9 @@
 
 import './App.css';
-import Category from './Components/Category/Category';
+import Category from './features/product/components/Category';
 
-import Products from './Components/Products';
-import Slider from './Components/Slider'
+import Products from './features/product/components/Products';
+import Slider from './features/product/components/Slider'
 
 import {loadStripe} from '@stripe/stripe-js'
 

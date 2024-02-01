@@ -12,7 +12,7 @@ import {
   filter,
   updateAddedToCart,
   namecategory,
-} from "../../Redux/features/counter/ProductSlice";
+} from "../../../Redux/features/counter/ProductSlice";
 import { Button } from "@mui/material";
 import { MDBInput } from "mdb-react-ui-kit";
 

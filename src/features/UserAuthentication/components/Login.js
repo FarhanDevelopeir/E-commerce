@@ -1,7 +1,7 @@
 import { TextField } from '@mui/material'
 import React from 'react'
 import { Link } from 'react-router-dom'
-import loginpic from '../../Images/loginpic3.png'
+import loginpic from '../../../Images/loginpic3.png'
 
 
 

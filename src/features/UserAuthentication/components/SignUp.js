@@ -3,9 +3,9 @@ import { TextField } from '@mui/material'
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
-import signuppic from '../../Images/signuppic3.png'
+import signuppic from '../../../Images/signuppic.jpg'
 import axios from 'axios'
-import { Userdata } from '../../Redux/features/counter/ProductSlice'
+import { Userdata } from '../../../Redux/features/counter/ProductSlice'
 
 
 

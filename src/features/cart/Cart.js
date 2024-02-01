@@ -8,9 +8,9 @@ import {
   MDBCheckbox,
   MDBBtn
 } from 'mdb-react-ui-kit';
-import { decreasequantity, increasequantity, removefromcart, productPrice, updateTotalAmount, clearcart } from '../Redux/features/counter/ProductSlice';
-import Addressform from './Checkout/BasicDetails';
-import Stepper from './Checkout/Stepper';
+import { decreasequantity, increasequantity, removefromcart, productPrice, updateTotalAmount, clearcart } from '../../Redux/features/counter/ProductSlice';
+import Addressform from '../Checkout/components/BasicDetails';
+import Stepper from '../Checkout/components/Stepper';
 import { useState } from 'react';
 
 const Cart = () => {

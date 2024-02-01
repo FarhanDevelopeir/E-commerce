@@ -2,8 +2,8 @@ import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { addtocart, productview } from '../Redux/features/counter/ProductSlice'
-import { increasequantity, decreasequantity } from '../Redux/features/counter/ProductSlice'
+import { addtocart, productview } from '../../../Redux/features/counter/ProductSlice'
+import { increasequantity, decreasequantity } from '../../../Redux/features/counter/ProductSlice'
 
 const ProductDetail = ({item}) => {
   const singleproduct = useSelector((state) => state.product.singleproduct);
