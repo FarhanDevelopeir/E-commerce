@@ -332,7 +332,7 @@
     {
       "id": "19",
       "title": "Skin Beauty Serum.",
-      "description": "Product name: rorec collagen hyaluronic acid white face serum riceNet weight: 15 m",
+      "description": "Product title: rorec collagen hyaluronic acid white face serum riceNet weight: 15 m",
       "price": 46,
       "discountPercentage": 10.68,
       "rating": 4.42,
@@ -566,7 +566,7 @@
         {}
       ],
       "rating": "4.5",
-      "discountedPrice": "1299",
+      "discountPercentage": "1299",
       "description": ", Piece of glass or other transparent substance that is used to form an image of an object by converging or diverging rays of light from the object. Because of the curvature of its surface, different rays of light are refracted (see refraction) through different angles."
     },
     {
@@ -583,7 +583,7 @@
         {}
       ],
       "rating": "3.5",
-      "discountedPrice": "1200",
+      "discountPercentage": "1200",
       "description": "A lens is a piece of transparent glass which concentrates or disperses light rays when passes through them by refraction. Due to the magnifying property, lenses are used in telescopes and other magnifying devices"
     },
     {
@@ -600,8 +600,34 @@
         {}
       ],
       "rating": "3.4",
-      "discountedPrice": "899",
+      "discountPercentage": "899",
       "description": "sdjhcvajvcja"
+    },
+    {
+      "id": "cbbb",
+      "title": "jch",
+      "brand": "",
+      "price": 0,
+      "category": "",
+      "stock": 0,
+      "thumbnail": {},
+      "images": [],
+      "rating": 0,
+      "discountPercentage": 0,
+      "description": ""
+    },
+    {
+      "id": "7aff",
+      "title": "",
+      "brand": "",
+      "price": 0,
+      "category": "",
+      "stock": 0,
+      "thumbnail": null,
+      "images": [],
+      "rating": 0,
+      "discountPercentage": 0,
+      "description": ""
     }
   ]
 }

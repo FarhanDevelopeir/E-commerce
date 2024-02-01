@@ -9,14 +9,12 @@ import {
   displayproducts,
   updateAddedToCart,
 } from "../Redux/features/counter/ProductSlice";
-import { fetchData } from "./features/AdminSlice";
+import { ActivePage, AddProducts, fetchData } from "./features/AdminSlice";
 
 const AdminProducts = () => {
   const getproducts = useSelector((state) => state.adminslice.data);
   console.log(getproducts);
-  const products = useSelector((state) => state.product.products);
-  const cart = useSelector((state) => state.product.cart);
-  const [loading, setloading] = useState(true);
+  const [activeItem, setActiveItem] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 12;
 
@@ -25,19 +23,26 @@ const AdminProducts = () => {
     dispatch(fetchData());
   }, [dispatch]);
 
+  const handleClick = (itemName, itemId) => {
+    setActiveItem(itemName === activeItem ? null : itemName);
+    dispatch(ActivePage(itemName,itemId));
+    // Dispatch an action with the item ID
+    
+  };
+
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
   const currentProducts = getproducts.slice(
     indexOfFirstProduct,
     indexOfLastProduct
   );
-  console.log(currentProducts)
+  console.log(currentProducts);
 
   const displaydata = currentProducts.map((item) => {
     return (
       <div className="overflow-hidden ">
         <div className=" h-[250px] shadow overflow-hidden  text-sm rounded-lg  bg-white">
-          <Link to={`/productdetail/${item.id}`}>
+          {/* <Link to={`/productdetail/${item.id}`}> */}
             <div className="" style={{ textAlign: "center" }}>
               <div className=" w-full   ">
                 <img
@@ -54,20 +59,31 @@ const AdminProducts = () => {
               </div>
 
               <div className="card-body px-3 py-2">
-                                    <div className='flex'>
-                                    <h5 className="text-dark text-left w-full text-sm mb-0">{item.title}</h5>
-                                    <button className='flex' >
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
-  <path d="M21.731 2.269a2.625 2.625 0 0 0-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 0 0 0-3.712ZM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 0 0-1.32 2.214l-.8 2.685a.75.75 0 0 0 .933.933l2.685-.8a5.25 5.25 0 0 0 2.214-1.32l8.4-8.4Z" />
-  <path d="M5.25 5.25a3 3 0 0 0-3 3v10.5a3 3 0 0 0 3 3h10.5a3 3 0 0 0 3-3V13.5a.75.75 0 0 0-1.5 0v5.25a1.5 1.5 0 0 1-1.5 1.5H5.25a1.5 1.5 0 0 1-1.5-1.5V8.25a1.5 1.5 0 0 1 1.5-1.5h5.25a.75.75 0 0 0 0-1.5H5.25Z" />
-</svg>
-
-                                    </button>
-                                    </div>
+                <div className="flex">
+                  <h5 className="text-dark text-left w-full text-sm mb-0">
+                    {item.title}
+                  </h5>
+                   <Link to={`${item.id}`}>
+                  <button className="flex" 
+                 onClick={() => handleClick("Add Products",item.id)}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                      class="w-6 h-6"
+                    >
+                      <path d="M21.731 2.269a2.625 2.625 0 0 0-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 0 0 0-3.712ZM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 0 0-1.32 2.214l-.8 2.685a.75.75 0 0 0 .933.933l2.685-.8a5.25 5.25 0 0 0 2.214-1.32l8.4-8.4Z" />
+                      <path d="M5.25 5.25a3 3 0 0 0-3 3v10.5a3 3 0 0 0 3 3h10.5a3 3 0 0 0 3-3V13.5a.75.75 0 0 0-1.5 0v5.25a1.5 1.5 0 0 1-1.5 1.5H5.25a1.5 1.5 0 0 1-1.5-1.5V8.25a1.5 1.5 0 0 1 1.5-1.5h5.25a.75.75 0 0 0 0-1.5H5.25Z" />
+                    </svg>
+                  </button>
+                  </Link>
+                </div>
 
                 <div className="mb-2">
-
-                  <h5 className="text-dark text-right text-sm mb-0">${item.price}</h5>
+                  <h5 className="text-dark text-right text-sm mb-0">
+                    ${item.price}
+                  </h5>
                 </div>
                 {/* <div>
                   {item.description}
@@ -87,7 +103,7 @@ const AdminProducts = () => {
                 </div>
               </div>
             </div>
-          </Link>
+          {/* </Link> */}
         </div>
       </div>
     );

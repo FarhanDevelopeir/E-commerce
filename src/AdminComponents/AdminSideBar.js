@@ -5,8 +5,9 @@ import { ActivePage } from "./features/AdminSlice";
 
 const AdminSideBar = () => {
   const dispatch = useDispatch();
-  const [activeItem, setActiveItem] = useState(null);
+  const activepage = useSelector((state)=>state.adminslice.activePage)
   const [collapsed, setCollapsed] = useState(true);
+  const [activeItem, setActiveItem] = useState(null);
 
   const handleClick = (itemName) => {
     setActiveItem(itemName === activeItem ? null : itemName);
@@ -69,15 +70,21 @@ const AdminSideBar = () => {
             collapsed ? "px-3" : "px-2  "
           } `}
         >
+
+
+         
+
+
+
           <div className="">
             <div className="bg-top bg-cover space-y-1 mt-5">
               <a
                 href="#"
                 onClick={() => handleClick("Dashboard")}
                 className={`styleOnHover font-medium text-sm mb-4 items-center rounded-lg text-white py-2.5 flex
-                 transition-all duration-200  hover:text-black  hover:bg-gray-200  cursor-pointer ${
-                   activeItem === "Dashboard" ? "active" : ""
-                 } ${collapsed ? "px-4" : "px-1"}
+                 transition-all duration-200  hover:text-black  hover:bg-gray-200  cursor-pointer
+                 ${activepage === "Dashboard" ? "active" : ""} 
+                  ${collapsed ? "px-4" : "px-1"}
                  `}
               >
                 <span className="justify-center items-center flex ">
@@ -104,12 +111,16 @@ const AdminSideBar = () => {
                 </span>
                 {collapsed ? <span>Dashboard</span> : ""}
               </a>
+
+
+              
+
               <p
                 onClick={() => handleClick("Products")}
                 className={`styleOnHover font-medium mb-4 text-sm flex  w-full   items-center py-2 cursor-pointer 
-              rounded-lg text-white transition-all duration-200 hover:bg-gray-200  ${
-                activeItem === "Products" ? "active" : ""
-              } ${collapsed ? "px-4" : "px-1"} `}
+              rounded-lg text-white transition-all duration-200 hover:bg-gray-200
+              ${activepage === "Products" ? "active" : "" }
+              ${collapsed ? "px-4" : "px-1"} `}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -127,12 +138,14 @@ const AdminSideBar = () => {
                 </svg>
                 {collapsed ? <span>Products</span> : ""}
               </p>
+
+             
               <p
                 onClick={() => handleClick("Orders")}
                 className={`styleOnHover font-medium mb-4  text-sm flex  w-full items-center py-2 
-              cursor-pointer rounded-lg text-white transition-all duration-200 hover:bg-gray-200 ${
-                activeItem === "Orders" ? "active" : ""
-              } ${collapsed ? "px-4" : "px-1"}`}
+              cursor-pointer rounded-lg text-white transition-all duration-200 hover:bg-gray-200  
+              ${ activepage === "Orders" ? "active" : "" } 
+              ${collapsed ? "px-4" : "px-1"}`}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -149,12 +162,13 @@ const AdminSideBar = () => {
 
                 {collapsed ? <span>Orders</span> : ""}
               </p>
+           
               <p
                 onClick={() => handleClick("Add Products")}
                 className={`styleOnHover font-medium  text-sm flex  w-full items-center py-2 
-              cursor-pointer rounded-lg text-white transition-all duration-200 hover:bg-gray-200 ${
-                activeItem === "Add Products" ? "active" : ""
-              } ${collapsed ? "px-4" : "px-1"}`}
+              cursor-pointer rounded-lg text-white transition-all duration-200 hover:bg-gray-200 
+              ${ activepage === "Add Products" ? "active" : "" }
+              ${collapsed ? "px-4" : "px-1"}`}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -178,15 +192,15 @@ const AdminSideBar = () => {
           </div>
           <div className="mt-12 pb-4">
             <div className="bg-top bg-cover space-y-1">
+             
+
               <a
                 href="#"
                 onClick={() => handleClick("Settings")}
                 className={`styleOnHover font-medium text-sm items-center rounded-lg text-white  py-2.5 flex
-                    transition-all duration-200 hover:bg-gray-200 group cursor-pointer ${
-                      activeItem === "Settings" ? "active" : ""
-                    }
+                    transition-all duration-200 hover:bg-gray-200 group cursor-pointer 
+                    ${ activepage === "Settings" ? "active" : ""} 
                     ${collapsed ? "px-4" : "px-1"}
-                    
               `}
               >
                 <span className="justify-center items-center flex">

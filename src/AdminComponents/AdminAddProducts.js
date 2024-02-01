@@ -1,12 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { category } from "../Redux/features/counter/ProductSlice";
-import { useDispatch } from "react-redux";
-import { AddProducts } from "./features/AdminSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { ActivePage, AddProducts, SingleProductData } from "./features/AdminSlice";
+import { useLocation, useParams } from "react-router-dom";
 
 const AdminAddProducts = () => {
-  const dispatch = useDispatch();
+  const Product = useSelector((state)=>state.adminslice.singleProduct)
+  console.log('get single product ', Product)
+  const dispatch = useDispatch()
+  const location = useLocation();
+  const [image, setImage]=useState('')
   const [formData, setFormData] = useState({
-    name: "",
+    title: "",
     brand: "",
     price: 0,
     category: "",
@@ -14,32 +19,55 @@ const AdminAddProducts = () => {
     thumbnail: null,
     images: [],
     rating: 0,
-    discountedPrice: 0,
+    discountPercentage: 0,
     description: "",
   });
 
+  let id = ''
+  // Parse the URL to extract the ID
+  const pathname = location.pathname;
+  const parts = pathname.split('/');
+  id = parts[parts.length - 1]; // Assuming the ID is the last part of the URL
+  console.log('ID from URL:', id);
+
+  useEffect(() => {
+    if(id !== '' ){
+      dispatch(SingleProductData(id))
+    } 
+  }, []);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
-    // dispatch(AddProducts(formData));
-  };
+    console.log(formData)
+    dispatch(AddProducts(formData));
+};
 
-  const handleChange = (e) => {
+const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-  };
-  const handleThumbnailChange = (e) => {
-    const file = e.target.files[0];
-    setFormData({ ...formData, thumbnail: file });
-  };
+};
 
-  const handleImagesChange = (e) => {
+const handleThumbnailChange = (e) => {
+  
+  // if(e.target && e.target.files[0]){
+  //   formsData.append('file', e.target.files[0]);
+  // }
+  // console.log(e.target.files[0])
+  // console.log(formData)
+    const file = e.target.files[0];
+   
+    setFormData({ ...formData, thumbnail: file });
+    setImage(file)
+};
+
+const handleImagesChange = (e) => {
     const files = Array.from(e.target.files);
     setFormData((prevFormData) => ({
-      ...prevFormData,
-      images: [...prevFormData.images, ...files],
+        ...prevFormData,
+        images: [...prevFormData.images, ...files],
     }));
-  };
+};
+
   return (
     <div>
       <section class=" pt-6 px-3 sm:pt-6 sm:px-8  dark:bg-gray-500">
@@ -59,12 +87,12 @@ const AdminAddProducts = () => {
                   </label>
                   <input
                     type="text"
-                    name="name"
+                    name="title"
                     // id="name"
                     class="bg-white shadow-md mb-2  border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600  w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     placeholder="Type product name"
                     required=""
-                    value={formData.name}
+                    value={formData.title}
                     onChange={handleChange}
                   />
                 </div>
@@ -170,6 +198,10 @@ const AdminAddProducts = () => {
                   className="mt-2 h-20"
                 />
               )} */}
+              {image=== '' ? '':
+              <img src={image} />
+            }
+
                 </div>
 
                 <div>
@@ -246,9 +278,9 @@ const AdminAddProducts = () => {
                   </label>
                   <input
                     type="Number"
-                    value={formData.discountedPrice}
+                    value={formData.discountPercentage}
                     onChange={handleChange}
-                    name="discountedPrice"
+                    name="discountPercentage"
                     // id="name"
                     class="bg-white shadow-md  border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     placeholder="$1550"
