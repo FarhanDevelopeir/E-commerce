@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { TextField, Button } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux';
-import { addressdetails } from '../../Redux/features/counter/ProductSlice';
+import { addressdetails } from '../../../Redux/features/counter/ProductSlice';
 
 
 const Contactformdetails = (props) => {

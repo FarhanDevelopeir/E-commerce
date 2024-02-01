@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom';
-import { addtocart, updateAddedToCart } from '../Redux/features/counter/ProductSlice'
+import { addtocart, updateAddedToCart } from '../../Redux/features/counter/ProductSlice'
 
 
 const Whishlist = () => {

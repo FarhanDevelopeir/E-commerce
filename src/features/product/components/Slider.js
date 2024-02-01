@@ -1,7 +1,7 @@
 import React from 'react'
-import pic1 from '../Images/1.png'
-import pic2 from '../Images/2.png'
-import pic3 from '../Images/3.png'
+import pic1 from '../../../Images/1.png'
+import pic2 from '../../../Images/2.png'
+import pic3 from '../../../Images/3.png'
 
 const Slider = () => {
   return (

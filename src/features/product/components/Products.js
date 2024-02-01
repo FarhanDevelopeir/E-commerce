@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import axios from 'axios'
 
 import { Link } from 'react-router-dom';
-import { addtocart, addtowishlist, displayproducts, updateAddedToCart } from '../Redux/features/counter/ProductSlice'
+import { addtocart, addtowishlist, displayproducts, updateAddedToCart } from '../../../Redux/features/counter/ProductSlice'
 
 
 const Products = () => {

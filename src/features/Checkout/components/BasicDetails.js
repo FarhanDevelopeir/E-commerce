@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { TextField, Button } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux';
-import {  contactdetails } from '../../Redux/features/counter/ProductSlice';
+import {  contactdetails } from '../../../Redux/features/counter/ProductSlice';
 
 const Addressform = (props) => {
     const billingdetailss = useSelector((state)=>state.product.shipmentdetail)

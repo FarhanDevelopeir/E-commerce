@@ -1,11 +1,11 @@
 import axios from 'axios';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { namecategory } from '../../Redux/features/counter/ProductSlice';
-import electronic from '../../Images/electronic.jpg';
-import jewelry from '../../Images/jewelry.jpg';
-import menclothing from '../../Images/womenclothing.jpg';
-import womenclothing from '../../Images/menclo.jpg';
+import { namecategory } from '../../../Redux/features/counter/ProductSlice';
+import electronic from '../../../Images/electronic.jpg';
+import jewelry from '../../../Images/jewelry.jpg';
+import menclothing from '../../../Images/womenclothing.jpg';
+import womenclothing from '../../../Images/menclo.jpg';
 import { Link } from 'react-router-dom';
 
 const Category = () => {
