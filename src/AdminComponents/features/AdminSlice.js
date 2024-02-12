@@ -47,6 +47,18 @@ export const AddProducts = createAsyncThunk("products/addProduct", async (formDa
   }
 });
 
+// Update Product
+const updateContact= async (contact)=>{
+  const response = await api.put(`/usercontacts/${contact.id}`, contact);
+  const {id}=response.data;
+  setList(
+    list.map((contact)=>{
+      return contact.id===id ? {...response.data} : contact;
+    })
+  )
+}
+
+
 export const adminSlice = createSlice({
   name: "products",
   initialState,
