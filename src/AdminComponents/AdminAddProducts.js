@@ -1,15 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { category } from "../Redux/features/counter/ProductSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { ActivePage, AddProducts, SingleProductData } from "./features/AdminSlice";
+import {
+  ActivePage,
+  AddProducts,
+  SingleProductData,
+} from "./features/AdminSlice";
 import { useLocation, useParams } from "react-router-dom";
 
 const AdminAddProducts = () => {
-  const Product = useSelector((state)=>state.adminslice.singleProduct)
-  console.log('get single product ', Product)
-  const dispatch = useDispatch()
+  const Product = useSelector((state) => state.adminslice.singleProduct);
+  console.log("get single product ", Product);
+  const dispatch = useDispatch();
   const location = useLocation();
-  const [image, setImage]=useState('')
+  const [image, setImage] = useState("");
   const [formData, setFormData] = useState({
     title: "",
     brand: "",
@@ -23,50 +27,75 @@ const AdminAddProducts = () => {
     description: "",
   });
 
-  let id = ''
+  const thumbnailInputRef = useRef(null);
+
+  let id = "";
   // Parse the URL to extract the ID
   const pathname = location.pathname;
-  const parts = pathname.split('/');
+  const parts = pathname.split("/");
   id = parts[parts.length - 1]; // Assuming the ID is the last part of the URL
-  console.log('ID from URL:', id);
+  console.log("ID from URL:", id);
 
   useEffect(() => {
-    if(id !== '' ){
-      dispatch(SingleProductData(id))
-    } 
+    if (id !== "") {
+      dispatch(SingleProductData(id));
+    }
   }, []);
+
+  useEffect(() => {
+    if (Product) {
+      setFormData(Product);
+    }
+  }, [Product]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData)
+    console.log(formData);
     dispatch(AddProducts(formData));
-};
+  };
 
-const handleChange = (e) => {
+  const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-};
+  };
 
-const handleThumbnailChange = (e) => {
-  
-  // if(e.target && e.target.files[0]){
-  //   formsData.append('file', e.target.files[0]);
-  // }
-  // console.log(e.target.files[0])
-  // console.log(formData)
+  const handleThumbnailChange = (e) => {
+    // if(e.target && e.target.files[0]){
+    //   formsData.append('file', e.target.files[0]);
+    // }
+    // console.log(e.target.files[0])
+    // console.log(formData)
     const file = e.target.files[0];
-   
-    setFormData({ ...formData, thumbnail: file });
-    setImage(file)
-};
+    const reader = new FileReader();
 
-const handleImagesChange = (e) => {
+    reader.onloadend = () => {
+      setFormData({
+        ...formData,
+        thumbnail: file,
+        thumbnailPreview: reader.result,
+      });
+    };
+
+    if (file) {
+      reader.readAsDataURL(file);
+    }
+
+    // setFormData({ ...formData, thumbnail: file });
+    // setImage(file)
+  };
+  const resetThumbnailInput = () => {
+    if (thumbnailInputRef.current) {
+      thumbnailInputRef.current.value = ""; // Clear the file input
+    }
+  };
+
+  const handleImagesChange = (e) => {
     const files = Array.from(e.target.files);
     setFormData((prevFormData) => ({
-        ...prevFormData,
-        images: [...prevFormData.images, ...files],
+      ...prevFormData,
+      images: [...prevFormData.images, ...files],
     }));
-};
+  };
 
   return (
     <div>
@@ -101,7 +130,7 @@ const handleImagesChange = (e) => {
                   <div class="w-full">
                     <label
                       for="brand"
-                      class=" mb-2 text-sm font-medium text-gray-600 dark:text-white"
+                      class=" mb-2 text-sm font-semibold text-gray-600  dark:text-white"
                     >
                       Brand
                     </label>
@@ -160,7 +189,7 @@ const handleImagesChange = (e) => {
                   <div>
                     <label
                       for="item-weight"
-                      class="mb-2 text-sm font-medium text-gray-600 dark:text-white"
+                      class="mb-2 text-sm font-semibold text-gray-600 dark:text-white"
                     >
                       Stock
                     </label>
@@ -187,10 +216,21 @@ const handleImagesChange = (e) => {
                     <input
                       type="file"
                       id="thumbnail"
-                      onChange={handleThumbnailChange}
+                      ref={thumbnailInputRef}
+                      onChange={(e) => {
+                        handleThumbnailChange(e);
+                        resetThumbnailInput();
+                      }}
                       class="bg-white shadow-md mb-2 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600  w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     />
                   </div>
+                  {formData.thumbnailPreview && (
+              <img
+                src={formData.thumbnailPreview}
+                alt="Thumbnail"
+                className="mt-2 h-20"
+              />
+            )}
                   {/* {formData.thumbnail && (
                 <img
                   src={URL.createObjectURL(formData.thumbnail)}
@@ -198,10 +238,7 @@ const handleImagesChange = (e) => {
                   className="mt-2 h-20"
                 />
               )} */}
-              {image=== '' ? '':
-              <img src={image} />
-            }
-
+                  {image === "" ? "" : <img src={image} />}
                 </div>
 
                 <div>
@@ -215,7 +252,6 @@ const handleImagesChange = (e) => {
                     <div>
                       <input
                         type="file"
-                        
                         id="images"
                         onChange={handleImagesChange}
                         class="bg-white shadow-md mb-2 border sm:py-3 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600  w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
@@ -290,7 +326,7 @@ const handleImagesChange = (e) => {
                 <div class="w-full">
                   <label
                     for="description"
-                    class="mb-2 text-sm font-medium text-gray-600 dark:text-white"
+                    class="mb-2 text-sm font-semibold text-gray-600 dark:text-white"
                   >
                     Description
                   </label>
