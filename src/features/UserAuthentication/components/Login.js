@@ -1,12 +1,49 @@
 import { TextField } from '@mui/material'
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { Link, Navigate, useNavigate } from 'react-router-dom'
 import loginpic from '../../../Images/loginpic3.png'
-
+import { loginUserAsync, selectLoggedInUser } from '../authSlice'
 
 
 const Login = () => {
+    const userdata = useSelector(selectLoggedInUser);
+    const dispatch = useDispatch()
+    const [formData, setFormData] = useState({ email: '', password: '' });
+    const [Erroremail, setErrorEmail] = useState(false)
+    const [Errorpassword, setErrorPassword] = useState(false)
+
+    const handleChange = (e) => {
+
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value });
+    };
+
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        setErrorEmail(false)
+        setErrorPassword(false)
+        if (formData.email === '') {
+            setErrorEmail(true)
+
+        }
+        if (formData.password === '') {
+
+            setErrorPassword(true)
+        }
+        else {
+            dispatch(loginUserAsync(formData))
+        }
+    }
+
+    useEffect(() => {
+        console.log(userdata)
+      }, [userdata])
+
     return (
+        <div>
+            {userdata.token !== '' && <Navigate to={'/'} replace={true} ></Navigate>}
         <div className=''>
             <section class="" style={{ backgroundColor: '#eee' }}>
                 <div class="container h-100 pt-5 pb-4">
@@ -19,28 +56,41 @@ const Login = () => {
 
                                             <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Login</p>
 
-                                            <form class="mx-1 mx-md-4">
+                                            <form class="mx-1 mx-md-4" onSubmit={handleSubmit}>
                                                 <div class="d-flex flex-row align-items-center mb-4">
                                                     <i class="signup-icon fas fa-envelope fa-lg me-3 fa-fw"></i>
-                                                    <div class="w-100">
-                                                        <TextField
+                                                    <div className=' w-100 '>
+                                                        <TextField type="text"
+                                                            id="form3Example1c"
+                                                            name="email"
                                                             label='Email'
                                                             variant="standard"
                                                             fullWidth
+                                                            value={formData.email}
+                                                            onChange={handleChange}
                                                         />
                                                     </div>
                                                 </div>
+                                                <span className='text-danger'>{Erroremail ? <p>Field is required</p> : ''}</span>
 
                                                 <div class="d-flex flex-row align-items-center mb-4">
                                                     <i class="signup-icon fas fa-lock fa-lg me-3 fa-fw"></i>
-                                                    <div class="w-100">
-                                                        <TextField
-                                                            label='Password'
+                                                    <div className=' w-100 '>
+                                                        <TextField type="text"
+                                                            id="form3Example1c"
+                                                            name="password"
+
                                                             variant="standard"
+                                                            label='Password'
                                                             fullWidth
+                                                            value={formData.password}
+                                                            onChange={handleChange}
                                                         />
                                                     </div>
                                                 </div>
+                                                <span className='text-danger'>
+                                                    {Errorpassword ? <p>Field is required</p> : ''}
+                                                </span>
 
 
 
@@ -58,8 +108,8 @@ const Login = () => {
 
                   </div> */}
                                                 <div class="text-center text-lg-start mt-5 d-flex justify-content-center ">
-                                                    <button type="button" class="btn btn-primary btn-lg m-auto "
-                                                        style={{ paddingLeft: '2.5rem', paddingRight:'2.5rem' }}>Login</button>
+                                                    <button type="submit" class="btn btn-primary btn-lg m-auto "
+                                                        style={{ paddingLeft: '2.5rem', paddingRight: '2.5rem' }}>Login</button>
 
                                                 </div>
                                                 <p class="small fw-bold text-center mt-1 w-100 pt-1 mb-0">Don't have an account?
@@ -84,6 +134,7 @@ const Login = () => {
                     </div>
                 </div>
             </section>
+        </div>
         </div>
     )
 }

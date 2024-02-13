@@ -2,6 +2,7 @@ import axios, { all } from "axios";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useParams } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 import { Link } from "react-router-dom";
 import {
   addtocart,
@@ -15,18 +16,26 @@ import {
 } from "../../../Redux/features/counter/ProductSlice";
 import { Button } from "@mui/material";
 import { MDBInput } from "mdb-react-ui-kit";
+import { allCategoriesAsync, allProductsAsync, allFetchedCategories, allFetchedProducts, selectCategory, selectedCategory } from '../productSlice';
+
+// import {useFilterNavigation} from './useFilterNavigation'
 
 const Filterproducts = () => {
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const category1 = params.get("category");
+  const category2 = useSelector(selectedCategory);
   const { category } = useParams(); // Use useParams to get the category from the URL
   const dispatch = useDispatch();
   const allfilterproducts = useSelector(
     (state) => state.product.allproductsinfilterComponent
   );
   const filterproduct = useSelector((state) => state.product.filterproducts);
-  const Category = useSelector((state) => state.product.categoryNames);
+  const allfilterproducts1 = useSelector(allFetchedProducts);
+  const Category = useSelector(allFetchedCategories);
   const { price } = allfilterproducts;
   const [categoryfilter, setcategoryfilter] = useState(false);
-
+  const [filter, setfilter] = useState({});
   const [searchInput, setSearchInput] = useState(""); // Step 1
 
   // Use useLocation to get the current location object
@@ -53,38 +62,40 @@ const Filterproducts = () => {
     // dispatch(namecategory(rescate.data));
   };
 
-  // useEffect(() => {
-  //     fetchproducts();
-
-  // }, [])
   useEffect(() => {
-    fetchproducts();
-    // Check if the category exists and apply the category filter
-    // if (selectedCategory) {
-    //     filtercategory(selectedCategory);
-    // }
-  }, [category]);
+    handlefilter(category2);
+    
+  }, [category2]);
+
+  useEffect(() => {
+    dispatch(allCategoriesAsync())
+  }, [])
+
+  useEffect(() => {
+    if (Object.keys(filter).length > 0) {
+      dispatch(allProductsAsync({ filter }));
+    }
+  }, [dispatch, filter]);
+
+  if (allfilterproducts1.length > 0) {
+    console.log(allfilterproducts1)
+  }
 
   const searchdata = (e) => {
     setSearchInput(e.target.value);
     console.log(searchInput);
   };
-  const filtercategory = (selectcategory) => {
-    const filteredProducts = allfilterproducts.filter(
-      (item) => item.category === selectcategory
-    );
-    dispatch(filter(filteredProducts));
-    setcategoryfilter(true);
-  };
 
-  const filterprice = (selectedprice) => {
-    const filterprice = allfilterproducts.filter(
-      (item) => item.price === selectedprice
-    );
-    dispatch(filter(filterprice));
-    setcategoryfilter(true);
-  };
 
+  const handlefilter = (value) => {
+    const filterObject = {
+      category: value
+    }
+    setfilter(filterObject)
+    dispatch(selectCategory(value));
+
+  }
+  
   const displayproductsinfilteration =
     categoryfilter === true ? filterproduct : allfilterproducts;
 
@@ -94,6 +105,9 @@ const Filterproducts = () => {
     const search = searchInput.toLowerCase();
     return productTitle.includes(search) || productCategory.includes(search);
   });
+
+
+
   const truncateTitle = (title, maxWords) => {
     const words = title.split(" ");
 
@@ -106,10 +120,10 @@ const Filterproducts = () => {
 
   const nomatchesproducts = filteredProducts.length === 0;
 
-  const displaydata = nomatchesproducts ? (
+  const displaydata = allfilterproducts1.length < 0 ? (
     <h2 className="mt-5 text-center">Sorry, data is not available</h2>
   ) : (
-    filteredProducts.map((item) => {
+    allfilterproducts1.map((item) => {
       return (
         <div className=" col-sm-6 col-md-4 col-lg-3 mb-4 mt-3 mb-lg-0 ">
           <div className="card pt-3   hover-zoom shadow ">
@@ -194,17 +208,20 @@ const Filterproducts = () => {
         <div className="" style={{ width: "20%", marginTop: "10px" }}>
           <h3 className="mb-4">Filters</h3>
           <h5 className="mb-2">Category</h5>
-          {Category.map((item) => {
+
+
+          {Category.map((item, i) => {
             return (
               <>
                 <label>
                   <input
                     type="radio"
-                    onChange={(e) => filtercategory(item)}
+                    onChange={(e) => handlefilter(item.name)}
                     class="form-check-input"
                     name="category"
+                    checked={category2 === item.name}
                   />
-                  {item}
+                  {item.name}
                 </label>
                 <br />
               </>
