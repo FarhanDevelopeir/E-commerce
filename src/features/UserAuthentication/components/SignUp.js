@@ -1,16 +1,17 @@
 // import { TextField } from '@mui/material'
 import { TextField } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, Navigate } from 'react-router-dom'
 import signuppic from '../../../Images/signuppic.jpg'
 import axios from 'axios'
 import { Userdata } from '../../../Redux/features/counter/ProductSlice'
+import { createUserAsync, selectLoggedInUser } from '../authSlice'
 
 
 
 const SignUp = () => {
-  const userdata = useSelector((state) => state.product.Usersdata)
+  const userdata = useSelector(selectLoggedInUser);
   const dispatch = useDispatch()
   const [formData, setFormData] = useState({ name: '', email: '', password: '' });
   const navigate = useNavigate()
@@ -44,23 +45,33 @@ const SignUp = () => {
     }
     else {
 
-      console.log(formData);
-      signupform(formData)
+      // console.log(formData);
+      // signupform(formData)
+      dispatch(createUserAsync(formData))
     }
   }
 
-  const signupform = async (user, token) => {
-    try {
-      const res = await axios.post('http://localhost:3000/users', user)
-      console.log(res);
-      navigate('/');
-      dispatch(Userdata(res.data.user, res.data.token));
-    } catch (error) {
-      console.log('err', error)
-    }
-  }
+  // const signupform = async (user, token) => {
+  //   try {
+  //     const res = await axios.post('http://localhost:3000/users', user)
+  //     console.log(res);
+  //     navigate('/');
+  //     dispatch(Userdata(res.data.user, res.data.token));
+  //   } catch (error) {
+  //     console.log('err', error)
+  //   }
+  // }
+
+  useEffect(() => {
+    console.log(userdata)
+  }, [userdata])
+
+
+
+
   return (
-
+    <div>
+      {userdata.token !== '' && <Navigate to={'/'} replace={true}></Navigate> }    
     <div className=''>
       <section class="" style={{ backgroundColor: '#eee' }} >
         <div class="container pt-5 pb-4">
@@ -166,6 +177,7 @@ const SignUp = () => {
           </div>
         </div>
       </section>
+    </div>
     </div>
   )
 }

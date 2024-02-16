@@ -5,32 +5,31 @@ import axios from 'axios'
 import { Link } from 'react-router-dom';
 import { addtocart, addtowishlist, displayproducts, updateAddedToCart } from '../../../Redux/features/counter/ProductSlice'
 
-
+import { allProductsAsync, allFetchedProducts } from '../productSlice';
 const Products = () => {
-    const products = useSelector((state) => state.product.products);
-    const cart = useSelector((state) => state.product.cart)
-    const { id } = cart
-    console.log(id, products)
-    const [loading, setloading] = useState(true)
-    // const [btn, setbtn] = useState(false);
-
+    const products = useSelector(allFetchedProducts);
     const dispatch = useDispatch()
+
+
+
+
     // const {price, id, name, image}=products
+    // const fetchproducts = async () => {
+    //     const res = await axios
+    //         .get('https://fakestoreapi.com/products')
+    //         .catch((error) => {
+    //             console.log('err', error)
+    //         })
+    //     dispatch(displayproducts(res.data));
+    //     setloading(false)
+    //     console.log(res.data)
 
-    const fetchproducts = async () => {
-        const res = await axios
-            .get('https://fakestoreapi.com/products')
-            .catch((error) => {
-                console.log('err', error)
-            })
-        dispatch(displayproducts(res.data));
-        setloading(false)
-        console.log(res.data)
-
-    }
+    // }
 
     useEffect(() => {
-        fetchproducts();
+        const filter = {}
+        dispatch(allProductsAsync(filter))
+        console.log(products)
     }, [])
 
     const displaydata = products.map((item) => {
@@ -38,15 +37,15 @@ const Products = () => {
             <div className=" col-sm-6 col-md-4 col-lg-3 mb-4 mt-3 mb-lg-0 ">
 
                 <div className="card pt-3 shadow border rounded hover-zoom ">
-                   
+
                     <Link to={`/productdetail/${item.id}`}>
                         <div style={{ textAlign: 'center' }}>
 
 
-                           <div className='hover-zoom'>
-                           <img src={item.image}
-                                className="card-img-top    " style={{ height: '150px', width: '150px', margin: 'auto' }} alt="Laptop" />
-                           </div>
+                            <div className='hover-zoom'>
+                                <img src={item.image}
+                                    className="card-img-top    " style={{ height: '150px', width: '150px', margin: 'auto' }} alt="Laptop" />
+                            </div>
 
                             <div className="card-body">
                                 <div className="d-flex justify-content-between mb-2">
@@ -112,16 +111,14 @@ const Products = () => {
             <section style={{ backgroundColor: '#fff' }}>
                 <div className="container  order mt-3 rounded  ">
                     <div className="row mb-3 ">
+                        {products.length < 1 ? (
 
-
-                        {loading ? (
-                           
                             <>
-                            <div class="spinner-border text-danger m-auto d-inline" role="status">
-                                <span class="visually-hidden ">Loading...</span>
-                            </div>
+                                <div class="spinner-border text-danger m-auto d-inline" role="status">
+                                    <span class="visually-hidden ">Loading...</span>
+                                </div>
                                 <h1 className='text-center'>...loading</h1>
-                                </>
+                            </>
 
                         ) : (
                             <>{displaydata}</>

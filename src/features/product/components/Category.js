@@ -7,12 +7,15 @@ import jewelry from '../../../Images/jewelry.jpg';
 import menclothing from '../../../Images/womenclothing.jpg';
 import womenclothing from '../../../Images/menclo.jpg';
 import { Link } from 'react-router-dom';
+import { allCategoriesAsync, allFetchedCategories, selectCategory } from '../productSlice';
+import { useNavigate } from 'react-router-dom';
 
 const Category = () => {
     const Namecategory = useSelector((state) => state.product.categoryNames);
     const CategoryPictures = useSelector((state) => state.product.categoryPictures);
-
-    const dispatch = useDispatch();
+    const categories = useSelector(allFetchedCategories);
+    const dispatch = useDispatch()
+    const navigate = useNavigate();
 
     const categoryPics = [
         electronic,
@@ -33,26 +36,39 @@ const Category = () => {
         }
     }
 
+
+    const handleClick = (name) => {
+        console.log(name)
+        dispatch(selectCategory(name));
+        navigate('/filterproducts');
+
+    }
+
     useEffect(() => {
         fetchcategory();
+        dispatch(allCategoriesAsync())
     }, []);
 
+    if (categories.length > 0) {
+        console.log(categories)
+    }
+
     // Render your component based on the data from the Redux store
-    const cateNames = Namecategory.map((item, i) => {
-        console.log("items => ", item, i)
+    const cateNames = categories.map((item, i) => {
+        // console.log("items => ", item, i)
         return (
 
-            
-               <div className='hover-shadow w-25 rounded'>
-                <Link to={`/filterproducts`}>
+
+            <div className='hover-shadow w-25 rounded'>
+                <div onClick={() => handleClick(item.name)}  >
                     <div key={item} className=' p-1 w-100 rounded   text-center'>
 
                         <img src={categoryPics[i]} className='cate-img rounded mb-2' alt={item} height="120" />
-                        <h6 className='cate-text text-danger'>{item}</h6>
+                        <h6 className='cate-text text-danger'>{item.name}</h6>
                     </div>
-                </Link>
                 </div>
-            
+            </div>
+
 
 
         );
