@@ -43,7 +43,7 @@ const Login = () => {
 
     return (
         <div>
-            {userdata.token !== '' && <Navigate to={'/'} replace={true} ></Navigate>}
+            {userdata.token && <Navigate to={'/'} replace={true} ></Navigate>}
         <div className=''>
             <section class="" style={{ backgroundColor: '#eee' }}>
                 <div class="container h-100 pt-5 pb-4">

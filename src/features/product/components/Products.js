@@ -6,31 +6,29 @@ import { Link } from 'react-router-dom';
 import { addtocart, addtowishlist, displayproducts, updateAddedToCart } from '../../../Redux/features/counter/ProductSlice'
 
 import { allProductsAsync, allFetchedProducts } from '../productSlice';
+import { allCartDataAsync, addCartAsync } from "../../cart/cartSlice";
+import { selectLoggedInUser } from "../../UserAuthentication/authSlice";
 const Products = () => {
     const products = useSelector(allFetchedProducts);
     const dispatch = useDispatch()
-
-
-
-
-    // const {price, id, name, image}=products
-    // const fetchproducts = async () => {
-    //     const res = await axios
-    //         .get('https://fakestoreapi.com/products')
-    //         .catch((error) => {
-    //             console.log('err', error)
-    //         })
-    //     dispatch(displayproducts(res.data));
-    //     setloading(false)
-    //     console.log(res.data)
-
-    // }
+    const User = useSelector(selectLoggedInUser);
 
     useEffect(() => {
         const filter = {}
         dispatch(allProductsAsync(filter))
+        dispatch(allCartDataAsync(User.user._id))
         console.log(products)
     }, [])
+
+    const handleCart = (itemId) => {
+        const cartData = {
+          userId : User.user._id,
+          productId : itemId,
+          quantity: 1
+        }
+        console.log(cartData)
+        dispatch(addCartAsync(cartData))
+      }
 
     const displaydata = products.map((item) => {
         return (
@@ -38,7 +36,7 @@ const Products = () => {
 
                 <div className="card pt-3 shadow border rounded hover-zoom ">
 
-                    <Link to={`/productdetail/${item.id}`}>
+                    <Link to={`/productdetail/${item._id}`}>
                         <div style={{ textAlign: 'center' }}>
 
 
@@ -76,11 +74,7 @@ const Products = () => {
                             <button
                                 type="button"
                                 className="btn btn-primary"
-                                onClick={() => {
-                                    dispatch(addtocart(item));
-                                    // Update the addedToCart property when the item is added to the cart
-                                    dispatch(updateAddedToCart({ productId: item.id, addedToCart: true }));
-                                }}
+                                onClick={() => handleCart(item._id) }
                             >
                                 Add to Cart
                             </button>

@@ -2,7 +2,7 @@ import axios, { all } from "axios";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useParams } from "react-router-dom";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Navigate } from 'react-router-dom';
 import { Link } from "react-router-dom";
 import {
   addtocart,
@@ -17,8 +17,10 @@ import {
 import { Button } from "@mui/material";
 import { MDBInput } from "mdb-react-ui-kit";
 import { allCategoriesAsync, allProductsAsync, allFetchedCategories, allFetchedProducts, selectCategory, selectedCategory } from '../productSlice';
+import { addCartAsync } from "../../cart/cartSlice";
+import { selectLoggedInUser } from "../../UserAuthentication/authSlice";
+import Header from "../../../pages/Header";
 
-// import {useFilterNavigation} from './useFilterNavigation'
 
 const Filterproducts = () => {
   const location = useLocation();
@@ -33,6 +35,7 @@ const Filterproducts = () => {
   const filterproduct = useSelector((state) => state.product.filterproducts);
   const allfilterproducts1 = useSelector(allFetchedProducts);
   const Category = useSelector(allFetchedCategories);
+  const User = useSelector(selectLoggedInUser);
   const { price } = allfilterproducts;
   const [categoryfilter, setcategoryfilter] = useState(false);
   const [filter, setfilter] = useState({});
@@ -62,9 +65,19 @@ const Filterproducts = () => {
     // dispatch(namecategory(rescate.data));
   };
 
+  const handleCart = (itemId) => {
+    const cartData = {
+      userId: User.user._id,
+      productId: itemId,
+      quantity: 1
+    }
+    console.log(cartData)
+    dispatch(addCartAsync(cartData))
+  }
+
   useEffect(() => {
     handlefilter(category2);
-    
+    console.log("user ==> ", User.token)
   }, [category2]);
 
   useEffect(() => {
@@ -95,7 +108,7 @@ const Filterproducts = () => {
     dispatch(selectCategory(value));
 
   }
-  
+
   const displayproductsinfilteration =
     categoryfilter === true ? filterproduct : allfilterproducts;
 
@@ -168,7 +181,7 @@ const Filterproducts = () => {
                   type="button"
                   className="btn btn-primary"
                   onClick={() => {
-                    dispatch(addtocart(item));
+                    dispatch(() => handleCart(item._id));
                     // Update the addedToCart property when the item is added to the cart
                     dispatch(
                       updateAddedToCart({
@@ -203,85 +216,88 @@ const Filterproducts = () => {
   );
 
   return (
-    <div className="mt-5 pt-5">
-      <div className="container d-flex">
-        <div className="" style={{ width: "20%", marginTop: "10px" }}>
-          <h3 className="mb-4">Filters</h3>
-          <h5 className="mb-2">Category</h5>
+    <div>
+      <Header></Header>
+      <div className="mt-5 pt-5">
+        <div className="container d-flex">
+          <div className="" style={{ width: "20%", marginTop: "10px" }}>
+            <h3 className="mb-4">Filters</h3>
+            <h5 className="mb-2">Category</h5>
 
 
-          {Category.map((item, i) => {
-            return (
-              <>
-                <label>
-                  <input
-                    type="radio"
-                    onChange={(e) => handlefilter(item.name)}
-                    class="form-check-input"
-                    name="category"
-                    checked={category2 === item.name}
+            {Category.map((item, i) => {
+              return (
+                <>
+                  <label>
+                    <input
+                      type="radio"
+                      onChange={(e) => handlefilter(item.name)}
+                      class="form-check-input"
+                      name="category"
+                      checked={category2 === item.name}
+                    />
+                    {item.name}
+                  </label>
+                  <br />
+                </>
+              );
+            })}
+
+            {/* price filter */}
+            <h5 className="mt-3 mb-2">Price</h5>
+            <form class="multi-range-field ">
+              <input
+                id="multi6"
+                class="multi-range"
+                type="range"
+                min="0"
+                max="1500"
+                step="250"
+              />
+            </form>
+
+            <button
+              className="btn btn-danger mt-3"
+              name="category"
+              onClick={() => {
+                setcategoryfilter(false);
+                setSearchInput("");
+              }}
+            >
+              Clear filters
+            </button>
+          </div>
+          <div style={{ width: "96%" }}>
+            <div>
+              <div className="d-flex justify-content-between w-100">
+                {/* <div className='d-flex justify-content-between ' style={{width:'70%'}}> */}
+                <div className="form-outline w-25 ">
+                  <MDBInput
+                    className="bar  bg-white "
+                    id="form6Example1"
+                    label="Search products"
+                    onChange={searchdata}
                   />
-                  {item.name}
-                </label>
-                <br />
-              </>
-            );
-          })}
+                </div>
+                <div>
+                  <h5>Total products {filteredProducts.length}</h5>
+                </div>
 
-          {/* price filter */}
-          <h5 className="mt-3 mb-2">Price</h5>
-          <form class="multi-range-field ">
-            <input
-              id="multi6"
-              class="multi-range"
-              type="range"
-              min="0"
-              max="1500"
-              step="250"
-            />
-          </form>
-
-          <button
-            className="btn btn-danger mt-3"
-            name="category"
-            onClick={() => {
-              setcategoryfilter(false);
-              setSearchInput("");
-            }}
-          >
-            Clear filters
-          </button>
-        </div>
-        <div style={{ width: "96%" }}>
-          <div>
-            <div className="d-flex justify-content-between w-100">
-              {/* <div className='d-flex justify-content-between ' style={{width:'70%'}}> */}
-              <div className="form-outline w-25 ">
-                <MDBInput
-                  className="bar  bg-white "
-                  id="form6Example1"
-                  label="Search products"
-                  onChange={searchdata}
-                />
-              </div>
-              <div>
-                <h5>Total products {filteredProducts.length}</h5>
-              </div>
-
-              <div>
-                <select
-                  class="form-select  form-select-lg mb-3"
-                  aria-label=".form-select-lg example"
-                >
-                  <option selected>Sort by Price</option>
-                  <option value="1">One</option>
-                  <option value="2">Two</option>
-                  <option value="3">Three</option>
-                </select>
+                <div>
+                  <select
+                    class="form-select  form-select-lg mb-3"
+                    aria-label=".form-select-lg example"
+                  >
+                    <option selected>Sort by Price</option>
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
+                  </select>
+                </div>
               </div>
             </div>
+            <div className="row mt-2">{displaydata}</div>
           </div>
-          <div className="row mt-2">{displaydata}</div>
         </div>
       </div>
     </div>

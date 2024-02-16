@@ -3,12 +3,14 @@ import logo from "../Images/bluelogo.png";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { MDBInput } from "mdb-react-ui-kit";
+import { allFetchedCartData } from "../features/cart/cartSlice";
 
 const Header = () => {
   const cart = useSelector((state) => state.product.cart);
+  const cart1 = useSelector(allFetchedCartData);
   const wishlist = useSelector((state) => state.product.wishlist);
   const userdata = useSelector((state) => state.product.Usersdata);
-  console.log(userdata.password);
+  console.log("header cart data => ", cart1);
 
   return (
     <div className="mb-5">
@@ -59,14 +61,12 @@ const Header = () => {
                     <span>
                       <i class="fas fa-shopping-cart  me-md-2"></i>
                     </span>
-                    {cart.length === 0 ? (
-                      ""
-                    ) : (
+                    {cart1 && cart1.products && cart1.products.length > 0 && (
                       <span
-                        class="badge rounded-pill badge-notification  bg-primary"
+                        class="badge rounded-pill badge-notification bg-primary"
                         style={{ fontSize: "bold" }}
                       >
-                        {cart.length}
+                        {cart1.products.length}
                       </span>
                     )}
                     <span className="d-none d-md-block ">My Cart</span>

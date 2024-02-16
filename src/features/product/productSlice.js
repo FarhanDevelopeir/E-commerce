@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { getAllProducts, fetchCategories } from "./productApi";
+import { getAllProducts, fetchCategories, getOneProduct } from "./productApi";
 
 
 const initialState = {
@@ -15,6 +15,14 @@ export const allProductsAsync = createAsyncThunk(
     "product/allProducts",
     async ({filter}) => {
         const data = await getAllProducts(filter)
+        return data
+    }
+)
+
+export const getOneProductAsync = createAsyncThunk(
+    "product/oneProduct",
+    async(id) => {
+        const data = await getOneProduct(id)
         return data
     }
 )
@@ -58,6 +66,13 @@ export const productSlice = createSlice({
         .addCase(allCategoriesAsync.rejected, (state) => {
             state.status = 'rejected'
         })
+        .addCase(getOneProductAsync.fulfilled, (state, action) => {
+            state.status = 'fulfilled'
+            state.SingleProduct = action.payload
+        })
+        .addCase(getOneProductAsync.rejected, (state) => {
+            state.status = 'rejected'
+        })
     }
 });
 
@@ -65,6 +80,7 @@ export const { selectCategory } = productSlice.actions
 
 
 export const allFetchedProducts = (state) => state.product1.Products
+export const singleProductFetched = (state) => state.product1.SingleProduct
 export const allFetchedCategories = (state) => state.product1.Categories
 export const selectedCategory = (state) => state.product1.Category
 

@@ -20,6 +20,17 @@ export function getAllProducts(filter) {
     })
 };
 
+export function getOneProduct(id) {
+    return new Promise(async (resolve, reject) => {
+        try{
+            const res = await axios.get(`http://localhost:3000/products/${id}`)
+            const data = res.data
+            resolve(data)
+        } catch (error){
+            reject(error)
+        }
+    })
+}
 
 export function fetchCategories() {
 
