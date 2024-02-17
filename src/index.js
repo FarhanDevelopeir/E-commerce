@@ -22,6 +22,7 @@ import Filterproducts from './features/product/components/Filterproducts';
 import SignUp from './features/UserAuthentication/components/SignUp';
 import Login from './features/UserAuthentication/components/Login';
 import AdminMain from './AdminComponents/AdminMain';
+import Protected from './features/UserAuthentication/components/protected';
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -48,15 +49,14 @@ const AppContainer = () => {
     <React.StrictMode>
       <BrowserRouter>
         <Provider store={store}>
-          <Header />
           <Routes>
-            <Route path="/" element={<App />} />
-            <Route path="/productdetail/:id" element={<ProductDetail />} />
-            <Route path="/cart" element={<Cart />} />
+            <Route path="/" element={<Protected><App /></Protected>} />
+            <Route path="/productdetail/:id" element={<Protected><ProductDetail /></Protected>} />
+            <Route path="/cart" element={<Protected><Cart /></Protected>} />
             <Route path="/wishlist" element={<Whishlist />} />
             <Route path="/checkout" element={<Addressform />} />
             <Route path="/ordercomplete" element={<Completeorder />} />
-            <Route path="/filterproducts" element={<Filterproducts />} />
+            <Route path="/filterproducts" element={<Protected><Filterproducts /></Protected>} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/login" element={<Login />} />
 

@@ -3,6 +3,7 @@ import ProductReducer from "../features/counter/ProductSlice";
 import AdminSlice from "../../AdminComponents/features/AdminSlice";
 import authReducer from "../../features/UserAuthentication/authSlice";
 import producReducer from "../../features/product/productSlice";
+import cartReducer from "../../features/cart/cartSlice";
 
 
 export const store = configureStore(
@@ -11,7 +12,8 @@ export const store = configureStore(
       product: ProductReducer,
       product1: producReducer,
       adminslice: AdminSlice,
-      auth: authReducer
+      auth: authReducer,
+      cart: cartReducer
     }
   }
 );
