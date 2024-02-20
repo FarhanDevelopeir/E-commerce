@@ -13,8 +13,8 @@ const initialState = {
 
 export const allProductsAsync = createAsyncThunk(
     "product/allProducts",
-    async ({filter}) => {
-        const data = await getAllProducts(filter)
+    async ({filter, pagination}) => {
+        const data = await getAllProducts(filter, pagination)
         return data
     }
 )

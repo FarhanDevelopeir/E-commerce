@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import StripeContainer from './StripeContainer'
 import { Button } from '@mui/material'
 import { addressState } from '../checkoutSlice';
 import { selectLoggedInUser } from '../../UserAuthentication/authSlice'
