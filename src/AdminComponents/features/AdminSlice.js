@@ -22,42 +22,55 @@ export const fetchData = createAsyncThunk("products/fetchData", async () => {
 });
 
 // Get Single product data
-export const SingleProductData = createAsyncThunk("products/getSingleProductData", async (id) => {
-  try {
-    const response = await axios.get("http://localhost:3000/products");
-    const data =  response.data;
-    const product = data.find((product) => product.id === id);
-    // Set the product data in the state
-    return product
-    // console.log(product)
-
-  } catch (error) {
-    throw error;
+export const SingleProductData = createAsyncThunk(
+  "products/getSingleProductData",
+  async (id) => {
+    try {
+      const response = await axios.get("http://localhost:3000/products");
+      const data = response.data;
+      const product = data.find((product) => product.id === id);
+      // Set the product data in the state
+      return product;
+      // console.log(product)
+    } catch (error) {
+      throw error;
+    }
   }
-});
+);
 
-
-
-export const AddProducts = createAsyncThunk("products/addProduct", async (formDataWithFiles) => {
-  try {
-    const response = await axios.post("http://localhost:3000/products", formDataWithFiles);
-    return response.data;
-  } catch (error) {
-    throw error;
+export const AddProducts = createAsyncThunk(
+  "products/addProduct",
+  async (formDataWithFiles) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/products",
+        formDataWithFiles
+      );
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
   }
-});
+);
 
 // Update Product
-const updateContact= async (contact)=>{
-  const response = await api.put(`/usercontacts/${contact.id}`, contact);
-  const {id}=response.data;
-  setList(
-    list.map((contact)=>{
-      return contact.id===id ? {...response.data} : contact;
-    })
-  )
-}
+export const updateProduct = createAsyncThunk(
+  "products/updateProduct",
+  async (formDataWithFiles) => {
+    try {
+      // Assuming you're sending the updated product data to the server for updating
+      const response = await axios.put(
+        `http://localhost:3000/products/${formDataWithFiles.id}`, // Assuming you're sending the ID along with other details for updating
+        formDataWithFiles
+      );
+      console.log(response.data)
 
+      return response.data; // Make sure the server responds with the updated product data
+    } catch (error) {
+      throw error;
+    }
+  }
+);
 
 export const adminSlice = createSlice({
   name: "products",
@@ -76,6 +89,13 @@ export const adminSlice = createSlice({
     builder.addCase(SingleProductData.fulfilled, (state, action) => {
       state.status = "idle";
       state.singleProduct = action.payload;
+    });
+    builder.addCase(updateProduct.fulfilled, (state, action) => {
+      state.status = "idle";
+      const index = state.data.findIndex(product => product.id === action.payload.id);
+      if (index !== -1) {
+        state.data[index] = action.payload;
+      }
     });
   },
 });

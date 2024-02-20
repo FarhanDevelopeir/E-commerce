@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js'
+// import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js'
 import axios from 'axios'
 import { Button } from '@mui/material'
 
@@ -25,35 +25,35 @@ const CARD_OPTIONS={
 
 const Paymentform = () => {
     const [success, setsuccess] = useState(false)
-    const stripe = useStripe()
-    const elements = useElements()
+    // const stripe = useStripe()
+    // const elements = useElements()
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        const { error, paymentMethod } = await stripe.createPaymentMethod({
-            type: 'card',
-            card: elements.getElement(CardElement)
-        })
+        // const { error, paymentMethod } = await stripe.createPaymentMethod({
+        //     type: 'card',
+        //     card: elements.getElement(CardElement)
+        // })
 
 
-        if (!error) {
-            try {
-                const { id } = paymentMethod
-                const response = await axios.post('http://localhost:4000/payment', {
-                    amount: 1000,
-                    id
-                })
+        // if (!error) {
+        //     try {
+        //         const { id } = paymentMethod
+        //         const response = await axios.post('http://localhost:4000/payment', {
+        //             amount: 1000,
+        //             id
+        //         })
 
-                if (response.data.success) {
-                    console.log('Successful Payment')
-                    setsuccess(true)
-                }
-            } catch (error) {
-                console.log('Error', error)
-            }
-        } else {
-            console.log(error.message)
-        }
+        //         if (response.data.success) {
+        //             console.log('Successful Payment')
+        //             setsuccess(true)
+        //         }
+        //     } catch (error) {
+        //         console.log('Error', error)
+        //     }
+        // } else {
+        //     console.log(error.message)
+        // }
     }
 
     return (
@@ -62,12 +62,12 @@ const Paymentform = () => {
         <form onSubmit={handleSubmit}>
             <fieldset className='FormGroup mt-3'>
                 <div className='FormRow'>
-                    <CardElement options={CARD_OPTIONS}/>
+                    {/* <CardElement options={CARD_OPTIONS}/> */}
                  
                 </div>
             </fieldset>
             
-            <Button disabled={!stripe} variant='contained' type='submit' style={{margin:'auto'}} >Pay</Button>
+            {/* <Button disabled={!stripe} variant='contained' type='submit' style={{margin:'auto'}} >Pay</Button> */}
         </form>   :
         <div>
             <h2>You bought a book .. Congrats this is the best decision of you're life</h2>
