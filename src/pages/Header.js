@@ -42,7 +42,7 @@ const Header = () => {
                     </a>
                   </Link>
                 )}
-                <Link to={"/wishlist"}>
+                <Link to={"/orders"}>
                   <a className="me-1  py-2 px-3 nav-link d-flex text-white hover-shadow  align-items-center">
                     {wishlist.length === 0 ? (
                       <i className="fas fa-heart m-1 me-md-2"></i>

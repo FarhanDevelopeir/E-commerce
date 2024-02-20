@@ -1,19 +1,21 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { TextField, Button } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux';
 import {  contactdetails } from '../../../Redux/features/counter/ProductSlice';
+import { addressState, handleAddress } from '../checkoutSlice';
 
 const Addressform = (props) => {
     const billingdetailss = useSelector((state)=>state.product.shipmentdetail)
+    const address = useSelector(addressState)
     const dispatch=useDispatch();
-    const [firstname, setfirstname] = useState('');
-    const [lastname, setlastname] = useState('');
-    const [phone, setphone] = useState('');
-    const [email, setemail] = useState('');
+    const [firstName, setfirstName] = useState(address.firstName || '');
+    const [lastName, setlastName] = useState(address.lastName ||'');
+    const [phone, setphone] = useState(address.phone || null);
+    const [email, setemail] = useState(address.email ||'');
 
     // form error
-    const [firstnameError, setFirstnameError] = useState(false);
-    const [lastnameError, setLastnameError] = useState(false);
+    const [firstNameError, setFirstNameError] = useState(false);
+    const [lastNameError, setLastNameError] = useState(false);
     const [phoneError, setPhoneError] = useState(false);
     const [emailError, setEmailError] = useState(false);
 
@@ -22,8 +24,6 @@ const Addressform = (props) => {
         // Use a regular expression to remove any non-numeric characters
         const numericInput = input.replace(/\D/g, '');
         setphone(numericInput);
-
-        dispatch(contactdetails(phone))
     }
 
 
@@ -31,17 +31,17 @@ const Addressform = (props) => {
 
         e.preventDefault()
 
-        setFirstnameError(false)
-        setLastnameError(false)
+        setFirstNameError(false)
+        setLastNameError(false)
         setPhoneError(false)
         setEmailError(false)
 
-        if (firstname === '') {
-            setFirstnameError('First Name is required')
+        if (firstName === '') {
+            setFirstNameError('First Name is required')
 
         }
-        if (lastname === '') {
-            setLastnameError('Last Name is required')
+        if (lastName === '') {
+            setLastNameError('Last Name is required')
         }
        
         if (email === '') {
@@ -53,19 +53,22 @@ const Addressform = (props) => {
             setPhoneError('Phone is required')
         }
         
-
-        if (firstname && lastname && email && phone) {
+        if (firstName && lastName && email && phone) {
             const formData = {
-                firstname,
-                lastname,
+                firstName,
+                lastName,
                 email,
                 phone,
               };
               console.log(formData)
-            dispatch(contactdetails(formData))
-           
+            dispatch(handleAddress(formData))
         }
+        props.handleNext();
     }
+
+    useEffect(() => {
+        console.log(address);
+    }, [address] )
 
 
 
@@ -84,21 +87,21 @@ const Addressform = (props) => {
                                 <TextField
                                     label='First Name *'
                                     style={{ width: '100%' }}
-                                    onChange={(e) => {setfirstname(e.target.value); dispatch(contactdetails(firstname))} }
-                                    value={firstname}
-                                    error={firstnameError}
+                                    onChange={(e) => {setfirstName(e.target.value)}}
+                                    value={firstName}
+                                    error={firstNameError}
                                 />
-                                {firstnameError ? <span style={{ display: 'block', color: 'red' }} >{firstnameError}</span> : null}
+                                {firstNameError ? <span style={{ display: 'block', color: 'red' }} >{firstNameError}</span> : null}
                             </div>
                             <div style={{ width: '48%' }}>
                                 <TextField
                                     label='Last Name *'
                                     style={{ width: '100%' }}
-                                    onChange={(e) => {setlastname(e.target.value); dispatch(contactdetails(lastname))}}
-                                    value={lastname}
-                                    error={lastnameError}
+                                    onChange={(e) => {setlastName(e.target.value)}}
+                                    value={lastName}
+                                    error={lastNameError}
                                 />
-                                {lastnameError ? <span style={{ display: 'block', color: 'red' }} >{lastnameError}</span> : null}
+                                {lastNameError ? <span style={{ display: 'block', color: 'red' }} >{lastNameError}</span> : null}
 
                             </div>
 
@@ -141,7 +144,7 @@ const Addressform = (props) => {
                             type='email'
                             fullWidth
                             className='mt-3'
-                            onChange={(e) => {setemail(e.target.value); dispatch(contactdetails(email))}}
+                            onChange={(e) => {setemail(e.target.value)}}
                             error={emailError}
                         />
                         {emailError ? <span style={{ dislay: 'block', color: 'red' }}>{emailError}</span> : null}
@@ -149,7 +152,7 @@ const Addressform = (props) => {
                         <TextField
                             label='Phone *'
                             value={phone}
-                            type='tel'
+                            type='number'
                             fullWidth
                             className='mt-3'
                             error={phoneError}
@@ -174,9 +177,8 @@ const Addressform = (props) => {
 
 
                         <Button 
-                        onClick={props.handleNext}
                         variant="contained" 
-                        disabled={firstname==='' || lastname==='' || email==='' || phone==='' }  
+                        disabled={firstName==='' || lastName==='' || email==='' || phone==='' }  
                         className='mt-4' color="primary" 
                         type="submit"
                         >Next</Button>

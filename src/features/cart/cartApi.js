@@ -53,3 +53,16 @@ export function deletecart(cartData){
         }
     })
 };
+
+export function deletefullcart(id){
+    return new Promise(async (resolve, reject) => {
+        try{
+            const res = await axios.delete(`http://localhost:3000/cart/deleteCart/${id}`);
+            const data = res.data
+            resolve(data);
+
+        } catch(error){
+            reject(error)
+        }
+    })
+};

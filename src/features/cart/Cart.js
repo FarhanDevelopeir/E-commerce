@@ -17,6 +17,7 @@ import { selectLoggedInUser } from '../UserAuthentication/authSlice';
 import { allCartDataAsync, updateCartAsync } from './cartSlice';
 import Header from '../../pages/Header';
 import { deleteCartAsync } from './cartSlice';
+import { addQuantity } from './cartSlice';
 
 const Cart = () => {
   const cart = useSelector((state) => state.product.cart);
@@ -33,6 +34,7 @@ const Cart = () => {
 
   const handleCheckout = () => {
     setcheckout(true)
+    dispatch(addQuantity(totalQuantity))
   }
 
 
