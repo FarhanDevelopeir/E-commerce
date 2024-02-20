@@ -5,29 +5,55 @@ import {
   ActivePage,
   AddProducts,
   SingleProductData,
+  updateProduct,
 } from "./features/AdminSlice";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import AdminOrders from "./AdminOrders";
+import AdminProducts from "./AdminProducts";
+import AdminDashboard from "./AdminDashboard";
 
 const AdminAddProducts = () => {
   const Product = useSelector((state) => state.adminslice.singleProduct);
   console.log("get single product ", Product);
   const dispatch = useDispatch();
+  const navigate = useNavigate(); // Access the navigate function
+
   const location = useLocation();
-  const [image, setImage] = useState("");
+  const [images, setImages] = useState([]);
+  const [thumbnail, setThumbnail] = useState("");
   const [formData, setFormData] = useState({
     title: "",
     brand: "",
-    price: 0,
+    price: "",
     category: "",
-    stock: 0,
+    stock: "",
     thumbnail: null,
     images: [],
-    rating: 0,
-    discountPercentage: 0,
+    rating: "",
+    discountPercentage: "",
     description: "",
   });
+  // setFormData(Product)
 
-  const thumbnailInputRef = useRef(null);
+  useEffect(() => {
+    if (Product) {
+      setFormData({
+        title: Product.title,
+        brand: Product.brand,
+        price: Product.price,
+        category: Product.category,
+        stock: Product.stock,
+        thumbnail: Product.thumbnail,
+        images: Product.images,
+        rating: Product.rating,
+        discountPercentage: Product.discountPercentage,
+        description: Product.description,
+      });
+      setThumbnail(Product.thumbnail);
+      setImages(Product.images);
+    }
+    // Product && setThumbnail(Product.thumbnail);
+  }, [Product]);
 
   let id = "";
   // Parse the URL to extract the ID
@@ -36,22 +62,37 @@ const AdminAddProducts = () => {
   id = parts[parts.length - 1]; // Assuming the ID is the last part of the URL
   console.log("ID from URL:", id);
 
+  
+  
+  
   useEffect(() => {
     if (id !== "") {
       dispatch(SingleProductData(id));
+    } else {
+      setFormData({
+        title: "",
+        brand: "",
+        price: "",
+        category: "",
+        stock: "",
+        thumbnail: null,
+        images: [],
+        rating: "",
+        discountPercentage: "",
+        description: "",
+      });
     }
-  }, []);
-
-  useEffect(() => {
-    if (Product) {
-      setFormData(Product);
-    }
-  }, [Product]);
+  }, [id,location.pathname]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(formData);
-    dispatch(AddProducts(formData));
+    if (id) {
+      formData.id = id;
+      dispatch(updateProduct(formData));
+    } else {
+      dispatch(AddProducts(formData));
+    }
   };
 
   const handleChange = (e) => {
@@ -60,36 +101,12 @@ const AdminAddProducts = () => {
   };
 
   const handleThumbnailChange = (e) => {
-    // if(e.target && e.target.files[0]){
-    //   formsData.append('file', e.target.files[0]);
-    // }
-    // console.log(e.target.files[0])
-    // console.log(formData)
     const file = e.target.files[0];
-    const reader = new FileReader();
-
-    reader.onloadend = () => {
-      setFormData({
-        ...formData,
-        thumbnail: file,
-        thumbnailPreview: reader.result,
-      });
-    };
-
-    if (file) {
-      reader.readAsDataURL(file);
-    }
-
-    // setFormData({ ...formData, thumbnail: file });
-    // setImage(file)
-  };
-  const resetThumbnailInput = () => {
-    if (thumbnailInputRef.current) {
-      thumbnailInputRef.current.value = ""; // Clear the file input
-    }
+    setFormData({ ...formData, thumbnail: file });
+    setThumbnail(URL.createObjectURL(file)); // Display selected image
   };
 
-  const handleImagesChange = (e) => {
+    const handleImagesChange = (e) => {
     const files = Array.from(e.target.files);
     setFormData((prevFormData) => ({
       ...prevFormData,
@@ -178,12 +195,14 @@ const AdminAddProducts = () => {
                       class="bg-white shadow-md mb-2 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     >
                       <option value="">Select category</option>
-                      <option value="SP">Smartphones</option>
-                      <option value="LT">Laptops</option>
-                      <option value="FR">Fragrances</option>
-                      <option value="SK">Skincare</option>
-                      <option value="GR">Groceries</option>
-                      <option value="HD">Home-decoration</option>
+                      <option value="smartphones">smartphones</option>
+                      <option value="Samsung">Samsung</option>
+                      <option value="laptops">laptops</option>
+                      <option value="fragrances">fragrances</option>
+                      <option value="groceries">groceries</option>
+                      <option value="skincare">skincare</option>
+                      {/* corrected value */}
+                      <option value="HD">home-decoration</option>
                     </select>
                   </div>
                   <div>
@@ -213,32 +232,21 @@ const AdminAddProducts = () => {
                     >
                       Thumbnail Image
                     </label>
-                    <input
-                      type="file"
-                      id="thumbnail"
-                      ref={thumbnailInputRef}
-                      onChange={(e) => {
-                        handleThumbnailChange(e);
-                        resetThumbnailInput();
-                      }}
-                      class="bg-white shadow-md mb-2 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600  w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    />
+                    <div className="flex justify-between p-2.5 bg-white border border-gray-300 rounded-lg shadow-md">
+                      <input
+                        type="file"
+                        id="thumbnail"
+                        onChange={handleThumbnailChange}
+                      ></input>
+                      {thumbnail && (
+                        <img
+                          src={thumbnail}
+                          alt="Thumbnail"
+                          className="mt-2 h-12 w-12 rounded-full"
+                        />
+                      )}
+                    </div>
                   </div>
-                  {formData.thumbnailPreview && (
-              <img
-                src={formData.thumbnailPreview}
-                alt="Thumbnail"
-                className="mt-2 h-20"
-              />
-            )}
-                  {/* {formData.thumbnail && (
-                <img
-                  src={URL.createObjectURL(formData.thumbnail)}
-                  alt="Thumbnail"
-                  className="mt-2 h-20"
-                />
-              )} */}
-                  {image === "" ? "" : <img src={image} />}
                 </div>
 
                 <div>
@@ -249,40 +257,25 @@ const AdminAddProducts = () => {
                     Image's
                   </label>
                   <div className="grid grid-cols-2 gap-2  sm:grid sm:grid-cols-3 sm:gap-4 ">
-                    <div>
-                      <input
-                        type="file"
-                        id="images"
-                        onChange={handleImagesChange}
-                        class="bg-white shadow-md mb-2 border sm:py-3 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600  w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                      />
-                    </div>
-                    <div>
-                      <input
-                        type="file"
-                        id="images"
-                        onChange={handleImagesChange}
-                        class="bg-white shadow-md mb-2 sm:py-3 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600  w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                      />
-                    </div>
-                    <div>
-                      <input
-                        type="file"
-                        id="images"
-                        onChange={handleImagesChange}
-                        class="bg-white shadow-md mb-2 border sm:py-3 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600  w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                      />
-                      {/* <div className="flex flex-wrap mt-2">
-                {formData.images.map((image, index) => (
-                  <img
-                    key={index}
-                    src={URL.createObjectURL(image)}
-                    alt={`Image ${index + 1}`}
-                    className="mr-2 mb-2 h-20"
-                  />
-                ))}
-              </div> */}
-                    </div>
+                    {Array.from({ length: 3 }).map((_, index) => (
+                      <div
+                        key={index}
+                        className="bg-white overflow-hidden shadow-md mb-2 border sm:py-3 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                      >
+                        <input
+                          type="file"
+                          id={`image_${index}`}
+                          onChange={(e) => handleImagesChange(e, index)}
+                        />
+                        {images && images[index] && (
+                          <img
+                            src={images[index]}
+                            alt={`Thumbnail ${index}`}
+                            className="m-auto mt-2 h-12 w-12 rounded-full"
+                          />
+                        )}
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>
@@ -343,10 +336,32 @@ const AdminAddProducts = () => {
               </div>
             </div>
             <button
+              // disabled={
+              //   !formData.title ||
+              //   !formData.brand ||
+              //   !formData.category ||
+              //   !formData.description ||
+              //   !formData.discountPercentage ||
+              //   !formData.price ||
+              //   !formData.rating ||
+              //   !formData.stock
+              // }
               type="submit"
-              class="shadow-md mb-2 bg-gradient-to-r  from-indigo-500  to-pink-500 hover:bg-gradient-to-l    hover:from-pink-500  hover:to-indigo-700 text-semibold inline-flex float-right font-semibold items-center px-5 py-2.5 mt-4 sm:mt-6 text-md text-center text-white bg-primary-700 rounded-md focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800"
+              className={`shadow-md mb-2 ${
+                !formData.title ||
+                !formData.brand ||
+                !formData.category ||
+                !formData.description ||
+                !formData.discountPercentage ||
+                !formData.price ||
+                !formData.rating ||
+                !formData.stock
+                  ? "bg-gray-200 pointer-events-none cursor-not-allowed text-gray-400"
+                  : "bg-gradient-to-r from-indigo-500 to-pink-500 hover:bg-gradient-to-l hover:from-pink-500 hover:to-indigo-700 text-white"
+              } cursor-pointer inline-flex float-right font-semibold items-center px-5 py-2.5 mt-4 sm:mt-6 text-md text-center 
+  rounded-md focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900`}
             >
-              Add product
+              {id === "" ? "Add Product" : "Update Product"}
             </button>
           </form>
         </div>
