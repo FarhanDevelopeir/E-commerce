@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export function getAllProducts(filter) {
+export function getAllProducts(filter, pagination) {
 
     let queryString = '';
     for (let key in filter) {
@@ -8,6 +8,13 @@ export function getAllProducts(filter) {
             queryString += '&'; 
         }
         queryString += `${key}=${filter[key]}`;
+    };
+
+    for(let key in pagination){
+        if(queryString !== ''){
+            queryString += '&'; 
+        }
+        queryString += `${key}=${pagination[key]}`;
     }
     return new Promise(async (resolve, reject) => {
         try {
