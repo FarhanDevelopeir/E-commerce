@@ -1,30 +1,21 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { TextField, Button } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux';
-import { addressdetails } from '../../../Redux/features/counter/ProductSlice';
+import { addressState, handleAddress } from '../checkoutSlice';
 
 
 const Contactformdetails = (props) => {
-    const billingdetailss=useSelector((state)=>state.product.shipmentdetail)
     const dispatch=useDispatch();
-
-    const [province, setprovince] = useState('');
-    const [address, setaddress] = useState('');
-    const [phone, setphone] = useState('');
-    const [info, setinfo] = useState('');
+    const address1 = useSelector(addressState)
+    const [province, setprovince] = useState(address1.state || '');
+    const [city, setcity] = useState(address1.city || '');
+    const [address, setaddress] = useState(address1.street || '');
+    const [info, setinfo] = useState(address1.info || '');
 
     // form error
     const [provinceError, setProvinceError] = useState(false);
     const [addressError, setAddressError] = useState(false);
-    const [infoError, setInfoError] = useState(false);
-
-
-    const handlephone=(e)=>{
-        const input = e.target.value;
-        // Use a regular expression to remove any non-numeric characters
-        const numericInput = input.replace(/\D/g, '');
-        setphone(numericInput);
-    }
+    const [cityError, setCityError] = useState(false);
 
 
     const handleform = (e) => {
@@ -33,7 +24,7 @@ const Contactformdetails = (props) => {
 
         setAddressError(false)
         setProvinceError(false)
-        setInfoError(false)
+        setCityError(false)
     
         if (province === '') {
             setProvinceError('Province is required')
@@ -42,24 +33,27 @@ const Contactformdetails = (props) => {
         if (address === '') {
             setAddressError('Address is required')
         }
-        
-        if( address && province ){
-            console.log({
-           
-            province,
-            address,
-            
-            info  
-            })   
-            const formdata={
-            province,
-            address,
-            info  
-            }
-            dispatch(addressdetails(formdata))   
+
+        if (city === '') {
+            setCityError('Address is required')
         }
+        
+        if( address && province && city ){  
+            const formdata={
+            state : province,
+            city : city,
+            street : address,
+            info : info  
+            }
+            console.log(formdata)
+            dispatch(handleAddress(formdata))   
+        }
+        props.handleNext();
     }
 
+    useEffect(() => {
+        console.log(address1);
+    }, [address1] )
 
 
     return (
@@ -92,6 +86,17 @@ const Contactformdetails = (props) => {
                         </select>
                         {provinceError ? <span style={{ display: 'block', color: 'red' }}>{provinceError}</span> : null}
 
+                        <TextField
+                            type='text'
+                            label='City *'
+                            onChange={(e) => setcity(e.target.value)}
+                            value={city}
+                            error={cityError}
+                            fullWidth
+                            className='mt-3'
+                        />
+                        {cityError ? <span style={{ display: 'block', color: 'red' }}>{cityError}</span> : null}
+
 
 
                         <TextField
@@ -105,7 +110,6 @@ const Contactformdetails = (props) => {
                         />
                         {addressError ? <span style={{ display: 'block', color: 'red' }}>{addressError}</span> : null}
 
-                       
 
                          <label className='mt-3'>Optional</label>
                         <textarea
@@ -128,7 +132,6 @@ const Contactformdetails = (props) => {
                         color="primary" 
                         type="submit"
                         disabled={province==='' || address==='' }
-                        onClick={props.handleNext}
                          >Next</Button>
                     </form>
                 </div>

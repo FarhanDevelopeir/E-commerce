@@ -23,6 +23,7 @@ import SignUp from './features/UserAuthentication/components/SignUp';
 import Login from './features/UserAuthentication/components/Login';
 import AdminMain from './AdminComponents/AdminMain';
 import Protected from './features/UserAuthentication/components/protected';
+import OrdersPage from './pages/ordersPage';
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -54,6 +55,7 @@ const AppContainer = () => {
             <Route path="/productdetail/:id" element={<Protected><ProductDetail /></Protected>} />
             <Route path="/cart" element={<Protected><Cart /></Protected>} />
             <Route path="/wishlist" element={<Whishlist />} />
+            <Route path="/orders" element={<OrdersPage></OrdersPage>}/>
             <Route path="/checkout" element={<Addressform />} />
             <Route path="/ordercomplete" element={<Completeorder />} />
             <Route path="/filterproducts" element={<Protected><Filterproducts /></Protected>} />

@@ -1,8 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-import { allCartData, addtocart, updatecart, deletecart } from "./cartApi";
+import { allCartData, addtocart, updatecart, deletecart, deletefullcart } from "./cartApi";
 
 const initialState = {
+    TotalItems: 0,
     CartList: [],
     status: ''
 
@@ -33,6 +34,14 @@ export const deleteCartAsync = createAsyncThunk(
     }
 );
 
+export const deletefullCartAsync = createAsyncThunk(
+    "cart/deletefullCart",
+    async (id) => {
+        const data = await deletefullcart(id)
+        return data
+    }
+);
+
 
 export const allCartDataAsync = createAsyncThunk(
     "cart/allCart",
@@ -48,6 +57,9 @@ export const cartSlice = createSlice({
     reducers: {
         clearCart: (state) => {
             state.CartList = []
+        },
+        addQuantity: (state, action) => {
+            state.TotalItems = action.payload
         }
     },
     extraReducers: (buider) => {
@@ -99,11 +111,22 @@ export const cartSlice = createSlice({
             .addCase(deleteCartAsync.rejected, (state) => {
                 state.status = 'rejected'
             })
+            .addCase(deletefullCartAsync.fulfilled, (state, action) => {
+                state.status = 'fulfilled'
+                console.log(action.payload)
+                state.CartList = []
+            })
+            .addCase(deletefullCartAsync.rejected, (state) => {
+                state.status = 'rejected'
+            })
     }
 });
 
+export const {addQuantity} = cartSlice.actions
+
 
 export const allFetchedCartData = (state) => state.cart.CartList
+export const totalItemsInCart = (state) => state.cart.TotalItems
 
 
 

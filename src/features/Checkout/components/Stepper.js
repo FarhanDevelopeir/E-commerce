@@ -26,11 +26,11 @@ export default function HorizontalLinearStepper() {
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set());
 
-  const isStepOptional = (step: number) => {
+  const isStepOptional = (step) => {
     return step === 1;
   };
 
-  const isStepSkipped = (step: number) => {
+  const isStepSkipped = (step) => {
     return skipped.has(step);
   };
 
@@ -69,18 +69,16 @@ export default function HorizontalLinearStepper() {
   };
 
   return (
-<Box sx={{ width: '60%' }}  >
+    <Box sx={{ width: '60%' }}  >
       <Stepper activeStep={activeStep} >
         {steps.map((label, index) => {
-          const stepProps: { completed?: boolean } = {};
-          const labelProps: {
-            optional?: React.ReactNode;
-          } = {};
-        //   if (isStepOptional(index)) {
-        //     labelProps.optional = (
-        //       <Typography variant="caption">Optional</Typography>
-        //     );
-        //   }
+          const stepProps = {};
+          const labelProps = {};
+          //   if (isStepOptional(index)) {
+          //     labelProps.optional = (
+          //       <Typography variant="caption">Optional</Typography>
+          //     );
+          //   }
           if (isStepSkipped(index)) {
             stepProps.completed = false;
           }
@@ -98,14 +96,14 @@ export default function HorizontalLinearStepper() {
           </Typography>
           <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
             <Box sx={{ flex: '1 1 auto' }} />
-            <Button  onClick={handleReset}>Reset</Button>
+            <Button onClick={handleReset}>Reset</Button>
           </Box>
         </React.Fragment>
       ) : (
         <React.Fragment>
-            {activeStep === 0 && <Addressform handleNext={handleNext}/>}
-        {activeStep === 1 && <Contactformdetails handleNext={handleNext}/>}
-        {activeStep === 2 && <Paymentmethod/>}
+          {activeStep === 0 && <Addressform handleNext={handleNext} />}
+          {activeStep === 1 && <Contactformdetails handleNext={handleNext} />}
+          {activeStep === 2 && <Paymentmethod />}
           {/* <Typography sx={{ mt: 2, mb: 1 }}>Step {activeStep + 1}</Typography> */}
           <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
             <Button
@@ -126,8 +124,8 @@ export default function HorizontalLinearStepper() {
             {/* <Button  onClick={handleNext} className='btn' variant="contained" color="primary" > 
               {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
             </Button> */}
-          
-  
+
+
           </Box>
         </React.Fragment>
       )}
