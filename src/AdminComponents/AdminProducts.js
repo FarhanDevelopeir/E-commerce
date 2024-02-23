@@ -9,7 +9,7 @@ import {
   displayproducts,
   updateAddedToCart,
 } from "../Redux/features/counter/ProductSlice";
-import { ActivePage, AddProducts, fetchData } from "./features/AdminSlice";
+import { ActivePage, AddProducts, ProductId, fetchData } from "./features/AdminSlice";
 import AdminProductDetails from "./AdminProductDetails";
 
 const AdminProducts = () => {
@@ -25,9 +25,14 @@ const AdminProducts = () => {
     dispatch(fetchData());
   }, [dispatch]);
 
-  const handleClick = (itemName, itemId) => {
-    setActiveItem(itemName === activeItem ? null : itemName);
-    dispatch(ActivePage(itemName, itemId));
+  const handleViewProduct = ( itemId) => {
+    dispatch(ProductId(itemId))
+    setOpenModal(true)
+    
+    // console.log(itemId)
+
+    // setActiveItem(itemName === activeItem ? null : itemName);
+    // dispatch(ActivePage(itemName, itemId));
     // Dispatch an action with the item ID
   };
 
@@ -64,11 +69,11 @@ const AdminProducts = () => {
                 <h5 className="text-dark text-left w-full text-sm mb-0">
                   {item.title}
                 </h5>
-                {/*  <Link to={`${item.id}`}>*/}
+                
                 <button
-                  onClick={()=> setOpenModal(true)}
+                  
                   className="flex"
-                  //  onClick={() => handleClick("Add Products",item.id)}
+                   onClick={()=>handleViewProduct(item.id)}
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -84,7 +89,7 @@ const AdminProducts = () => {
                     />
                   </svg>
                 </button>
-                {/* </Link>*/}
+               
               </div>
 
               <div className="mb-2">
@@ -190,7 +195,7 @@ const AdminProducts = () => {
         <div>{paginationButtons}</div>
       </section>
       
-    { openModal && <AdminProductDetails/>}
+    { openModal && <AdminProductDetails openModal={openModal} setOpenModal={setOpenModal} />}
     
     </div>
   );
