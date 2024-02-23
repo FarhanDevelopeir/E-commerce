@@ -3,10 +3,11 @@ import axios from "axios";
 
 const initialState = {
   activePage: "Dashboard",
-
   loading: false,
   data: [],
   singleProduct: {},
+  selectedProduct: {},
+  editProduct: {},
   error: null,
   status: "idle",
 };
@@ -63,7 +64,7 @@ export const updateProduct = createAsyncThunk(
         `http://localhost:3000/products/${formDataWithFiles.id}`, // Assuming you're sending the ID along with other details for updating
         formDataWithFiles
       );
-      console.log(response.data)
+      console.log(response.data);
 
       return response.data; // Make sure the server responds with the updated product data
     } catch (error) {
@@ -79,6 +80,17 @@ export const adminSlice = createSlice({
     ActivePage: (state, action) => {
       state.activePage = action.payload;
     },
+    ProductId: (state, action) => {
+      const index= state.data.findIndex((product)=> product.id ===action.payload)
+      state.selectedProduct=state.data[index]
+    },
+    EmptySelectedProduct : (state)=>{
+      state.editProduct={}
+    },
+    ProductEdit: (state, action) => {
+      const index= state.data.findIndex((product)=> product.id ===action.payload)
+      state.editProduct=state.data[index]
+    },
   },
 
   extraReducers: (builder) => {
@@ -92,7 +104,9 @@ export const adminSlice = createSlice({
     });
     builder.addCase(updateProduct.fulfilled, (state, action) => {
       state.status = "idle";
-      const index = state.data.findIndex(product => product.id === action.payload.id);
+      const index = state.data.findIndex(
+        (product) => product.id === action.payload.id
+      );
       if (index !== -1) {
         state.data[index] = action.payload;
       }
@@ -100,6 +114,6 @@ export const adminSlice = createSlice({
   },
 });
 
-export const { ActivePage } = adminSlice.actions;
+export const { ActivePage, ProductId, EmptySelectedProduct, ProductEdit } = adminSlice.actions;
 
 export default adminSlice.reducer;

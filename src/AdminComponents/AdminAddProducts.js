@@ -1,9 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import { category } from "../Redux/features/counter/ProductSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css'
 import {
   ActivePage,
   AddProducts,
+  EmptySelectedProduct,
   SingleProductData,
   updateProduct,
 } from "./features/AdminSlice";
@@ -13,7 +16,9 @@ import AdminProducts from "./AdminProducts";
 import AdminDashboard from "./AdminDashboard";
 
 const AdminAddProducts = () => {
-  const Product = useSelector((state) => state.adminslice.singleProduct);
+  const [alertPopup, setalertPopup] = useState(false)
+  const activePage = useSelector((state) => state.adminslice.activePage);
+  const Product = useSelector((state) => state.adminslice.editProduct);
   console.log("get single product ", Product);
   const dispatch = useDispatch();
   const navigate = useNavigate(); // Access the navigate function
@@ -21,75 +26,93 @@ const AdminAddProducts = () => {
   const location = useLocation();
   const [images, setImages] = useState([]);
   const [thumbnail, setThumbnail] = useState("");
+  const [chnagesMade, setchnagesMade] = useState(false);
   const [formData, setFormData] = useState({
-    title: "",
-    brand: "",
-    price: "",
-    category: "",
-    stock: "",
-    thumbnail: null,
-    images: [],
-    rating: "",
-    discountPercentage: "",
-    description: "",
+    title: Product.title || "",
+    brand: Product.brand || "",
+    price: Product.price || "",
+    category: Product.category || "",
+    stock: Product.stock || "",
+    thumbnail: Product.thumbnail || null,
+    images: Product.images || [],
+    rating: Product.rating || "",
+    discountPercentage: Product.discountPercentage || "",
+    description: Product.description || "",
   });
-  // setFormData(Product)
 
+  // Assuming `Product` is a prop passed to this component
   useEffect(() => {
     if (Product) {
+      // If a product is available, populate the form fields with its data
       setFormData({
-        title: Product.title,
-        brand: Product.brand,
-        price: Product.price,
-        category: Product.category,
-        stock: Product.stock,
-        thumbnail: Product.thumbnail,
-        images: Product.images,
-        rating: Product.rating,
-        discountPercentage: Product.discountPercentage,
-        description: Product.description,
+        title: Product.title || "",
+        brand: Product.brand || "",
+        price: Product.price || "",
+        category: Product.category || "",
+        stock: Product.stock || "",
+        thumbnail: Product.thumbnail || null,
+        images: Product.images || [],
+        rating: Product.rating || "",
+        discountPercentage: Product.discountPercentage || "",
+        description: Product.description || "",
       });
       setThumbnail(Product.thumbnail);
       setImages(Product.images);
-    }
-    // Product && setThumbnail(Product.thumbnail);
-  }, [Product]);
-
-  let id = "";
-  // Parse the URL to extract the ID
-  const pathname = location.pathname;
-  const parts = pathname.split("/");
-  id = parts[parts.length - 1]; // Assuming the ID is the last part of the URL
-  console.log("ID from URL:", id);
-
-  
-  
-  
-  useEffect(() => {
-    if (id !== "") {
-      dispatch(SingleProductData(id));
     } else {
+      // If no product is available, reset the form fields
       setFormData({
         title: "",
         brand: "",
         price: "",
         category: "",
         stock: "",
-        thumbnail: null,
-        images: [],
         rating: "",
         discountPercentage: "",
         description: "",
       });
     }
-  }, [id,location.pathname]);
+  }, [Product]); // Update the form data whenever `Product` changes
+
+  
+
+  useEffect(() => {
+    const cleanupFunction = (e) => {
+      if (Object.keys(Product).length !== 0) {
+        e.preventDefault();
+        e.returnValue = '';
+      }
+    };
+
+
+    window.addEventListener("beforeunload", cleanupFunction);
+
+    return () => {
+
+      if (chnagesMade) {
+
+        const userConfirmation = window.confirm("You have unsaved changes. Do you want to leave?");
+        if (!userConfirmation) {
+          console.log('cancel button')
+          dispatch(ActivePage('Add Products'));
+          return false
+        }
+      }
+    };
+  }, [chnagesMade]);
+
+  useEffect(() => {
+    if (Object.keys(Product).length !== 0 && formData.title !== Product.title) {
+      setchnagesMade(true);
+    }
+  }, [formData]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(formData);
-    if (id) {
-      formData.id = id;
+    if (Product) {
+      formData.id = Product.id;
       dispatch(updateProduct(formData));
+      dispatch(EmptySelectedProduct());
     } else {
       dispatch(AddProducts(formData));
     }
@@ -106,7 +129,7 @@ const AdminAddProducts = () => {
     setThumbnail(URL.createObjectURL(file)); // Display selected image
   };
 
-    const handleImagesChange = (e) => {
+  const handleImagesChange = (e) => {
     const files = Array.from(e.target.files);
     setFormData((prevFormData) => ({
       ...prevFormData,
@@ -134,7 +157,6 @@ const AdminAddProducts = () => {
                   <input
                     type="text"
                     name="title"
-                    // id="name"
                     class="bg-white shadow-md mb-2  border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600  w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     placeholder="Type product name"
                     required=""
@@ -336,16 +358,6 @@ const AdminAddProducts = () => {
               </div>
             </div>
             <button
-              // disabled={
-              //   !formData.title ||
-              //   !formData.brand ||
-              //   !formData.category ||
-              //   !formData.description ||
-              //   !formData.discountPercentage ||
-              //   !formData.price ||
-              //   !formData.rating ||
-              //   !formData.stock
-              // }
               type="submit"
               className={`shadow-md mb-2 ${
                 !formData.title ||
@@ -361,9 +373,25 @@ const AdminAddProducts = () => {
               } cursor-pointer inline-flex float-right font-semibold items-center px-5 py-2.5 mt-4 sm:mt-6 text-md text-center 
   rounded-md focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900`}
             >
-              {id === "" ? "Add Product" : "Update Product"}
+              {Object.keys(Product).length !== 0
+                ? "Update Product"
+                : "Add Product"}
             </button>
           </form>
+          {alertPopup && 
+          <div className="fixed inset-0 bg-opacity-30
+    backdrop-blur-[7px]  bg-slate-900  
+    p-2 flex justify-center items-center">
+        <div className="bg-black border-2  w-[60%] shadow-2xl rounded-lg p-3">
+          <h5 className="text-white" >Your changes are not saved. Are you sure you want to leave?</h5>
+          <div className="float-right mt-3">
+          <button className="text-white px-4 py-2 rounded mr-2 bg-gradient-to-r  from-indigo-500 to-pink-500 hover:bg-gradient-to-l hover:from-pink-500 hover:to-indigo-700" >Cancel </button>
+         <button className="bg-red-600   text-white px-4 py-2 rounded"  >Leave </button>
+          </div>
+        
+        </div>
+
+          </div>}
         </div>
       </section>
     </div>
