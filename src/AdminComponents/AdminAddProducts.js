@@ -6,6 +6,7 @@ import 'react-confirm-alert/src/react-confirm-alert.css'
 import {
   ActivePage,
   AddProducts,
+  AddProductsAsync,
   EmptySelectedProduct,
   SingleProductData,
   updateProduct,
@@ -25,24 +26,25 @@ const AdminAddProducts = () => {
 
   const location = useLocation();
   const [images, setImages] = useState([]);
-  const [thumbnail, setThumbnail] = useState("");
+  const [stock, setstock] = useState("");
+  const [thumbnailImage, setthumbnailImage] = useState("");
   const [chnagesMade, setchnagesMade] = useState(false);
   const [formData, setFormData] = useState({
-    title: Product.title || "",
-    brand: Product.brand || "",
-    price: Product.price || "",
-    category: Product.category || "",
+    // title: Product.title || "",
+    // brand: Product.brand || "",
+    // price: Product.price || "",
+    // // category: Product.category || "",
     stock: Product.stock || "",
-    thumbnail: Product.thumbnail || null,
-    images: Product.images || [],
-    rating: Product.rating || "",
-    discountPercentage: Product.discountPercentage || "",
-    description: Product.description || "",
+    thumbnailImage: Product.thumbnail || '',
+    // images: Product.images || [],
+    // rating: Product.rating || "",
+    // discountPercentage: Product.discountPercentage || "",
+    // description: Product.description || "",
   });
 
   // Assuming `Product` is a prop passed to this component
   useEffect(() => {
-    if (Product) {
+    if (Object.keys(Product).length !== 0) {
       // If a product is available, populate the form fields with its data
       setFormData({
         title: Product.title || "",
@@ -56,20 +58,20 @@ const AdminAddProducts = () => {
         discountPercentage: Product.discountPercentage || "",
         description: Product.description || "",
       });
-      setThumbnail(Product.thumbnail);
+      setthumbnailImage(Product.thumbnail);
       setImages(Product.images);
     } else {
       // If no product is available, reset the form fields
-      setFormData({
-        title: "",
-        brand: "",
-        price: "",
-        category: "",
-        stock: "",
-        rating: "",
-        discountPercentage: "",
-        description: "",
-      });
+      // setFormData({
+      //   title: "",
+      //   brand: "",
+      //   price: "",
+      //   category: "",
+      //   stock: "",
+      //   rating: "",
+      //   discountPercentage: "",
+      //   description: "",
+      // });
     }
   }, [Product]); // Update the form data whenever `Product` changes
 
@@ -108,13 +110,18 @@ const AdminAddProducts = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
-    if (Product) {
+    
+    if (Object.keys(Product).length !== 0) {
       formData.id = Product.id;
       dispatch(updateProduct(formData));
       dispatch(EmptySelectedProduct());
     } else {
-      dispatch(AddProducts(formData));
+      console.log(stock, thumbnailImage )
+      const formData = new FormData()
+      formData.append('stock', stock)
+      formData.append('thumbnailImage', thumbnailImage)
+      console.log(formData);
+      dispatch(AddProductsAsync(formData));
     }
   };
 
@@ -125,8 +132,9 @@ const AdminAddProducts = () => {
 
   const handleThumbnailChange = (e) => {
     const file = e.target.files[0];
-    setFormData({ ...formData, thumbnail: file });
-    setThumbnail(URL.createObjectURL(file)); // Display selected image
+    console.log(file)
+    setthumbnailImage(file)
+    // setThumbnail(URL.createObjectURL(file)); // Display selected image
   };
 
   const handleImagesChange = (e) => {
@@ -136,7 +144,7 @@ const AdminAddProducts = () => {
       images: [...prevFormData.images, ...files],
     }));
   };
-
+ 
   return (
     <div>
       <section class=" pt-6 px-3 sm:pt-6 sm:px-8  dark:bg-gray-500">
@@ -235,8 +243,8 @@ const AdminAddProducts = () => {
                       Stock
                     </label>
                     <input
-                      value={formData.stock}
-                      onChange={handleChange}
+                      value={stock}
+                      onChange={(e) => (setstock(e.target.value))}
                       type="number"
                       name="stock"
                       id="item-weight"
@@ -260,9 +268,9 @@ const AdminAddProducts = () => {
                         id="thumbnail"
                         onChange={handleThumbnailChange}
                       ></input>
-                      {thumbnail && (
+                      {thumbnailImage && (
                         <img
-                          src={thumbnail}
+                          src={thumbnailImage}
                           alt="Thumbnail"
                           className="mt-2 h-12 w-12 rounded-full"
                         />
@@ -360,15 +368,16 @@ const AdminAddProducts = () => {
             <button
               type="submit"
               className={`shadow-md mb-2 ${
-                !formData.title ||
-                !formData.brand ||
-                !formData.category ||
-                !formData.description ||
-                !formData.discountPercentage ||
-                !formData.price ||
-                !formData.rating ||
-                !formData.stock
-                  ? "bg-gray-200 pointer-events-none cursor-not-allowed text-gray-400"
+                // !formData.title ||
+                // !formData.brand ||
+                // // !formData.category ||
+                // !formData.description ||
+                // !formData.discountPercentage ||
+                // !formData.price ||
+                // !formData.rating ||
+                // !formData.stock'*: 
+                ''  
+                ? "bg-gray-200 pointer-events-none cursor-not-allowed text-gray-400"
                   : "bg-gradient-to-r from-indigo-500 to-pink-500 hover:bg-gradient-to-l hover:from-pink-500 hover:to-indigo-700 text-white"
               } cursor-pointer inline-flex float-right font-semibold items-center px-5 py-2.5 mt-4 sm:mt-6 text-md text-center 
   rounded-md focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900`}
