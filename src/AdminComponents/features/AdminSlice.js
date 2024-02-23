@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { AddProducts } from "./AdminApis";
 
 const initialState = {
   activePage: "Dashboard",
@@ -39,18 +40,11 @@ export const SingleProductData = createAsyncThunk(
   }
 );
 
-export const AddProducts = createAsyncThunk(
+export const AddProductsAsync = createAsyncThunk(
   "products/addProduct",
-  async (formDataWithFiles) => {
-    try {
-      const response = await axios.post(
-        "http://localhost:3000/products",
-        formDataWithFiles
-      );
-      return response.data;
-    } catch (error) {
-      throw error;
-    }
+  async (formData) => {
+   const data = await AddProducts(formData)
+   return data
   }
 );
 
@@ -94,6 +88,9 @@ export const adminSlice = createSlice({
   },
 
   extraReducers: (builder) => {
+    builder.addCase(AddProductsAsync.fulfilled, (state, action)=>{
+      state.data.push(action.payload);
+    })
     builder.addCase(fetchData.fulfilled, (state, action) => {
       state.status = "idle";
       state.data = action.payload;
