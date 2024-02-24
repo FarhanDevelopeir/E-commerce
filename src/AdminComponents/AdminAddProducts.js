@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import { category } from "../Redux/features/counter/ProductSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { confirmAlert } from 'react-confirm-alert';
-import 'react-confirm-alert/src/react-confirm-alert.css'
+// import { confirmAlert } from 'react-confirm-alert';
+// import 'react-confirm-alert/src/react-confirm-alert.css'
 import {
   ActivePage,
   AddProducts,
@@ -26,6 +26,9 @@ const AdminAddProducts = () => {
 
   const location = useLocation();
   const [images, setImages] = useState([]);
+  const [image1, setImage1] = useState(null);
+  const [image2, setImage2] = useState(null);
+  const [image3, setImage3] = useState(null);
   const [stock, setstock] = useState("");
   const [thumbnailImage, setthumbnailImage] = useState("");
   const [chnagesMade, setchnagesMade] = useState(false);
@@ -36,7 +39,7 @@ const AdminAddProducts = () => {
     // // category: Product.category || "",
     stock: Product.stock || "",
     thumbnailImage: Product.thumbnail || '',
-    // images: Product.images || [],
+    images: Product.images || [],
     // rating: Product.rating || "",
     // discountPercentage: Product.discountPercentage || "",
     // description: Product.description || "",
@@ -116,12 +119,15 @@ const AdminAddProducts = () => {
       dispatch(updateProduct(formData));
       dispatch(EmptySelectedProduct());
     } else {
-      console.log(stock, thumbnailImage )
-      const formData = new FormData()
-      formData.append('stock', stock)
-      formData.append('thumbnailImage', thumbnailImage)
-      console.log(formData);
-      dispatch(AddProductsAsync(formData));
+      console.log(stock, thumbnailImage, image1, image2, image3  )
+      const formData1 = new FormData()
+      formData1.append('stock', stock)
+      formData1.append('thumbnailImage', thumbnailImage)
+      formData1.append('image1', image1)
+      formData1.append('image2', image2)
+      formData1.append('image3', image3)
+      console.log(formData1);
+      dispatch(AddProductsAsync(formData1));
     }
   };
 
@@ -134,6 +140,27 @@ const AdminAddProducts = () => {
     const file = e.target.files[0];
     console.log(file)
     setthumbnailImage(file)
+    // setThumbnail(URL.createObjectURL(file)); // Display selected image
+  };
+
+  const handleimage1Change = (e) => {
+    const file = e.target.files[0];
+    console.log(file)
+    setImage1(file)
+    // setThumbnail(URL.createObjectURL(file)); // Display selected image
+  };
+
+  const handleimage2Change = (e) => {
+    const file = e.target.files[0];
+    console.log(file)
+    setImage2(file)
+    // setThumbnail(URL.createObjectURL(file)); // Display selected image
+  };
+
+  const handleimage3Change = (e) => {
+    const file = e.target.files[0];
+    console.log(file)
+    setImage3(file)
     // setThumbnail(URL.createObjectURL(file)); // Display selected image
   };
 
@@ -272,6 +299,81 @@ const AdminAddProducts = () => {
                         <img
                           src={thumbnailImage}
                           alt="Thumbnail"
+                          className="mt-2 h-12 w-12 rounded-full"
+                        />
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <div>
+                    <label
+                      for="category"
+                      class="mb-2 text-sm  font-semibold text-gray-600 dark:text-white"
+                    >
+                      Product Image 1
+                    </label>
+                    <div className="flex justify-between p-2.5 bg-white border border-gray-300 rounded-lg shadow-md">
+                      <input
+                        type="file"
+                        id="image1"
+                        onChange={handleimage1Change}
+                      ></input>
+                      {image1 && (
+                        <img
+                          src={image1}
+                          alt="image1"
+                          className="mt-2 h-12 w-12 rounded-full"
+                        />
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <div>
+                    <label
+                      for="category"
+                      class="mb-2 text-sm  font-semibold text-gray-600 dark:text-white"
+                    >
+                      Product Image 2
+                    </label>
+                    <div className="flex justify-between p-2.5 bg-white border border-gray-300 rounded-lg shadow-md">
+                      <input
+                        type="file"
+                        id="image2"
+                        onChange={handleimage2Change}
+                      ></input>
+                      {image2 && (
+                        <img
+                          src={image2}
+                          alt="image2"
+                          className="mt-2 h-12 w-12 rounded-full"
+                        />
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <div>
+                    <label
+                      for="category"
+                      class="mb-2 text-sm  font-semibold text-gray-600 dark:text-white"
+                    >
+                      Product Image 3
+                    </label>
+                    <div className="flex justify-between p-2.5 bg-white border border-gray-300 rounded-lg shadow-md">
+                      <input
+                        type="file"
+                        id="image3"
+                        onChange={handleimage3Change}
+                      ></input>
+                      {image3 && (
+                        <img
+                          src={image3}
+                          alt="image3"
                           className="mt-2 h-12 w-12 rounded-full"
                         />
                       )}
