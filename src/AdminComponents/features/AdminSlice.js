@@ -16,7 +16,7 @@ const initialState = {
 // Thunk for making API call
 export const fetchData = createAsyncThunk("products/fetchData", async () => {
   try {
-    const response = await axios.get("http://localhost:3000/products");
+    const response = await axios.get("http://localhost:4000/products");
     return response.data;
   } catch (error) {
     throw error;
@@ -28,7 +28,7 @@ export const SingleProductData = createAsyncThunk(
   "products/getSingleProductData",
   async (id) => {
     try {
-      const response = await axios.get("http://localhost:3000/products");
+      const response = await axios.get("http://localhost:4000/products");
       const data = response.data;
       const product = data.find((product) => product.id === id);
       // Set the product data in the state
@@ -55,7 +55,7 @@ export const updateProduct = createAsyncThunk(
     try {
       // Assuming you're sending the updated product data to the server for updating
       const response = await axios.put(
-        `http://localhost:3000/products/${formDataWithFiles.id}`, // Assuming you're sending the ID along with other details for updating
+        `http://localhost:4000/products/${formDataWithFiles.id}`, // Assuming you're sending the ID along with other details for updating
         formDataWithFiles
       );
       console.log(response.data);
