@@ -11,10 +11,15 @@ import {
 } from "../Redux/features/counter/ProductSlice";
 import { ActivePage, AddProducts, ProductId, fetchData } from "./features/AdminSlice";
 import AdminProductDetails from "./AdminProductDetails";
+import { allFetchedProducts, allProductsAsync, getOneProductAsync, productId } from "../features/product/productSlice";
 
 const AdminProducts = () => {
-  const getproducts = useSelector((state) => state.adminslice.data);
-  console.log(getproducts);
+  const getproducts = useSelector(allFetchedProducts)
+  console.log(getproducts)
+  
+  
+  // const getproducts = useSelector((state) => state.adminslice.data);
+  // console.log(getproducts);
   const [openModal, setOpenModal] = useState(false)
   const [activeItem, setActiveItem] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
@@ -22,18 +27,15 @@ const AdminProducts = () => {
 
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(fetchData());
-  }, [dispatch]);
+    // dispatch(fetchData());
+    dispatch(allProductsAsync({}))
+  }, []);
 
   const handleViewProduct = ( itemId) => {
-    dispatch(ProductId(itemId))
+    dispatch(productId(itemId))
+    console.log(itemId)
     setOpenModal(true)
-    
-    // console.log(itemId)
-
-    // setActiveItem(itemName === activeItem ? null : itemName);
-    // dispatch(ActivePage(itemName, itemId));
-    // Dispatch an action with the item ID
+    // getOneProductAsync(itemId)
   };
 
   const indexOfLastProduct = currentPage * productsPerPage;
@@ -43,6 +45,8 @@ const AdminProducts = () => {
     indexOfLastProduct
   );
   console.log(currentProducts);
+  
+
 
   const displaydata = currentProducts.map((item) => {
     return (
@@ -52,7 +56,7 @@ const AdminProducts = () => {
           <div className="" style={{ textAlign: "center" }}>
             <div className=" w-full   ">
               <img
-                src={item.thumbnail}
+                src={item.thumbnailImage}
                 className="hover-zoom rounded-t-lg mb-2 w-full"
                 style={{
                   height: "150px",
@@ -73,7 +77,7 @@ const AdminProducts = () => {
                 <button
                   
                   className="flex"
-                   onClick={()=>handleViewProduct(item.id)}
+                   onClick={()=>handleViewProduct(item._id)}
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -184,9 +188,9 @@ const AdminProducts = () => {
                   class="spinner-border text-danger m-auto d-inline"
                   role="status"
                 >
-                  <span class="visually-hidden ">Loading...</span>
+                   <h1 className="text-center">...loading</h1>
                 </div>
-                <h1 className="text-center">...loading</h1>
+               
               </>
             )}
           </div>

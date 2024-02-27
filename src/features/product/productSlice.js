@@ -1,11 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { getAllProducts, fetchCategories, getOneProduct } from "./productApi";
+import { getAllProducts, fetchCategories, getOneProduct, getUpdateProduct } from "./productApi";
 
 
 const initialState = {
     status: '',
     Products: [],
     SingleProduct : {},
+    selectedProduct : {},
     Categories: [],
     Category: "women's clothing"
 };
@@ -27,6 +28,14 @@ export const getOneProductAsync = createAsyncThunk(
     }
 )
 
+export const updateProductAsync = createAsyncThunk(
+    "product/UpdateProduct",
+    async(formData)=>{
+        const data = await getUpdateProduct(formData)
+        return data
+    }
+)
+
 
 export const allCategoriesAsync = createAsyncThunk(
     "product/allCategories",
@@ -44,7 +53,11 @@ export const productSlice = createSlice({
         selectCategory: (state, action) => {
             state.Category = action.payload
             console.log(state.Category)
-        }
+        },
+        productId: (state, action) => {
+            const index= state.Products.findIndex((product)=> product._id ===action.payload)
+            state.selectedProduct=state.Products[index]
+          },
     },
     extraReducers: (builder) => {
         builder
@@ -76,11 +89,12 @@ export const productSlice = createSlice({
     }
 });
 
-export const { selectCategory } = productSlice.actions
+export const { selectCategory, productId} = productSlice.actions
 
 
 export const allFetchedProducts = (state) => state.product1.Products
 export const singleProductFetched = (state) => state.product1.SingleProduct
+// export const selectedProduct = (state) => state.product1.selectedProduct
 export const allFetchedCategories = (state) => state.product1.Categories
 export const selectedCategory = (state) => state.product1.Category
 

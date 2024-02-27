@@ -17,52 +17,52 @@ import AdminProducts from "./AdminProducts";
 import AdminDashboard from "./AdminDashboard";
 
 const AdminAddProducts = () => {
+  const singleProduct = useSelector((state)=>state.product1.selectedProduct)
+  console.log(singleProduct)
   const [alertPopup, setalertPopup] = useState(false)
   const activePage = useSelector((state) => state.adminslice.activePage);
-  const Product = useSelector((state) => state.adminslice.editProduct);
-  console.log("get single product ", Product);
+  // const Product = useSelector((state) => state.adminslice.editProduct);
+  // console.log("get single product ", Product);
   const dispatch = useDispatch();
-  const navigate = useNavigate(); // Access the navigate function
 
-  const location = useLocation();
-  const [images, setImages] = useState([]);
   const [image1, setImage1] = useState(null);
   const [image2, setImage2] = useState(null);
   const [image3, setImage3] = useState(null);
-  const [stock, setstock] = useState("");
   const [thumbnailImage, setthumbnailImage] = useState("");
   const [chnagesMade, setchnagesMade] = useState(false);
   const [formData, setFormData] = useState({
-    // title: Product.title || "",
-    // brand: Product.brand || "",
-    // price: Product.price || "",
-    // // category: Product.category || "",
-    stock: Product.stock || "",
-    thumbnailImage: Product.thumbnail || '',
-    images: Product.images || [],
-    // rating: Product.rating || "",
-    // discountPercentage: Product.discountPercentage || "",
-    // description: Product.description || "",
+    title: singleProduct.title || "",
+    brand: singleProduct.brand || "",
+    price: singleProduct.price || "",
+    category: singleProduct.category || "",
+    stock: singleProduct.stock || "",
+    // thumbnailImage: Product.thumbnail || '',
+    // image1: Product.image1 || '',
+    // image2: Product.image2 || '',
+    // image3: Product.image3 || '',
+    rating: singleProduct.rating || "",
+    discountPercentage: singleProduct.discountPercentage || "",
+    description: singleProduct.description || "",
   });
 
   // Assuming `Product` is a prop passed to this component
   useEffect(() => {
-    if (Object.keys(Product).length !== 0) {
+    if (Object.keys(singleProduct).length !== 0) {
       // If a product is available, populate the form fields with its data
       setFormData({
-        title: Product.title || "",
-        brand: Product.brand || "",
-        price: Product.price || "",
-        category: Product.category || "",
-        stock: Product.stock || "",
-        thumbnail: Product.thumbnail || null,
-        images: Product.images || [],
-        rating: Product.rating || "",
-        discountPercentage: Product.discountPercentage || "",
-        description: Product.description || "",
+        title: singleProduct.title || "",
+        brand: singleProduct.brand || "",
+        price: singleProduct.price || "",
+        category: singleProduct.category || "",
+        stock: singleProduct.stock || "",
+        thumbnail: singleProduct.thumbnail || null,
+        images: singleProduct.images || [],
+        rating: singleProduct.rating || "",
+        discountPercentage: singleProduct.discountPercentage || "",
+        description: singleProduct.description || "",
       });
-      setthumbnailImage(Product.thumbnail);
-      setImages(Product.images);
+      setthumbnailImage(singleProduct.thumbnail);
+     
     } else {
       // If no product is available, reset the form fields
       // setFormData({
@@ -76,13 +76,13 @@ const AdminAddProducts = () => {
       //   description: "",
       // });
     }
-  }, [Product]); // Update the form data whenever `Product` changes
+  }, [singleProduct]); // Update the form data whenever `Product` changes
 
   
 
   useEffect(() => {
     const cleanupFunction = (e) => {
-      if (Object.keys(Product).length !== 0) {
+      if (Object.keys(singleProduct).length !== 0) {
         e.preventDefault();
         e.returnValue = '';
       }
@@ -106,7 +106,7 @@ const AdminAddProducts = () => {
   }, [chnagesMade]);
 
   useEffect(() => {
-    if (Object.keys(Product).length !== 0 && formData.title !== Product.title) {
+    if (Object.keys(singleProduct).length !== 0 && formData.title !== singleProduct.title) {
       setchnagesMade(true);
     }
   }, [formData]);
@@ -114,20 +114,27 @@ const AdminAddProducts = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     
-    if (Object.keys(Product).length !== 0) {
-      formData.id = Product.id;
+    if (Object.keys(singleProduct).length !== 0) {
+      formData.id = singleProduct._id;
       dispatch(updateProduct(formData));
       dispatch(EmptySelectedProduct());
     } else {
-      console.log(stock, thumbnailImage, image1, image2, image3  )
-      const formData1 = new FormData()
-      formData1.append('stock', stock)
-      formData1.append('thumbnailImage', thumbnailImage)
-      formData1.append('image1', image1)
-      formData1.append('image2', image2)
-      formData1.append('image3', image3)
-      console.log(formData1);
-      dispatch(AddProductsAsync(formData1));
+      console.log( thumbnailImage, image1, image2, image3  )
+      const SubmitFormData = new FormData()
+      SubmitFormData.append('title', formData.title)
+      SubmitFormData.append('brand', formData.brand)
+      SubmitFormData.append('category', formData.category)
+      SubmitFormData.append('rating', formData.rating)
+      SubmitFormData.append('description', formData.description)
+      SubmitFormData.append('discountPercentage', formData.discountPercentage)
+      SubmitFormData.append('price', formData.price)
+      SubmitFormData.append('stock', formData.stock)
+      SubmitFormData.append('thumbnailImage', thumbnailImage)
+      SubmitFormData.append('image1', image1)
+      SubmitFormData.append('image2', image2)
+      SubmitFormData.append('image3', image3)
+      console.log(SubmitFormData);
+      dispatch(AddProductsAsync(SubmitFormData));
     }
   };
 
@@ -164,13 +171,13 @@ const AdminAddProducts = () => {
     // setThumbnail(URL.createObjectURL(file)); // Display selected image
   };
 
-  const handleImagesChange = (e) => {
-    const files = Array.from(e.target.files);
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      images: [...prevFormData.images, ...files],
-    }));
-  };
+  // const handleImagesChange = (e) => {
+  //   const files = Array.from(e.target.files);
+  //   setFormData((prevFormData) => ({
+  //     ...prevFormData,
+  //     images: [...prevFormData.images, ...files],
+  //   }));
+  // };
  
   return (
     <div>
@@ -270,8 +277,8 @@ const AdminAddProducts = () => {
                       Stock
                     </label>
                     <input
-                      value={stock}
-                      onChange={(e) => (setstock(e.target.value))}
+                      value={formData.stock}
+                      onChange={handleChange}
                       type="number"
                       name="stock"
                       id="item-weight"
@@ -388,7 +395,7 @@ const AdminAddProducts = () => {
                   >
                     Image's
                   </label>
-                  <div className="grid grid-cols-2 gap-2  sm:grid sm:grid-cols-3 sm:gap-4 ">
+                  {/* <div className="grid grid-cols-2 gap-2  sm:grid sm:grid-cols-3 sm:gap-4 ">
                     {Array.from({ length: 3 }).map((_, index) => (
                       <div
                         key={index}
@@ -408,7 +415,7 @@ const AdminAddProducts = () => {
                         )}
                       </div>
                     ))}
-                  </div>
+                  </div> */}
                 </div>
               </div>
               <div class="grid gap-1  lg:w-[45%] sm:grid-cols-1 ">
@@ -484,7 +491,7 @@ const AdminAddProducts = () => {
               } cursor-pointer inline-flex float-right font-semibold items-center px-5 py-2.5 mt-4 sm:mt-6 text-md text-center 
   rounded-md focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900`}
             >
-              {Object.keys(Product).length !== 0
+              {Object.keys(singleProduct).length !== 0
                 ? "Update Product"
                 : "Add Product"}
             </button>
