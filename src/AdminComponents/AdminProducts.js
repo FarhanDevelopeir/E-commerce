@@ -80,7 +80,7 @@ const AdminProducts = () => {
                 <button
                   
                   className="flex"
-                   onClick={()=>handleViewProduct(item.id)}
+                   onClick={()=>handleViewProduct(item._id)}
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -187,7 +187,7 @@ const AdminProducts = () => {
                       <h5 className="text-dark text-left w-full text-sm mb-0">
                         {item.title}
                       </h5>
-                      <button className="flex" onClick={() => handleViewProduct(item.id)}>
+                      <button className="flex" onClick={() => handleViewProduct(item._id)}>
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           viewBox="0 0 24 24"

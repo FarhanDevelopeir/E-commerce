@@ -2,20 +2,21 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { ActivePage, ProductEdit } from "./features/AdminSlice";
-import { getOneProductAsync, productId, selectedProduct, singleProductFetched } from "../features/product/productSlice";
+import { editproduct, getOneProductAsync, productId, selectedProduct, singleProductFetched } from "../features/product/productSlice";
 
 const AdminProductDetails = (props) => {
   const singleProduct = useSelector((state)=>state.product1.selectedProduct)
   console.log(singleProduct)
-  const Product = useSelector((state) => state.adminslice.selectedProduct);
-  console.log("get single product ", Product);
+  // const Product = useSelector((state) => state.adminslice.selectedProduct);
+  // console.log("get single product ", Product);
   
   const dispatch = useDispatch()
 
   const handleEdit = (itemName, itemId) => {
     // Add logic to handle update functionality
     console.log("Update product");
-    dispatch(productId(itemId))
+    // dispatch(productId(itemId))
+    dispatch(editproduct(itemId))
 
     // dispatch(ProductEdit(itemId))
   
