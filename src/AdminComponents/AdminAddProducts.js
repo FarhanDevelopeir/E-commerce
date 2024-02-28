@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { category } from "../Redux/features/counter/ProductSlice";
+import { category, } from "../Redux/features/counter/ProductSlice";
 import { useDispatch, useSelector } from "react-redux";
 // import { confirmAlert } from 'react-confirm-alert';
 // import 'react-confirm-alert/src/react-confirm-alert.css'
@@ -7,7 +7,7 @@ import {
   ActivePage,
   AddProducts,
   AddProductsAsync,
-  EmptySelectedProduct,
+  
   SingleProductData,
   updateProduct,
 } from "./features/AdminSlice";
@@ -15,14 +15,12 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import AdminOrders from "./AdminOrders";
 import AdminProducts from "./AdminProducts";
 import AdminDashboard from "./AdminDashboard";
+import { updateProductAsync, EmptySelectedProduct } from "../features/product/productSlice";
 
 const AdminAddProducts = () => {
-  const singleProduct = useSelector((state)=>state.product1.selectedProduct)
-  console.log(singleProduct)
-  const [alertPopup, setalertPopup] = useState(false)
+  const singleProduct = useSelector((state) => state.product1.editProduct);
+  const [alertPopup, setalertPopup] = useState(false);
   const activePage = useSelector((state) => state.adminslice.activePage);
-  // const Product = useSelector((state) => state.adminslice.editProduct);
-  // console.log("get single product ", Product);
   const dispatch = useDispatch();
 
   const [image1, setImage1] = useState(null);
@@ -36,103 +34,81 @@ const AdminAddProducts = () => {
     price: singleProduct.price || "",
     category: singleProduct.category || "",
     stock: singleProduct.stock || "",
-    // thumbnailImage: Product.thumbnail || '',
-    // image1: Product.image1 || '',
-    // image2: Product.image2 || '',
-    // image3: Product.image3 || '',
     rating: singleProduct.rating || "",
     discountPercentage: singleProduct.discountPercentage || "",
     description: singleProduct.description || "",
   });
 
-  // Assuming `Product` is a prop passed to this component
   useEffect(() => {
-    if (Object.keys(singleProduct).length !== 0) {
-      // If a product is available, populate the form fields with its data
+    if (Object.keys(singleProduct).length === 0) {
       setFormData({
-        title: singleProduct.title || "",
-        brand: singleProduct.brand || "",
-        price: singleProduct.price || "",
-        category: singleProduct.category || "",
-        stock: singleProduct.stock || "",
-        thumbnail: singleProduct.thumbnail || null,
-        images: singleProduct.images || [],
-        rating: singleProduct.rating || "",
-        discountPercentage: singleProduct.discountPercentage || "",
-        description: singleProduct.description || "",
+        title: "",
+        brand: "",
+        price: "",
+        category: "",
+        stock: "",
+        rating: "",
+        discountPercentage: "",
+        description: "",
       });
-      setthumbnailImage(singleProduct.thumbnail);
-     
-    } else {
-      // If no product is available, reset the form fields
-      // setFormData({
-      //   title: "",
-      //   brand: "",
-      //   price: "",
-      //   category: "",
-      //   stock: "",
-      //   rating: "",
-      //   discountPercentage: "",
-      //   description: "",
-      // });
     }
-  }, [singleProduct]); // Update the form data whenever `Product` changes
-
-  
+  }, [singleProduct]);
 
   useEffect(() => {
     const cleanupFunction = (e) => {
       if (Object.keys(singleProduct).length !== 0) {
         e.preventDefault();
-        e.returnValue = '';
+        e.returnValue = "";
       }
     };
-
 
     window.addEventListener("beforeunload", cleanupFunction);
 
     return () => {
-
       if (chnagesMade) {
-
-        const userConfirmation = window.confirm("You have unsaved changes. Do you want to leave?");
+        const userConfirmation = window.confirm(
+          "You have unsaved changes. Do you want to leave?"
+        );
         if (!userConfirmation) {
-          console.log('cancel button')
-          dispatch(ActivePage('Add Products'));
-          return false
+          console.log("cancel button");
+          dispatch(ActivePage("Add Products"));
+          return false;
         }
       }
     };
   }, [chnagesMade]);
 
   useEffect(() => {
-    if (Object.keys(singleProduct).length !== 0 && formData.title !== singleProduct.title) {
+    if (
+      Object.keys(singleProduct).length !== 0 &&
+      formData.title !== singleProduct.title
+    ) {
       setchnagesMade(true);
     }
   }, [formData]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+
     if (Object.keys(singleProduct).length !== 0) {
-      formData.id = singleProduct._id;
-      dispatch(updateProduct(formData));
+      const Id = singleProduct._id;
+      dispatch(updateProductAsync({ formData, Id }));
       dispatch(EmptySelectedProduct());
     } else {
-      console.log( thumbnailImage, image1, image2, image3  )
-      const SubmitFormData = new FormData()
-      SubmitFormData.append('title', formData.title)
-      SubmitFormData.append('brand', formData.brand)
-      SubmitFormData.append('category', formData.category)
-      SubmitFormData.append('rating', formData.rating)
-      SubmitFormData.append('description', formData.description)
-      SubmitFormData.append('discountPercentage', formData.discountPercentage)
-      SubmitFormData.append('price', formData.price)
-      SubmitFormData.append('stock', formData.stock)
-      SubmitFormData.append('thumbnailImage', thumbnailImage)
-      SubmitFormData.append('image1', image1)
-      SubmitFormData.append('image2', image2)
-      SubmitFormData.append('image3', image3)
+      console.log(thumbnailImage, image1, image2, image3);
+      const SubmitFormData = new FormData();
+      SubmitFormData.append("title", formData.title);
+      SubmitFormData.append("brand", formData.brand);
+      SubmitFormData.append("category", formData.category);
+      SubmitFormData.append("rating", formData.rating);
+      SubmitFormData.append("description", formData.description);
+      SubmitFormData.append("discountPercentage", formData.discountPercentage);
+      SubmitFormData.append("price", formData.price);
+      SubmitFormData.append("stock", formData.stock);
+      SubmitFormData.append("thumbnailImage", thumbnailImage);
+      SubmitFormData.append("image1", image1);
+      SubmitFormData.append("image2", image2);
+      SubmitFormData.append("image3", image3);
       console.log(SubmitFormData);
       dispatch(AddProductsAsync(SubmitFormData));
     }
@@ -145,29 +121,29 @@ const AdminAddProducts = () => {
 
   const handleThumbnailChange = (e) => {
     const file = e.target.files[0];
-    console.log(file)
-    setthumbnailImage(file)
+    console.log(file);
+    setthumbnailImage(file);
     // setThumbnail(URL.createObjectURL(file)); // Display selected image
   };
 
   const handleimage1Change = (e) => {
     const file = e.target.files[0];
-    console.log(file)
-    setImage1(file)
+    console.log(file);
+    setImage1(file);
     // setThumbnail(URL.createObjectURL(file)); // Display selected image
   };
 
   const handleimage2Change = (e) => {
     const file = e.target.files[0];
-    console.log(file)
-    setImage2(file)
+    console.log(file);
+    setImage2(file);
     // setThumbnail(URL.createObjectURL(file)); // Display selected image
   };
 
   const handleimage3Change = (e) => {
     const file = e.target.files[0];
-    console.log(file)
-    setImage3(file)
+    console.log(file);
+    setImage3(file);
     // setThumbnail(URL.createObjectURL(file)); // Display selected image
   };
 
@@ -178,7 +154,7 @@ const AdminAddProducts = () => {
   //     images: [...prevFormData.images, ...files],
   //   }));
   // };
- 
+
   return (
     <div>
       <section class=" pt-6 px-3 sm:pt-6 sm:px-8  dark:bg-gray-500">
@@ -484,9 +460,9 @@ const AdminAddProducts = () => {
                 // !formData.discountPercentage ||
                 // !formData.price ||
                 // !formData.rating ||
-                // !formData.stock'*: 
-                ''  
-                ? "bg-gray-200 pointer-events-none cursor-not-allowed text-gray-400"
+                // !formData.stock'*:
+                ""
+                  ? "bg-gray-200 pointer-events-none cursor-not-allowed text-gray-400"
                   : "bg-gradient-to-r from-indigo-500 to-pink-500 hover:bg-gradient-to-l hover:from-pink-500 hover:to-indigo-700 text-white"
               } cursor-pointer inline-flex float-right font-semibold items-center px-5 py-2.5 mt-4 sm:mt-6 text-md text-center 
   rounded-md focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900`}
@@ -496,20 +472,27 @@ const AdminAddProducts = () => {
                 : "Add Product"}
             </button>
           </form>
-          {alertPopup && 
-          <div className="fixed inset-0 bg-opacity-30
+          {alertPopup && (
+            <div
+              className="fixed inset-0 bg-opacity-30
     backdrop-blur-[7px]  bg-slate-900  
-    p-2 flex justify-center items-center">
-        <div className="bg-black border-2  w-[60%] shadow-2xl rounded-lg p-3">
-          <h5 className="text-white" >Your changes are not saved. Are you sure you want to leave?</h5>
-          <div className="float-right mt-3">
-          <button className="text-white px-4 py-2 rounded mr-2 bg-gradient-to-r  from-indigo-500 to-pink-500 hover:bg-gradient-to-l hover:from-pink-500 hover:to-indigo-700" >Cancel </button>
-         <button className="bg-red-600   text-white px-4 py-2 rounded"  >Leave </button>
-          </div>
-        
-        </div>
-
-          </div>}
+    p-2 flex justify-center items-center"
+            >
+              <div className="bg-black border-2  w-[60%] shadow-2xl rounded-lg p-3">
+                <h5 className="text-white">
+                  Your changes are not saved. Are you sure you want to leave?
+                </h5>
+                <div className="float-right mt-3">
+                  <button className="text-white px-4 py-2 rounded mr-2 bg-gradient-to-r  from-indigo-500 to-pink-500 hover:bg-gradient-to-l hover:from-pink-500 hover:to-indigo-700">
+                    Cancel{" "}
+                  </button>
+                  <button className="bg-red-600   text-white px-4 py-2 rounded">
+                    Leave{" "}
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </section>
     </div>

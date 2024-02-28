@@ -79,6 +79,7 @@ export const adminSlice = createSlice({
       state.selectedProduct=state.data[index]
     },
     EmptySelectedProduct : (state)=>{
+      console.log('working')
       state.editProduct={}
     },
     ProductEdit: (state, action) => {

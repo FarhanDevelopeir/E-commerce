@@ -52,11 +52,13 @@ export function fetchCategories() {
   });
 }
 
-export function getUpdateProduct(formDataWithFiles) {
+export function getUpdateProduct(formDataWithFiles, Id) {
+
+  console.log(formDataWithFiles, Id)
   return new Promise(async (resolve, reject) => {
     try {
       const response = await axios.put(
-        `http://localhost:4000/products/${formDataWithFiles._id}`,
+        `http://localhost:4000/products/update/${Id}`,
         formDataWithFiles
       );
       console.log(response.data);
