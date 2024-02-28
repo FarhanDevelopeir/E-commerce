@@ -42,32 +42,20 @@ const AdminOrders = () => {
   console.log(currentOrders);
 
   return (
-    <div>
-      <div class="relative overflow-x-auto sm:rounded-lg">
-        <div className="my-4 ">
+   
+      <div class="mx-2 overflow-scroll  sm:rounded-lg">
+        <div className="my-4 text-xs md:text-sm ">
           <input
             type="text"
             placeholder="Search by name..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="p-2 border border-gray-300 rounded-md w-[20%]"
+            className="p-2 border border-gray-300 rounded-md w-[65%] sm:w-[60%] md:w-[50%] lg:w-[40%] xl:w-[30%] "
           />
         </div>
-        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+        <table class="w-full text-sm text-left  text-gray-500 dark:text-gray-400">
           <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
-              {/* <th scope="col" class="p-4">
-                <div class="flex items-center">
-                  <input
-                    id="checkbox-all-search"
-                    type="checkbox"
-                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                  />
-                  <label for="checkbox-all-search" class="sr-only">
-                    checkbox
-                  </label>
-                </div>
-              </th> */}
               <th scope="col" class="px-6 py-3">
                 Image
               </th>
@@ -92,18 +80,6 @@ const AdminOrders = () => {
             {currentOrders.map((item) => {
               return (
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                  {/* <td class="w-4 p-4">
-                    <div class="flex items-center">
-                      <input
-                        id="checkbox-table-search-1"
-                        type="checkbox"
-                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                      />
-                      <label for="checkbox-table-search-1" class="sr-only">
-                        checkbox
-                      </label>
-                    </div>
-                  </td> */}
                   <th
                     scope="row"
                     class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white"
@@ -121,45 +97,29 @@ const AdminOrders = () => {
                   </td>
                   <td class="px-6 py-4">{item.stock}</td>
                   <td class="px-6 py-4">COD</td>
-
                   <td className="px-6 py-4">
-  <select
-    className="rounded-[7px] border border-blue-gray-200 border-t-transparent bg-transparent px-1 py-1.5 font-sans text-[15px] font-normal text-blue-gray-700 outline-none transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 empty:!bg-gray-900 focus:border-gray-900 focus:border-t-transparent focus:outline-none disabled:border-0 disabled:bg-blue-gray-50"
-  >
-    <option value="Pending">Pending</option>
-    <option value="Processing">Processing</option>
-    <option value="Delivered">Delivered</option>
-    <option value="Completed">Completed</option>
-    <option value="Cancelled">Cancelled</option>
-
-  </select>
-</td>
-
+                    <select
+                      className="rounded-[7px] border border-blue-gray-200 border-t-transparent bg-transparent px-1 py-1.5 font-sans text-[15px] font-normal text-blue-gray-700 outline-none transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 empty:!bg-gray-900 focus:border-gray-900 focus:border-t-transparent focus:outline-none disabled:border-0 disabled:bg-blue-gray-50"
+                    >
+                      <option value="Pending">Pending</option>
+                      <option value="Processing">Processing</option>
+                      <option value="Delivered">Delivered</option>
+                      <option value="Completed">Completed</option>
+                      <option value="Cancelled">Cancelled</option>
+                    </select>
+                  </td>
                   <td class="px-6 py-4">${item.price}</td>
                 </tr>
               );
             })}
           </tbody>
         </table>
-        <nav
-          class="flex items-center flex-column flex-wrap md:flex-row justify-between pt-4"
-          aria-label="Table navigation"
-        >
-          {/* <span class="text-sm font-normal text-gray-500 dark:text-gray-400 mb-4 md:mb-0 block w-full md:inline md:w-auto">
-            Showing{" "}
-            <span class="font-semibold text-gray-900 dark:text-white">
-              1-10
-            </span>{" "}
-            of{" "}
-            <span class="font-semibold text-gray-900 dark:text-white">
-              1000
-            </span>
-          </span> */}
-          <ul className="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8">
-            <li>
+        <nav className="flex flex-col sm:flex-row items-center justify-between pt-4" aria-label="Table navigation">
+          <ul className="flex flex-wrap justify-center sm:justify-start -mx-1 my-2">
+            <li className="mx-1">
               <a
                 href="#"
-                className={`flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white ${
+                className={`px-3 py-1 text-sm text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white ${
                   currentPage === 1 ? "pointer-events-none opacity-50" : ""
                 }`}
                 onClick={() => paginate(currentPage - 1)}
@@ -167,26 +127,10 @@ const AdminOrders = () => {
                 Previous
               </a>
             </li>
-            {Array.from(
-              { length: Math.ceil(getproducts.length / ordersPerPage) },
-              (_, index) => index + 1
-            ).map((number) => (
-              <li key={number}>
-                <a
-                  href="#"
-                  className={`flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white ${
-                    currentPage === number ? "bg-blue-50 text-blue-600" : ""
-                  }`}
-                  onClick={() => paginate(number)}
-                >
-                  {number}
-                </a>
-              </li>
-            ))}
-            <li>
+            <li className="mx-1">
               <a
                 href="#"
-                className={`flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white ${
+                className={`px-3 py-1 text-sm text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white ${
                   currentPage === Math.ceil(getproducts.length / ordersPerPage)
                     ? "pointer-events-none opacity-50"
                     : ""
@@ -199,7 +143,7 @@ const AdminOrders = () => {
           </ul>
         </nav>
       </div>
-    </div>
+   
   );
 };
 

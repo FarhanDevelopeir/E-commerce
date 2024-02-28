@@ -149,7 +149,7 @@ const AdminAddProducts = () => {
     <div>
       <section class=" pt-6 px-3 sm:pt-6 sm:px-8  dark:bg-gray-500">
         <div class="  mx-auto  ">
-          <h2 class="mb-4 text-xl font-bold text-gray-600 drop-shadow-md dark:text-white">
+          <h2 class="mb-4 text-lg md:text-xl font-bold text-gray-600 drop-shadow-md dark:text-white">
             Add a new product
           </h2>
           <form action="#" onSubmit={handleSubmit}>
