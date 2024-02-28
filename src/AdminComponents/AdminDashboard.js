@@ -126,8 +126,8 @@ const AdminDashboard = () => {
     <div>
       <div>
         <div class="grid grid-cols-1 gap-3  p-3  overflow-hidden  sm:grid-cols-2 sm:gap-3 md:grid-cols-3 md:gap-4 xl:gap-5    text-black ">
-          <div className="bg-white p-4 rounded-lg border-l-[3px] border-pink-700 hover:shadow-2xl hover:scale-[101%] col-span-3 sm:col-span-1 transition duration-300 ...">
-            <div className="flex justify-between items-center ">
+          <div className="bg-white text-xs md:text-[18px]  sm:p-2 md:p-4  rounded-lg border-l-[3px] border-pink-700 hover:shadow-2xl hover:scale-[101%] col-span-3 sm:col-span-1 transition duration-300 ...">
+            <div className="flex  justify-between items-center  p-1 ">
               <div className="flex justify-center items-center">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -147,11 +147,13 @@ const AdminDashboard = () => {
                   Products
                 </p>
               </div>
-              <div></div>
-              <p>90%</p>
+             
+              <div>
+              <p className="m-auto">90%</p>
+              </div>
             </div>
-            <h1>2000</h1>
-            <div className="flex justify-between">
+            <h1 className="px-1 text-[22px] ">2000</h1>
+            <div className="flex justify-between px-1">
               <p>500 from last month</p>
               <p className="flex">
                 more{" "}
@@ -172,9 +174,9 @@ const AdminDashboard = () => {
               </p>
             </div>
           </div>
-          <div className="bg-white p-4 border-l-[3px]  rounded-lg  hover:shadow-2xl hover:scale-[101%] transition duration-300 col-span-3 sm:col-span-1 border-pink-700   ...">
-            <div className="flex justify-between items-center ">
-              <div className="flex justify-center items-center">
+          <div className="bg-white text-xs  md:text-[18px] sm:p-2 md:p-4  border-l-[3px]  rounded-lg  hover:shadow-2xl hover:scale-[101%] transition duration-300 col-span-3 sm:col-span-1 border-pink-700   ...">
+            <div className="flex  justify-between  p-1 ">
+              <div className="flex justify-center items-center ">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -190,15 +192,18 @@ const AdminDashboard = () => {
                   />
                 </svg>
 
-                <p className="text-center m-auto font-sans font-semibold">
+               
+                  <p className=" m-auto font-sans font-semibold">
                   Orders
                 </p>
               </div>
-              <div></div>
-              <p>35%</p>
+              
+              <div>
+              <p className="m-auto ">35%</p>
+              </div>
             </div>
-            <h1>450</h1>
-            <div className="flex justify-between">
+            <h1 className="px-1">450</h1>
+            <div className="flex justify-between px-1">
               <p>300 from last month</p>
               <p className="flex">
                 more
@@ -219,8 +224,8 @@ const AdminDashboard = () => {
               </p>
             </div>
           </div>
-          <div className=" bg-white p-4 rounded-lg border-l-[3px] hover:shadow-2xl hover:scale-[101%] transition duration-300  col-span-3 md:col-span-1  border-pink-700   ...">
-            <div className="flex justify-between items-center ">
+          <div className=" bg-white text-xs  md:text-[18px] sm:p-2 md:p-4  rounded-lg border-l-[3px] hover:shadow-2xl hover:scale-[101%] transition duration-300  col-span-3 md:col-span-1  border-pink-700   ...">
+            <div className="flex justify-between items-center p-1">
               <div className="flex justify-center items-center">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -240,11 +245,13 @@ const AdminDashboard = () => {
                   Sales
                 </p>
               </div>
-              <div></div>
-              <p>20%</p>
+              <div>
+              <p className="m-auto">20%</p>
+              </div>
+            
             </div>
-            <h1>70</h1>
-            <div className="flex justify-between">
+            <h1 className="px-1">70</h1>
+            <div className="flex justify-between px-1">
               <p>50 from last month</p>
               <p className="flex">
                 more{" "}

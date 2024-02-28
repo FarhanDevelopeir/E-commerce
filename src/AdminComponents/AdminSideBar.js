@@ -21,17 +21,17 @@ const AdminSideBar = () => {
 
   return (
     <div
-      className={`position  z-10 bg-gradient-to-b    from-indigo-500 via-purple-800 to-pink-500 
-      lg:flex  md:flex-col border  transition-width duration-500
-    ${collapsed ? "w-[220px]" : "w-14"} 
-    ${collapsed ? "w-[220px]" : "w-14"} 
+      className={`position  z-10 bg-gradient-to-b   from-indigo-500 via-purple-800 to-pink-500 
+      lg:flex  md:flex-col border   transition-width duration-500
+    ${collapsed ? "w-[190px]" : "w-14"} 
+    ${collapsed ? "w-[200px]" : "w-14"} 
     `}
     >
       <div className="flex-col   flex overflow-y-auto ">
         <div
           onClick={handleCollapse}
           className={`absolute bg-gradient-to-b  from-indigo-500 via-purple-800 to-pink-500 bg-white border-white border-4 rounded-full p-1 top-5 transition-left duration-500
-        ${collapsed ? "left-[205px]" : "left-[37px]"} 
+        ${collapsed ? "left-[169px]" : "left-[37px]"} 
         `}
         >
           {collapsed ? (

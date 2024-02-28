@@ -32,10 +32,10 @@ const AdminProductDetails = (props) => {
   // },[])
 
   return (
-    <div className=" fixed inset-0 bg-opacity-30
-    backdrop-blur-[7px]  bg-slate-900  
+    <div className="fixed inset-0 bg-opacity-50
+     bg-gray-950  
     p-2 flex justify-center items-center ">
-      <div className=" bg-white border-2  w-[60%] shadow-2xl rounded-lg p-2">
+      <div className=" bg-white border-2 w-[80%] ml-14 md:ml-0 md:w-[60%] shadow-2xl rounded-lg p-2">
      <button className="  float-end rounded-sm  " onClick={() => props.setOpenModal(false)}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -51,16 +51,16 @@ const AdminProductDetails = (props) => {
         </svg>
       </button>
       <div className="p-2">
-        <h2 className="text-xl font-bold mb-4 p-2 border-b-2 ">Product Details</h2>
-        <div className=" flex  justify-between ">
-        <div className="w-[45%] ">
+        <h2 className= "text-sm md:text-xl font-bold mb-4 p-2 border-b-2 ">Product Details</h2>
+        <div className=" md:flex  md:justify-between ">
+        <div className="md:w-[45%] mb-2 md:mb-0 ">
           {/* <img src={Product.thumbnailImage} className=" w-full rounded-lg overflow-hidden" /> */}
         </div>
         <div
     class="   w-0.5 self-stretch bg-neutral-200 opacity-100 dark:opacity-50">
 
     </div>
-        <div className="w-[50%] flex flex-col justify-around ">
+        <div className=" text-xs sm:text-sm md:w-[50%] flex flex-col justify-around ">
         <div className="">
           <p className="mb-2">
             <strong>{singleProduct.title} </strong> 

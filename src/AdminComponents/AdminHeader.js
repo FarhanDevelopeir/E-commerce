@@ -10,15 +10,15 @@ const AdminHeader = () => {
   const activepage = useSelector((state)=>state.adminslice.activePage)
   console.log(activepage)
   return (
-    <div className="dashboard ml-5 w-full   ">
+    <div className="dashboard  w-full ml-2  ">
       <div className=" p-3 border-b-2 border-gray-400  flex justify-between  items-center">
         <p className="hidden sm:block font-sans font-semibold text-xl mt-2">{activepage}</p>
-        <div className="flex  items-center float-left w-[100%] sm:w-[50%] md:w-[40%] lg:w-[30%] xl:w-[20%]   justify-around">
+        <div className="flex  items-center float-left w-[100%]  sm:w-[50%] md:w-[40%] lg:w-[30%] xl:w-[20%]   justify-around">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            viewBox=" 24 24"
+            viewBox=" "
             fill="currentColor"
-            class="w-6 h-6"
+            class="w-6 h-6  sm:w-8  sm:h-8 "
           >
             <path
               fill-rule="evenodd"
@@ -40,10 +40,10 @@ const AdminHeader = () => {
           </svg>
 
           <div class="flex items-center justify-between gap-3 ">
-            <div className="flex flex-col h-full  ">
-              <h6 class=" font-sans   font-semibold  mt-2">
+            <div className="flex flex-col h-full text-xs  ">
+              <h6 class=" font-sans text-[14px] sm:text-[17px]  font-semibold  mt-2">
                 Farhan <br/>
-                <span className='text-sm font-normal'>Admin</span>
+                <span className='text-xs md:text-sm font-normal'>Admin</span>
                 <br />
               </h6>
               {/* <p class=" font-sans text-sm antialiased font-normal  text-gray-700">
