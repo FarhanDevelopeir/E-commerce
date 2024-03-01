@@ -3,7 +3,7 @@ import axios from 'axios';
 export function addtocart(cartData){
     return new Promise(async (resolve, reject) => {
         try{
-            const res = await axios.post(`http://localhost:3000/cart/add/${cartData.userId}`, cartData)
+            const res = await axios.post(`http://localhost:4000/cart/add/${cartData.userId}`, cartData)
             const data = res.data
             resolve(data);
 
@@ -16,7 +16,7 @@ export function addtocart(cartData){
 export function updatecart(cartData){
     return new Promise(async (resolve, reject) => {
         try{
-            const res = await axios.patch(`http://localhost:3000/cart/update/${cartData.userId}`, cartData)
+            const res = await axios.patch(`http://localhost:4000/cart/update/${cartData.userId}`, cartData)
             const data = res.data
             resolve(data);
 
@@ -29,7 +29,7 @@ export function updatecart(cartData){
 export function allCartData(userId){
     return new Promise(async (resolve, reject) => {
         try{
-            const res = await axios.get(`http://localhost:3000/cart/${userId}`)
+            const res = await axios.get(`http://localhost:4000/cart/${userId}`)
             const data = res.data
             resolve(data);
 
@@ -42,7 +42,7 @@ export function allCartData(userId){
 export function deletecart(cartData){
     return new Promise(async (resolve, reject) => {
         try{
-            const res = await axios.delete(`http://localhost:3000/cart/delete/${cartData.userId}`, {
+            const res = await axios.delete(`http://localhost:4000/cart/delete/${cartData.userId}`, {
                 data: cartData
             });
             const data = res.data
@@ -57,7 +57,7 @@ export function deletecart(cartData){
 export function deletefullcart(id){
     return new Promise(async (resolve, reject) => {
         try{
-            const res = await axios.delete(`http://localhost:3000/cart/deleteCart/${id}`);
+            const res = await axios.delete(`http://localhost:4000/cart/deleteCart/${id}`);
             const data = res.data
             resolve(data);
 

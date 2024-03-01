@@ -60,7 +60,7 @@ const Products = () => {
                                 </div>
 
                                 <div className="d-flex justify-content-between  ">
-                                    <p className="text-muted mb-0">Available: <span className="fw-bold">6</span></p>
+                                    <p className="text-muted mb-0">Available: <span className="fw-bold">{item.stock}</span></p>
                                     <div className="ms-auto text-warning">
                                         <i className="fa fa-star"></i>
                                         <i className="fa fa-star"></i>
