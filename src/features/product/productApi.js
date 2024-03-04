@@ -31,7 +31,7 @@ export function getAllProducts(filter, pagination) {
 export function getOneProduct(id) {
   return new Promise(async (resolve, reject) => {
     try {
-      const res = await axios.get(`http://localhost:3000/products/${id}`);
+      const res = await axios.get(`http://localhost:4000/products/${id}`);
       const data = res.data;
       resolve(data);
     } catch (error) {
@@ -43,7 +43,7 @@ export function getOneProduct(id) {
 export function fetchCategories() {
   return new Promise(async (resolve, reject) => {
     try {
-      const res = await axios.get("http://localhost:3000/categories");
+      const res = await axios.get("http://localhost:4000/categories");
       const data = res.data;
       resolve(data);
     } catch (error) {
@@ -59,7 +59,11 @@ export function getUpdateProduct(formDataWithFiles, Id) {
     try {
       const response = await axios.put(
         `http://localhost:4000/products/update/${Id}`,
-        formDataWithFiles
+        formDataWithFiles, {
+          headers:{
+            'Content-Type': 'multipart/form-data',
+        }
+        }
       );
       console.log(response.data);
       const data = response.data;

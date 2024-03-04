@@ -55,7 +55,7 @@ const AdminProductDetails = (props) => {
         <h2 className= "text-sm md:text-xl font-bold mb-4 p-2 border-b-2 ">Product Details</h2>
         <div className=" md:flex  md:justify-between ">
         <div className="md:w-[45%] mb-2 md:mb-0 ">
-          {/* <img src={Product.thumbnailImage} className=" w-full rounded-lg overflow-hidden" /> */}
+          <img src={'http://localhost:4000/images/' + singleProduct.thumbnailImage} className=" w-full rounded-lg overflow-hidden" />
         </div>
         <div
     class="   w-0.5 self-stretch bg-neutral-200 opacity-100 dark:opacity-50">

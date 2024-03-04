@@ -16,26 +16,31 @@ import { allFetchedProducts, allProductsAsync, getOneProductAsync, productId } f
 const AdminProducts = () => {
   const getproducts = useSelector(allFetchedProducts)
   console.log(getproducts)
-  
-  
+
+
   // const getproducts = useSelector((state) => state.adminslice.data);
   // console.log(getproducts);
   const [openModal, setOpenModal] = useState(false)
   const [activeItem, setActiveItem] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [thumbnailImage, setthumbnailImage] = useState([]);
   const productsPerPage = 12;
 
   const dispatch = useDispatch();
   useEffect(() => {
     // dispatch(fetchData());
     dispatch(allProductsAsync({}))
+    // const images = getproducts.map((product) => product.thumbnailImage);
+    // setthumbnailImage(images);
+    // console.log(images);
+
   }, []);
 
-  const handleViewProduct = ( itemId) => {
+  const handleViewProduct = (itemId) => {
     dispatch(productId(itemId))
     console.log(itemId)
     setOpenModal(true)
-    
+
     // console.log(itemId)
 
     // setActiveItem(itemName === activeItem ? null : itemName);
@@ -59,7 +64,7 @@ const AdminProducts = () => {
           <div className="" style={{ textAlign: "center" }}>
             <div className=" w-full   ">
               <img
-                src={item.thumbnail}
+                src={'http://localhost:4000/images/' + item.thumbnailImage}
                 className="hover-zoom rounded-t-lg mb-2 w-full"
                 style={{
                   height: "150px",
@@ -76,11 +81,11 @@ const AdminProducts = () => {
                 <h5 className="text-dark text-left w-full text-sm mb-0">
                   {item.title}
                 </h5>
-                
+
                 <button
-                  
+
                   className="flex"
-                   onClick={()=>handleViewProduct(item._id)}
+                  onClick={() => handleViewProduct(item._id)}
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -96,7 +101,7 @@ const AdminProducts = () => {
                     />
                   </svg>
                 </button>
-               
+
               </div>
 
               <div className="mb-2">
@@ -143,9 +148,8 @@ const AdminProducts = () => {
         {/* Previous Button */}
         <button
           onClick={() => paginate(currentPage - 1)}
-          className={`btn btn-link border hover:bg-blue-600 ${
-            currentPage === 1 ? "disabled" : ""
-          }`}
+          className={`btn btn-link border hover:bg-blue-600 ${currentPage === 1 ? "disabled" : ""
+            }`}
         >
           Previous
         </button>
@@ -153,9 +157,8 @@ const AdminProducts = () => {
         {/* Next Button */}
         <button
           onClick={() => paginate(currentPage + 1)}
-          className={`btn btn-link border bg-blue-500 ${
-            currentPage === pageNumbers.length ? "disabled" : ""
-          }`}
+          className={`btn btn-link border bg-blue-500 ${currentPage === pageNumbers.length ? "disabled" : ""
+            }`}
         >
           Next
         </button>
@@ -173,7 +176,7 @@ const AdminProducts = () => {
                 <div style={{ textAlign: "center" }}>
                   <div className="">
                     <img
-                      src={item.thumbnail}
+                      src={'http://localhost:4000/images/' + item.thumbnailImage}
                       className="hover-zoom rounded-t-lg mb-2 w-full"
                       style={{
                         height: "150px",
@@ -239,7 +242,7 @@ const AdminProducts = () => {
         </div>
       </div>
       {paginationButtons}
-      { openModal && <AdminProductDetails openModal={openModal} setOpenModal={setOpenModal} />}
+      {openModal && <AdminProductDetails openModal={openModal} setOpenModal={setOpenModal} />}
     </div>
   );
 };

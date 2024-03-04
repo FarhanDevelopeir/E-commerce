@@ -7,7 +7,7 @@ import {
   ActivePage,
   AddProducts,
   AddProductsAsync,
-  
+
   SingleProductData,
   updateProduct,
 } from "./features/AdminSlice";
@@ -23,10 +23,11 @@ const AdminAddProducts = () => {
   const activePage = useSelector((state) => state.adminslice.activePage);
   const dispatch = useDispatch();
 
-  const [image1, setImage1] = useState(null);
-  const [image2, setImage2] = useState(null);
-  const [image3, setImage3] = useState(null);
-  const [thumbnailImage, setthumbnailImage] = useState("");
+  // const [image1, setImage1] = useState(null);
+  // const [image2, setImage2] = useState(null);
+  // const [image3, setImage3] = useState(null);
+  // const [thumbnailImage, setthumbnailImage] = useState(null);
+  const [editthumbnailImage, seteditthumbnailImage] = useState(singleProduct.thumbnailImage || "");
   const [chnagesMade, setchnagesMade] = useState(false);
   const [formData, setFormData] = useState({
     title: singleProduct.title || "",
@@ -37,6 +38,10 @@ const AdminAddProducts = () => {
     rating: singleProduct.rating || "",
     discountPercentage: singleProduct.discountPercentage || "",
     description: singleProduct.description || "",
+    thumbnailImage: null,
+    image1: null,
+    image1: null,
+    image3: null
   });
 
   useEffect(() => {
@@ -89,13 +94,13 @@ const AdminAddProducts = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+    
+    
     if (Object.keys(singleProduct).length !== 0) {
       const Id = singleProduct._id;
       dispatch(updateProductAsync({ formData, Id }));
-      dispatch(EmptySelectedProduct());
+      // dispatch(EmptySelectedProduct());
     } else {
-      console.log(thumbnailImage, image1, image2, image3);
       const SubmitFormData = new FormData();
       SubmitFormData.append("title", formData.title);
       SubmitFormData.append("brand", formData.brand);
@@ -105,10 +110,10 @@ const AdminAddProducts = () => {
       SubmitFormData.append("discountPercentage", formData.discountPercentage);
       SubmitFormData.append("price", formData.price);
       SubmitFormData.append("stock", formData.stock);
-      SubmitFormData.append("thumbnailImage", thumbnailImage);
-      SubmitFormData.append("image1", image1);
-      SubmitFormData.append("image2", image2);
-      SubmitFormData.append("image3", image3);
+      SubmitFormData.append("thumbnailImage", formData.thumbnailImage);
+      SubmitFormData.append("image1", formData.image1);
+      SubmitFormData.append("image2", formData.image2);
+      SubmitFormData.append("image3", formData.image3);
       console.log(SubmitFormData);
       dispatch(AddProductsAsync(SubmitFormData));
     }
@@ -122,38 +127,30 @@ const AdminAddProducts = () => {
   const handleThumbnailChange = (e) => {
     const file = e.target.files[0];
     console.log(file);
-    setthumbnailImage(file);
-    // setThumbnail(URL.createObjectURL(file)); // Display selected image
+    // setthumbnailImage(file);
+    setFormData({...formData, thumbnailImage: file});
+    // setthumbnailImage(URL.createObjectURL(file)); // Display selected image
   };
 
   const handleimage1Change = (e) => {
     const file = e.target.files[0];
-    console.log(file);
-    setImage1(file);
+    setFormData({...formData, image1: file});
     // setThumbnail(URL.createObjectURL(file)); // Display selected image
   };
 
   const handleimage2Change = (e) => {
     const file = e.target.files[0];
-    console.log(file);
-    setImage2(file);
+    setFormData({...formData, image2: file});
     // setThumbnail(URL.createObjectURL(file)); // Display selected image
   };
 
   const handleimage3Change = (e) => {
     const file = e.target.files[0];
-    console.log(file);
-    setImage3(file);
+    setFormData({...formData, image3: file});
     // setThumbnail(URL.createObjectURL(file)); // Display selected image
   };
 
-  // const handleImagesChange = (e) => {
-  //   const files = Array.from(e.target.files);
-  //   setFormData((prevFormData) => ({
-  //     ...prevFormData,
-  //     images: [...prevFormData.images, ...files],
-  //   }));
-  // };
+
 
   return (
     <div>
@@ -278,13 +275,11 @@ const AdminAddProducts = () => {
                         id="thumbnail"
                         onChange={handleThumbnailChange}
                       ></input>
-                      {thumbnailImage && (
-                        <img
-                          src={thumbnailImage}
-                          alt="Thumbnail"
-                          className="mt-2 h-12 w-12 rounded-full"
-                        />
-                      )}
+                      {formData.thumbnailImage || editthumbnailImage ? <img
+                        src={formData.thumbnailImage ? formData.thumbnailImage : 'http://localhost:4000/images/' + editthumbnailImage}
+                        alt="Thumbnail"
+                        className="mt-2 h-12 w-12 rounded-full"
+                      />: ''}
                     </div>
                   </div>
                 </div>
@@ -303,13 +298,13 @@ const AdminAddProducts = () => {
                         id="image1"
                         onChange={handleimage1Change}
                       ></input>
-                      {image1 && (
+                      {/* {image1 && (
                         <img
                           src={image1}
                           alt="image1"
                           className="mt-2 h-12 w-12 rounded-full"
                         />
-                      )}
+                      )} */}
                     </div>
                   </div>
                 </div>
@@ -328,13 +323,13 @@ const AdminAddProducts = () => {
                         id="image2"
                         onChange={handleimage2Change}
                       ></input>
-                      {image2 && (
+                      {/* {image2 && (
                         <img
                           src={image2}
                           alt="image2"
                           className="mt-2 h-12 w-12 rounded-full"
                         />
-                      )}
+                      )} */}
                     </div>
                   </div>
                 </div>
@@ -353,13 +348,13 @@ const AdminAddProducts = () => {
                         id="image3"
                         onChange={handleimage3Change}
                       ></input>
-                      {image3 && (
+                      {/* {image3 && (
                         <img
                           src={image3}
                           alt="image3"
                           className="mt-2 h-12 w-12 rounded-full"
                         />
-                      )}
+                      )} */}
                     </div>
                   </div>
                 </div>
@@ -464,7 +459,7 @@ const AdminAddProducts = () => {
                 ""
                   ? "bg-gray-200 pointer-events-none cursor-not-allowed text-gray-400"
                   : "bg-gradient-to-r from-indigo-500 to-pink-500 hover:bg-gradient-to-l hover:from-pink-500 hover:to-indigo-700 text-white"
-              } cursor-pointer inline-flex float-right font-semibold items-center px-5 py-2.5 mt-4 sm:mt-6 text-md text-center 
+                } cursor-pointer inline-flex float-right font-semibold items-center px-5 py-2.5 mt-4 sm:mt-6 text-md text-center 
   rounded-md focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900`}
             >
               {Object.keys(singleProduct).length !== 0
