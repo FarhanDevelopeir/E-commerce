@@ -51,7 +51,7 @@ const OrdersPage = () => {
                                                     <li key={item.id} className="flex py-6">
                                                         <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                                                             <img
-                                                                src={item.productId.image}
+                                                                src={'http://localhost:4000/images/' + item.productId.thumbnailImage}
                                                                 alt={item.productId.title}
                                                                 className="h-full w-full object-cover object-center"
                                                             />

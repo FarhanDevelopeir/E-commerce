@@ -1,6 +1,7 @@
 import axios from "axios";
 
 export function AddProducts(formData){
+    console.log("api working ")
     return new Promise(async(resolve, reject)=>{
         try{
             const res = await axios.post('http://localhost:4000/products/create', formData,{
