@@ -64,7 +64,7 @@ const AppContainer = () => {
             <Route path="*" element={<PageNotFound />} />
           </Routes>
           <Toptopage />
-          <Footer />
+          {/* <Footer /> */}
         </Provider>
       </BrowserRouter>
     </React.StrictMode>
