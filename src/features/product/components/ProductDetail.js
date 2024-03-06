@@ -84,7 +84,7 @@ const ProductDetail = ({ item }) => {
                 <aside className="col-lg-6">
                   <div className="border rounded-4 mb-3 d-flex justify-content-center">
                     <a data-fslightbox="mygalley" className="rounded-4" target="_blank" data-type="image" href="#">
-                      <img style={{ maxWidth: "100%", maxHeight: '50vh', margin: 'auto' }} className="rounded-4 fit" src={singleproduct.image} />
+                      <img style={{ maxWidth: "100%", maxHeight: '50vh', margin: 'auto' }} className="rounded-4 fit" src={'http://localhost:4000/images/' + singleproduct.thumbnailImage} />
                     </a>
                   </div>
                   {/* <div className="d-flex justify-content-center mb-3">
