@@ -18,7 +18,7 @@ import { allCartDataAsync, updateCartAsync } from './cartSlice';
 import Header from '../../pages/Header';
 import { deleteCartAsync } from './cartSlice';
 import { addQuantity } from './cartSlice';
-
+import axios from 'axios';
 const Cart = () => {
   const cart = useSelector((state) => state.product.cart);
   // const quantity=useSelector((state)=>state.product.quantity);
@@ -31,6 +31,7 @@ const Cart = () => {
     return total + product.quantity;
 }, 0) : 0;
 
+axios.defaults.withCredentials = true;
 
   const handleCheckout = () => {
     setcheckout(true)
@@ -40,7 +41,6 @@ const Cart = () => {
 
   const changeQuality = (id, decrease) => {
     const cartData = {
-      userId : User.user._id,
       productId : id,
       quantity: 1,
       decrease: decrease
@@ -51,7 +51,6 @@ const Cart = () => {
 
   const deleteProduct = (id) => {
     const cartData = {
-      userId : User.user._id,
       productId : id,
     }
     console.log(cartData)
@@ -59,7 +58,7 @@ const Cart = () => {
   }
 
   useEffect(() => {
-    dispatch(allCartDataAsync(User.user._id))
+    dispatch(allCartDataAsync())
     console.log(Cart);
   }, [allFetchedCartData])
 
@@ -72,7 +71,7 @@ const Cart = () => {
         <div className="col-lg-3 col-md-12 mb-4 mb-lg-0">
           {/* <!-- Image --> */}
           <div className="bg-image  hover-zoom ripple rounded" data-mdb-ripple-color="light">
-            <img src={'http://localhost:4000/images/' + item.productId.thumbnailImage}
+            <img src={'http://localhost:4000/public/images/' + item.productId.thumbnailImage}
               className="w-100" alt="Blue Jeans Jacket" />
             <a href="#!">
               <div className="mask" style={{ backgroundColor: 'rgba(251, 251, 251, 0.2)' }}></div>

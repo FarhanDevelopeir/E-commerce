@@ -48,26 +48,11 @@ const Filterproducts = () => {
 
   // ...
 
-  // console.log(checkprice);
-
-  const fetchproducts = async () => {
-    const res = await axios
-      .get("https://fakestoreapi.com/products")
-      .catch((error) => {
-        console.log("err", error);
-      });
-    dispatch(allproductsinfilter(res.data));
-    // const rescate = await axios
-    //     .get('https://fakestoreapi.com/products/categories')
-    //     .catch((error) => {
-    //         console.log('err', error)
-    //     })
-    // dispatch(namecategory(rescate.data));
-  };
+  axios.defaults.withCredentials = true;
+ 
 
   const handleCart = (itemId) => {
     const cartData = {
-      userId: User.user._id,
       productId: itemId,
       quantity: 1
     }

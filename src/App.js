@@ -9,7 +9,7 @@ import Slider from './features/product/components/Slider'
 import Header from './pages/Header';
 
 import { useSelector, useDispatch } from 'react-redux'
-import { selectLoggedInUser } from './features/UserAuthentication/authSlice';
+import { checkUserAsync, selectLoggedInUser } from './features/UserAuthentication/authSlice';
 import { allCartDataAsync } from './features/cart/cartSlice';
 
 
@@ -20,10 +20,10 @@ function App() {
   // console.log(stripepromise)
   
   const dispatch = useDispatch()
-  const User = useSelector(selectLoggedInUser);
 
   useEffect(() => {
-    dispatch(allCartDataAsync(User.user._id))
+    dispatch(checkUserAsync())
+    dispatch(allCartDataAsync())
   }, [])
   return (
 

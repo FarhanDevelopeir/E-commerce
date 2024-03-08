@@ -12,10 +12,10 @@ export function createOrder(orderData){
     });
 };
 
-export function getUserOrders(id){
+export function getUserOrders(){
     return new Promise(async(resolve , reject) => {
         try{
-            const res = await axios.get(`http://localhost:4000/orders/${id}`);
+            const res = await axios.get(`http://localhost:4000/orders/user`);
             const data = res.data;
             resolve(data)
         }catch(error){

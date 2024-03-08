@@ -19,19 +19,12 @@ const ProductDetail = ({ item }) => {
   const { id } = useParams();
   const dispatch = useDispatch();
 
+  axios.defaults.withCredentials = true;
 
-  const fetchproducts = async () => {
-    const res = await axios
-      .get(`https://fakestoreapi.com/products/${id}`)
-      .catch((err) => {
-        console.log('Error', err)
-      })
-    dispatch(productview(res.data))
-  }
+
 
   const handleCart = (itemId) => {
     const cartData = {
-      userId: User.user._id,
       productId: itemId,
       quantity: quantity
     }
