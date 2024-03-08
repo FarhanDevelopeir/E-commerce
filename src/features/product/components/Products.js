@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/20/solid'
+import axios from 'axios';
 
 import { Link } from 'react-router-dom';
 import { addtocart, addtowishlist, displayproducts, updateAddedToCart } from '../../../Redux/features/counter/ProductSlice'
@@ -16,17 +17,17 @@ const Products = () => {
     const limit = 10
     const totalItems = 20
 
-    
+    axios.defaults.withCredentials = true;
+
     useEffect(() => {
         const pagination = { _page: selectedPage, _limit: limit }
         dispatch(allProductsAsync({pagination} ))
-        dispatch(allCartDataAsync(User.user._id))
+        dispatch(allCartDataAsync())
         console.log(products)
     }, [selectedPage])
 
     const handleCart = (itemId) => {
         const cartData = {
-            userId: User.user._id,
             productId: itemId,
             quantity: 1
         }
@@ -49,7 +50,7 @@ const Products = () => {
 
 
                             <div className='hover-zoom'>
-                                <img src={'http://localhost:4000/images/' + item.thumbnailImage}
+                                <img src={'http://localhost:4000/public/images/' + item.thumbnailImage}
                                     className="card-img-top    " style={{ height: '150px', width: '150px', margin: 'auto' }} alt="Laptop" />
                             </div>
 

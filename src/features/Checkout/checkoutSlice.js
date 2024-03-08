@@ -24,8 +24,8 @@ export const createOrderAsync = createAsyncThunk(
 
 export const getUserOrdersAsync = createAsyncThunk(
   "order/getUserOrders",
-  async (id) => {
-    const data = await getUserOrders(id);
+  async () => {
+    const data = await getUserOrders();
     return data;
   }
 );

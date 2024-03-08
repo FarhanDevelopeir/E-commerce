@@ -45,8 +45,8 @@ export const deletefullCartAsync = createAsyncThunk(
 
 export const allCartDataAsync = createAsyncThunk(
     "cart/allCart",
-    async (userId) => {
-        const data = await allCartData(userId)
+    async () => {
+        const data = await allCartData()
         return data
     }
 )
