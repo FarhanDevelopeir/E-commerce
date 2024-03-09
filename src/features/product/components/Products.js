@@ -6,7 +6,7 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { addtocart, addtowishlist, displayproducts, updateAddedToCart } from '../../../Redux/features/counter/ProductSlice'
 
-import { allProductsAsync, allFetchedProducts } from '../productSlice';
+import { allProductsAsync, allFetchedProducts, totalItemsCount } from '../productSlice';
 import { allCartDataAsync, addCartAsync } from "../../cart/cartSlice";
 import { selectLoggedInUser } from "../../UserAuthentication/authSlice";
 const Products = () => {
@@ -15,7 +15,7 @@ const Products = () => {
     const User = useSelector(selectLoggedInUser);
     const [selectedPage, setselectedPage] = useState(1);
     const limit = 10
-    const totalItems = 20
+    const totalItems = useSelector(totalItemsCount)
 
     axios.defaults.withCredentials = true;
 

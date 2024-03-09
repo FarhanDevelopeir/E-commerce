@@ -60,6 +60,7 @@ const AppContainer = () => {
             <Route path="/filterproducts" element={<Protected><Filterproducts /></Protected>} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/adminpanel" element={<AdminMain />} />
 
             <Route path="*" element={<PageNotFound />} />
           </Routes>

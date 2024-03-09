@@ -11,6 +11,9 @@ const Login = () => {
     const userdata = useSelector(selectLoggedInUser);
     const dispatch = useDispatch()
     const [formData, setFormData] = useState({ email: '', password: '' });
+    const [isSelected, setIsSelected] = useState(false);
+    const [isUser, setIsUser] = useState(false);
+    const [isAdmin, setIsAdmin] = useState(false);
     const [Erroremail, setErrorEmail] = useState(false)
     const [Errorpassword, setErrorPassword] = useState(false)
 
@@ -40,14 +43,27 @@ const Login = () => {
         }
     }
 
+    const handleUserType = (type) => {
+
+        setIsSelected(true);
+        if(type === 'user'){
+            setIsUser(true)
+        } else{
+            setIsAdmin(true)
+    }
+        
+    };
+
     useEffect(() => {
         console.log(userdata)
     }, [userdata])
 
     return (
-        <div>
-            {userdata.token && <Navigate to={'/'} replace={true} ></Navigate>}
-            <div className=''>
+        
+       <div>
+            {userdata.token && isUser && <Navigate to={'/'} replace={true} ></Navigate>}
+            {userdata.token && isAdmin &&  <Navigate to={'/adminpanel'} replace={true} ></Navigate>}
+          { isSelected && <div className=''>
                 <section class="" style={{ backgroundColor: '#eee' }}>
                     <div class="container h-100 pt-5 pb-4">
                         <div class="signup row d-flex justify-content-center align-items-center h-100">
@@ -137,7 +153,11 @@ const Login = () => {
                         </div>
                     </div>
                 </section>
-            </div>
+            </div>}
+            { isSelected ? '' : <div>
+                <button onClick={() => handleUserType('user')} >Login as User</button>
+                <button onClick={() => handleUserType('admin')}  >Login as Admin</button>
+            </div>}
         </div>
     )
 }

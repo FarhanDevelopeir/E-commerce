@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export function getAllProducts(filter, pagination) {
+export function getAllProducts(filter, pagination, sort) {
   let queryString = "";
   for (let key in filter) {
     if (queryString !== "") {
@@ -15,13 +15,21 @@ export function getAllProducts(filter, pagination) {
     }
     queryString += `${key}=${pagination[key]}`;
   }
+
+  for (let key in sort){
+    if(queryString !== ""){
+      queryString += "&";
+    }
+    queryString += `${key}=${sort[key]}`
+  }
   return new Promise(async (resolve, reject) => {
     try {
       const res = await axios.get(
         "http://localhost:4000/products?" + queryString
       );
       const data = res.data;
-      resolve(data);
+      const totalItems = await res.headers.get('X-Total-Count');
+      resolve({ data: { products: data, totalItems: +totalItems } });
     } catch (error) {
       reject(error);
     }
