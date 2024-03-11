@@ -67,7 +67,7 @@ axios.defaults.withCredentials = true;
         <div className="col-lg-3 col-md-12 mb-4 mb-lg-0">
           {/* <!-- Image --> */}
           <div className="bg-image  hover-zoom ripple rounded" data-mdb-ripple-color="light">
-            <img src={'http://localhost:4000/public/images/' + item.productId.thumbnailImage}
+            <img src={'/public/images/' + item.productId.thumbnailImage}
               className="w-100" alt="Blue Jeans Jacket" />
             <a href="#!">
               <div className="mask" style={{ backgroundColor: 'rgba(251, 251, 251, 0.2)' }}></div>

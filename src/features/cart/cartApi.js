@@ -3,7 +3,7 @@ import axios from 'axios';
 export function addtocart(cartData){
     return new Promise(async (resolve, reject) => {
         try{
-            const res = await axios.post(`http://localhost:4000/cart/add`, cartData)
+            const res = await axios.post(`/cart/add`, cartData)
             const data = res.data
             resolve(data);
 
@@ -16,7 +16,7 @@ export function addtocart(cartData){
 export function updatecart(cartData){
     return new Promise(async (resolve, reject) => {
         try{
-            const res = await axios.patch(`http://localhost:4000/cart/update`, cartData)
+            const res = await axios.patch(`/cart/update`, cartData)
             const data = res.data
             resolve(data);
 
@@ -29,7 +29,7 @@ export function updatecart(cartData){
 export function allCartData(){
     return new Promise(async (resolve, reject) => {
         try{
-            const res = await axios.get(`http://localhost:4000/cart`)
+            const res = await axios.get(`/cart`)
             const data = res.data
             resolve(data);
 
@@ -42,7 +42,7 @@ export function allCartData(){
 export function deletecart(cartData){
     return new Promise(async (resolve, reject) => {
         try{
-            const res = await axios.delete(`http://localhost:4000/cart/delete`, {
+            const res = await axios.delete(`/cart/delete`, {
                 data: cartData
             });
             const data = res.data
@@ -57,7 +57,7 @@ export function deletecart(cartData){
 export function deletefullcart(id){
     return new Promise(async (resolve, reject) => {
         try{
-            const res = await axios.delete(`http://localhost:4000/cart/deleteCart/${id}`);
+            const res = await axios.delete(`/cart/deleteCart/${id}`);
             const data = res.data
             resolve(data);
 

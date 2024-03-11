@@ -106,7 +106,7 @@ const AdminOrders = () => {
                 >
                   <img
                     class="w-10 h-10 rounded-full"
-                    // src={'http://localhost:4000/images/'+ item.thumbnailImage}
+                    // src={'/images/'+ item.thumbnailImage}
                     alt="Jese image"
                   />
                 </th>
