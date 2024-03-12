@@ -25,7 +25,7 @@ export function getAllProducts(filter, pagination, sort) {
   return new Promise(async (resolve, reject) => {
     try {
       const res = await axios.get(
-        "http://localhost:4000/products?" + queryString
+        "/products?" + queryString
       );
       const data = res.data;
       const totalItems = await res.headers.get('X-Total-Count');
@@ -39,7 +39,7 @@ export function getAllProducts(filter, pagination, sort) {
 export function getOneProduct(id) {
   return new Promise(async (resolve, reject) => {
     try {
-      const res = await axios.get(`http://localhost:4000/products/${id}`);
+      const res = await axios.get(`/products/${id}`);
       const data = res.data;
       resolve(data);
     } catch (error) {
@@ -51,7 +51,7 @@ export function getOneProduct(id) {
 export function fetchCategories() {
   return new Promise(async (resolve, reject) => {
     try {
-      const res = await axios.get("http://localhost:4000/categories");
+      const res = await axios.get("/categories");
       const data = res.data;
       resolve(data);
     } catch (error) {
@@ -66,7 +66,7 @@ export function getUpdateProduct(formDataWithFiles, Id) {
   return new Promise(async (resolve, reject) => {
     try {
       const response = await axios.put(
-        `http://localhost:4000/products/update/${Id}`,
+        `/products/update/${Id}`,
         formDataWithFiles, {
           headers:{
             'Content-Type': 'multipart/form-data',
