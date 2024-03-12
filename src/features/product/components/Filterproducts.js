@@ -16,7 +16,7 @@ import {
 } from "../../../Redux/features/counter/ProductSlice";
 import { Button } from "@mui/material";
 import { MDBInput } from "mdb-react-ui-kit";
-import { allCategoriesAsync, allProductsAsync, allFetchedCategories, allFetchedProducts, selectCategory, selectedCategory } from '../productSlice';
+import { allCategoriesAsync, allProductsAsync, allFetchedCategories, allFetchedProducts, selectCategory, selectedCategory, totalItemsCount } from '../productSlice';
 import { addCartAsync } from "../../cart/cartSlice";
 import { selectLoggedInUser } from "../../UserAuthentication/authSlice";
 import Header from "../../../pages/Header";
@@ -25,6 +25,7 @@ import Header from "../../../pages/Header";
 const Filterproducts = () => {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
+  const totalItems = useSelector(totalItemsCount)
   const category1 = params.get("category");
   const category2 = useSelector(selectedCategory);
   const { category } = useParams(); // Use useParams to get the category from the URL
@@ -39,6 +40,7 @@ const Filterproducts = () => {
   const { price } = allfilterproducts;
   const [categoryfilter, setcategoryfilter] = useState(false);
   const [filter, setfilter] = useState({});
+  const [sort, setSort] = useState({});
   const [searchInput, setSearchInput] = useState(""); // Step 1
 
   // Use useLocation to get the current location object
@@ -48,26 +50,11 @@ const Filterproducts = () => {
 
   // ...
 
-  // console.log(checkprice);
-
-  const fetchproducts = async () => {
-    const res = await axios
-      .get("https://fakestoreapi.com/products")
-      .catch((error) => {
-        console.log("err", error);
-      });
-    dispatch(allproductsinfilter(res.data));
-    // const rescate = await axios
-    //     .get('https://fakestoreapi.com/products/categories')
-    //     .catch((error) => {
-    //         console.log('err', error)
-    //     })
-    // dispatch(namecategory(rescate.data));
-  };
+  axios.defaults.withCredentials = true;
+ 
 
   const handleCart = (itemId) => {
     const cartData = {
-      userId: User.user._id,
       productId: itemId,
       quantity: 1
     }
@@ -86,13 +73,11 @@ const Filterproducts = () => {
 
   useEffect(() => {
     if (Object.keys(filter).length > 0) {
-      dispatch(allProductsAsync({ filter }));
+      dispatch(allProductsAsync({ filter, sort }));
     }
-  }, [dispatch, filter]);
+  }, [dispatch, filter, sort]);
 
-  if (allfilterproducts1.length > 0) {
-    console.log(allfilterproducts1)
-  }
+ 
 
   const searchdata = (e) => {
     setSearchInput(e.target.value);
@@ -107,6 +92,15 @@ const Filterproducts = () => {
     setfilter(filterObject)
     dispatch(selectCategory(value));
 
+  }
+
+  const handleSort = (e) => {
+    const sort = {
+      _sort : 'price',
+      _order : e.target.value
+    };
+    setSort(sort);
+    console.log(sort)
   }
 
   const displayproductsinfilteration =
@@ -243,55 +237,23 @@ const Filterproducts = () => {
               );
             })}
 
-            {/* price filter */}
-            <h5 className="mt-3 mb-2">Price</h5>
-            <form class="multi-range-field ">
-              <input
-                id="multi6"
-                class="multi-range"
-                type="range"
-                min="0"
-                max="1500"
-                step="250"
-              />
-            </form>
-
-            <button
-              className="btn btn-danger mt-3"
-              name="category"
-              onClick={() => {
-                setcategoryfilter(false);
-                setSearchInput("");
-              }}
-            >
-              Clear filters
-            </button>
           </div>
           <div style={{ width: "96%" }}>
             <div>
               <div className="d-flex justify-content-between w-100">
-                {/* <div className='d-flex justify-content-between ' style={{width:'70%'}}> */}
-                <div className="form-outline w-25 ">
-                  <MDBInput
-                    className="bar  bg-white "
-                    id="form6Example1"
-                    label="Search products"
-                    onChange={searchdata}
-                  />
-                </div>
                 <div>
-                  <h5>Total products {filteredProducts.length}</h5>
+                  <h5>Total products {totalItems}</h5>
                 </div>
 
                 <div>
                   <select
                     class="form-select  form-select-lg mb-3"
                     aria-label=".form-select-lg example"
+                    onClick={(e) => handleSort(e)}
                   >
-                    <option selected>Sort by Price</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
+                    <option value="" selected disabled>Sort by Price</option>
+                    <option value="asc">Lower to High</option>
+                    <option value="desc">Highest to lower</option>
                   </select>
                 </div>
               </div>

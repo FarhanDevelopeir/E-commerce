@@ -1,14 +1,32 @@
-import React from "react";
+import React, { useState } from "react";
 import AdminDashboard from "./AdminDashboard";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import AdminOrders from "./AdminOrders";
 import AdminProducts from "./AdminProducts";
 import AdminAddProducts from "./AdminAddProducts";
 import { ActivePage } from "./features/AdminSlice";
+import AdminProfile from "./AdminProfile";
 
 const AdminHeader = () => {
   const activepage = useSelector((state)=>state.adminslice.activePage)
   console.log(activepage)
+  const dispatch = useDispatch()
+
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  const handleProfile=(itemName)=>{
+    dispatch(ActivePage(itemName));
+    setIsMenuOpen(false)
+  }
+
+  const handleSignOut = () => {
+    setIsMenuOpen(false)
+  }
+
   return (
     <div className="dashboard  w-full ml-2  ">
       <div className=" p-3 border-b-2 border-gray-400  flex justify-between  items-center">
@@ -50,11 +68,62 @@ const AdminHeader = () => {
                 Web Developer
               </p> */}
             </div>
-            <img
-              src="https://www.upwork.com/profile-portraits/c19dXgv9zpC7qTDdo7SQwzKxPBD2SmAms87tIhtSZ_6iul2dz28FXhibj7qTQ8qFrF"
-              alt="avatar"
-              class="inline-block  object-cover object-center !rounded-full w-12 h-12"
-            />
+            <div className="relative ml-3">
+      <div>
+        <button
+          type="button"
+          className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+          id="user-menu-button"
+          onClick={toggleMenu}
+        >
+          <span className="absolute -inset-1.5"></span>
+          <span className="sr-only">Open user menu</span>
+          <img
+            className="h-8 w-8 rounded-full"
+            src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+            alt=""
+          />
+        </button>
+      </div>
+
+      <div
+        className={`absolute text-left  right-0 z-10 mt-2 w-36 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none ${
+          isMenuOpen
+            ? 'transition ease-in-out duration-100 transform opacity-100 scale-100'
+            : 'transition ease-in duration-95 transform opacity-0 scale-95'
+        }`}
+        role="menu"
+        aria-orientation="vertical"
+        aria-labelledby="user-menu-button"
+        tabIndex="-1"
+      >
+        {isMenuOpen && (
+          <div className="py-1">
+            <a
+            onClick={()=>handleProfile('Profile')}
+              href="#"
+              className="block px-4 py-2 text-sm text-gray-700"
+              role="menuitem"
+              tabIndex="-1"
+              id="user-menu-item-0"
+            >
+              Your Profile
+            </a>
+            
+            <a
+            onClick={()=>handleSignOut()}
+              href="#"
+              className="block px-4 py-2 text-sm text-gray-700"
+              role="menuitem"
+              tabIndex="-1"
+              id="user-menu-item-2"
+            >
+              Sign out
+            </a>
+          </div>
+        )}
+      </div>
+    </div>
           </div>
         </div>
       </div>
@@ -64,6 +133,8 @@ const AdminHeader = () => {
         {activepage === "Orders" ? <AdminOrders/> :'' }
         {activepage === "Products" ? <AdminProducts/> : ''}
         {activepage === "Add Products" ? <AdminAddProducts/> : ''}
+        {activepage === "Profile" ? <AdminProfile/> : ''}
+
 
 
 

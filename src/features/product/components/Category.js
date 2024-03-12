@@ -24,19 +24,7 @@ const Category = () => {
         menclothing
     ];
 
-    const fetchcategory = async () => {
-        try {
-            // Fetch data and dispatch the namecategory and imagecategory actions
-            const res = await axios.get('https://fakestoreapi.com/products/categories');
-            dispatch(namecategory(res.data));
-
-
-        } catch (error) {
-            console.log('Error:', error);
-        }
-    }
-
-
+  
     const handleClick = (name) => {
         console.log(name)
         dispatch(selectCategory(name));
@@ -45,7 +33,6 @@ const Category = () => {
     }
 
     useEffect(() => {
-        fetchcategory();
         dispatch(allCategoriesAsync())
     }, []);
 

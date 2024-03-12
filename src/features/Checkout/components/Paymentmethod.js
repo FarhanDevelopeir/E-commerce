@@ -40,7 +40,6 @@ const Paymentmethod = () => {
 
   const handleOrder = () => {
     const orderData = {
-      userId: User.user._id,
       products: Cart.products,
       status: 'pending',
       address: address,

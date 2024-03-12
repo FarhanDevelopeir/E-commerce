@@ -18,19 +18,17 @@ import { allCartDataAsync, updateCartAsync } from './cartSlice';
 import Header from '../../pages/Header';
 import { deleteCartAsync } from './cartSlice';
 import { addQuantity } from './cartSlice';
-
+import axios from 'axios';
 const Cart = () => {
-  const cart = useSelector((state) => state.product.cart);
-  // const quantity=useSelector((state)=>state.product.quantity);
   
   const dispatch = useDispatch()
   const [checkout, setcheckout] = useState(false);
-  const User = useSelector(selectLoggedInUser);
   const Cart = useSelector(allFetchedCartData);
   const totalQuantity = Cart.products ? Cart.products.reduce((total, product) => {
     return total + product.quantity;
 }, 0) : 0;
 
+axios.defaults.withCredentials = true;
 
   const handleCheckout = () => {
     setcheckout(true)
@@ -40,7 +38,6 @@ const Cart = () => {
 
   const changeQuality = (id, decrease) => {
     const cartData = {
-      userId : User.user._id,
       productId : id,
       quantity: 1,
       decrease: decrease
@@ -51,7 +48,6 @@ const Cart = () => {
 
   const deleteProduct = (id) => {
     const cartData = {
-      userId : User.user._id,
       productId : id,
     }
     console.log(cartData)
@@ -59,15 +55,14 @@ const Cart = () => {
   }
 
   useEffect(() => {
-    dispatch(allCartDataAsync(User.user._id))
+    dispatch(allCartDataAsync())
     console.log(Cart);
-  }, [allFetchedCartData])
+  }, [Cart])
 
 
   const displaycart = Cart.products ? Cart.products.map((item, index) => {
     return (
       <div>
-        <Header></Header>
         <div className="row" key={index}>
         <div className="col-lg-3 col-md-12 mb-4 mb-lg-0">
           {/* <!-- Image --> */}
@@ -135,8 +130,9 @@ const Cart = () => {
 
   return (
     <div>
+      <Header></Header>
       <section className="h-100 gradient-custom bg-grey ">
-        {Cart.length === 0 ? <h1>Your cart is empty </h1> :
+        {Cart.length === 0 ? <h1 className='mt-40' >Your cart is empty </h1> :
           <div className="container py-5">
             <div className="row d-flex justify-content-center my-4">
               {checkout === true ?
@@ -149,7 +145,6 @@ const Cart = () => {
                   <div className="card mb-4">
                     <div className="card-header d-flex justify-content-between py-3">
                       <h5 className="mb-0">Cart - {Cart.products.length} items</h5>
-                      <button className='btn btn-danger' onClick={() => { dispatch(clearcart()) }}>Clear Cart</button>
                     </div>
                     <div className="card-body">
                       {/* <!-- Single item --''> */}
@@ -185,9 +180,9 @@ const Cart = () => {
                       </li>
                     </ul>
 
-                    <button type="button" onClick={handleCheckout} className="btn btn-primary btn-lg btn-block">
+                    {!checkout && Cart.products && <button type="button" onClick={handleCheckout} className="btn btn-primary btn-lg btn-block">
                       Go to checkout
-                    </button>
+                    </button>}
                   </div>
                 </div>
               </div>

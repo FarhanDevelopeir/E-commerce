@@ -14,16 +14,14 @@ const Footer = () => {
                             style={{backgroundColor: ' #3b5998'}}
                             href="#!"
                             role="button"
-                        ><i className="fab fa-facebook-f"></i
-                        ></a>
+                        ><i className="fab fa-facebook-f"></i></a>
 
                         <a
                             className="btn text-white btn-floating m-1"
                             style={{backgroundColor: '#55acee'}}
                             href="#!"
                             role="button"
-                        ><i className="fab fa-twitter"></i
-                        ></a>
+                        ><i className="fab fa-twitter"></i></a>
 
 
                         <a
@@ -31,8 +29,7 @@ const Footer = () => {
                             style={{backgroundColor:' #dd4b39'}}
                             href="#!"
                             role="button"
-                        ><i className="fab fa-google"></i
-                        ></a>
+                        ><i className="fab fa-google"></i></a>
 
 
                         <a
@@ -40,24 +37,21 @@ const Footer = () => {
                             style={{backgroundColor: "#ac2bac"}}
                             href="#!"
                             role="button"
-                        ><i className="fab fa-instagram"></i
-                        ></a>
+                        ><i className="fab fa-instagram"></i></a>
 
                         <a
                             className="btn text-white btn-floating m-1"
                             style={{backgroundColor:'#0082ca'}}
                             href="#!"
                             role="button"
-                        ><i className="fab fa-linkedin-in"></i
-                        ></a>
+                        ><i className="fab fa-linkedin-in"></i></a>
 
                         <a
                             className="btn text-white btn-floating m-1"
                             style={{backgroundColor:'#333333'}}
                             href="#!"
                             role="button"
-                        ><i className="fab fa-github"></i
-                        ></a>
+                        ><i className="fab fa-github"></i></a>
                     </section>
 
                 </div>

@@ -13,14 +13,15 @@ const initialState = {
   selectedProduct: {},
   editProduct: {},
   Categories: [],
+  totalItems: 0,
   Category: "women's clothing",
 };
 
 export const allProductsAsync = createAsyncThunk(
   "product/allProducts",
-  async ({ filter, pagination }) => {
-    const data = await getAllProducts(filter, pagination);
-    return data;
+  async ({ filter, pagination, sort }) => {
+    const res = await getAllProducts(filter, pagination, sort);
+    return res.data
   }
 );
 
@@ -81,7 +82,9 @@ export const productSlice = createSlice({
       })
       .addCase(allProductsAsync.fulfilled, (state, action) => {
         state.status = "fulfilled";
-        state.Products = action.payload;
+        state.Products = action.payload.products;
+        state.totalItems = action.payload.totalItems
+        console.log(action.payload.totalItems)
       })
       .addCase(allProductsAsync.rejected, (state) => {
         state.status = "rejected";
@@ -111,6 +114,7 @@ export const productSlice = createSlice({
 export const { selectCategory, productId, EmptySelectedProduct, editproduct } = productSlice.actions;
 
 export const allFetchedProducts = (state) => state.product1.Products;
+export const totalItemsCount = (state) => state.product1.totalItems;
 export const singleProductFetched = (state) => state.product1.SingleProduct;
 // export const selectedProduct = (state) => state.product1.selectedProduct
 export const allFetchedCategories = (state) => state.product1.Categories;
