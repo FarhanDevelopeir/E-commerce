@@ -49,7 +49,7 @@ const Products = () => {
 
 
                             <div className='hover-zoom'>
-                                <img src={'http://localhost:4000/images/' + item.thumbnailImage}
+                                <img src={item.thumbnailImage}
                                     className="card-img-top    " style={{ height: '150px', width: '150px', margin: 'auto' }} alt="Laptop" />
                             </div>
 
