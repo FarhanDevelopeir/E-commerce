@@ -176,7 +176,7 @@ const AdminProducts = () => {
                 <div style={{ textAlign: "center" }}>
                   <div className="">
                     <img
-                      src={'/images/' + item.thumbnailImage}
+                      src={item.thumbnailImage}
                       className="hover-zoom rounded-t-lg mb-2 w-full"
                       style={{
                         height: "150px",
