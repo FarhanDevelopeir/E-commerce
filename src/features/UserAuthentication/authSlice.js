@@ -86,7 +86,7 @@ export const authSlice = createSlice({
       })
       .addCase(loginUserAsync.rejected, (state) => {
         state.status = "rejected";
-      });
+      })
       .addCase(checkUserAsync.fulfilled, (state, action) => {
         state.status = 'fulfilled'
         state.UserData = action.payload

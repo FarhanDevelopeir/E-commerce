@@ -170,44 +170,13 @@ const Login = () => {
             </div>
           </div>
         </section>
-      </div>
-    </div>
-  );
-};
-                                                    <div class="text-center text-lg-start mt-5 d-flex justify-content-center ">
-                                                        <button type="submit" class="btn btn-primary btn-lg m-auto "
-                                                            style={{ paddingLeft: '2.5rem', paddingRight: '2.5rem' }}>Login</button>
-
-                                                    </div>
-                                                    <p class="small fw-bold text-center mt-1 w-100 pt-1 mb-0">Don't have an account?
-                                                        <Link to={'/signup'} >
-                                                            <a class="link-danger">Register</a>
-                                                        </Link>
-                                                    </p>
-
-                                                </form>
-
-                                            </div>
-                                            <div class="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
-
-                                                <img src={loginpic} height={250} width={500}
-                                                    class="img-fluid " alt="Sample image" />
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            </div>}
-            { isSelected ? '' : <div>
+      </div>}
+      { isSelected ? '' : <div>
                 <button onClick={() => handleUserType('user')} >Login as User</button>
                 <button onClick={() => handleUserType('admin')}  >Login as Admin</button>
             </div>}
-        </div>
-    )
-}
+    </div>
+  );
+};
 
 export default Login;
