@@ -40,13 +40,13 @@ export const SingleProductData = createAsyncThunk(
   }
 );
 
-export const AddProductsAsync = createAsyncThunk(
-  "products/addProduct",
-  async (formData) => {
-   const data = await AddProducts(formData)
-   return data
-  }
-);
+// export const AddProductsAsync = createAsyncThunk(
+//   "products/addProduct",
+//   async (formData) => {
+//    const data = await AddProducts(formData)
+//    return data
+//   }
+// );
 
 // Update Product
 export const updateProduct = createAsyncThunk(
@@ -89,9 +89,9 @@ export const adminSlice = createSlice({
   },
 
   extraReducers: (builder) => {
-    builder.addCase(AddProductsAsync.fulfilled, (state, action)=>{
-      state.data.push(action.payload);
-    })
+    // builder.addCase(AddProductsAsync.fulfilled, (state, action)=>{
+    //   state.data.push(action.payload);
+    // })
     builder.addCase(fetchData.fulfilled, (state, action) => {
       state.status = "idle";
       state.data = action.payload;

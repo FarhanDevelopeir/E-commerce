@@ -10,7 +10,7 @@ const Header = () => {
   const cart1 = useSelector(allFetchedCartData);
   const wishlist = useSelector((state) => state.product.wishlist);
   const userdata = useSelector((state) => state.product.Usersdata);
-  console.log("header cart data => ", cart1);
+  // console.log("header cart data => ", cart1);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => {
