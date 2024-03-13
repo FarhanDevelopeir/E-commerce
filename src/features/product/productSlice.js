@@ -106,14 +106,15 @@ export const productSlice = createSlice({
         state.totalItems = action.payload.totalItems
         console.log(action.payload.totalItems)
       })
+      .addCase(allProductsAsync.rejected, (state) => {
+        state.status = "rejected";
+      })
       .addCase(AddProductsAsync.fulfilled, (state, action) => {
         state.Products.push(action.payload);
         state.isSubmit = false;
         state.alert = true;
       })
-      .addCase(allProductsAsync.rejected, (state) => {
-        state.status = "rejected";
-      })
+      
       .addCase(allCategoriesAsync.fulfilled, (state, action) => {
         state.status = "fulfilled";
         state.Categories = action.payload;

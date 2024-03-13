@@ -6,14 +6,16 @@ import { Link, useNavigate, Navigate } from 'react-router-dom'
 import signuppic from '../../../Images/signuppic.jpg'
 import axios from 'axios'
 import { Userdata } from '../../../Redux/features/counter/ProductSlice'
-import { createUserAsync, selectLoggedInUser, setSubmitting, submitState } from '../authSlice'
+import { createUserAsync, displayError, emptyError, selectLoggedInUser, setSubmitting, submitState } from '../authSlice'
 
 
 
 const SignUp = () => {
   const userdata = useSelector(selectLoggedInUser);
   const isSubmitting = useSelector(submitState);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+  const Error = useSelector(displayError)
+
   const [formData, setFormData] = useState({ name: '', email: '', password: '' });
   const navigate = useNavigate()
   const [Errorname, setErrorName] = useState(false)
@@ -23,10 +25,33 @@ const SignUp = () => {
   const [isUser, setIsUser] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
 
+  useEffect(()=>{
+    setTimeout(() => {
+      dispatch(emptyError())
+    }, 4000);
+  },[Error])
+
   const handleChange = (e) => {
 
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+// Clear all error states initially
+setErrorName(false);
+setErrorEmail(false);
+setErrorPassword(false);
+
+// Validate each field individually
+if (name === 'name' && value === '') {
+  setErrorName(true);
+}
+
+if (name === 'email' && !value.includes('@')) {
+  setErrorEmail(true);
+}
+
+if (name === 'password' && value.length < 8) {
+  setErrorPassword(true);
+}
   };
 
   const handleUserType = (type) => {
@@ -61,22 +86,11 @@ const SignUp = () => {
     }
     else {
 
-      // console.log(formData);
-      // signupform(formData)
+
       dispatch(createUserAsync(formData, dispatch))
     }
   }
 
-  // const signupform = async (user, token) => {
-  //   try {
-  //     const res = await axios.post('/users', user)
-  //     console.log(res);
-  //     navigate('/');
-  //     dispatch(Userdata(res.data.user, res.data.token));
-  //   } catch (error) {
-  //     console.log('err', error)
-  //   }
-  // }
 
   useEffect(() => {
     console.log(userdata)
@@ -121,7 +135,7 @@ const SignUp = () => {
 
 
                             </div>
-                            <span className='text-danger'>  {Errorname ? <p>Field is required</p> : ''}</span>
+                            <span className='text-danger'>  {Errorname ? <p>name is required*</p> : ''}</span>
                           </div>
 
                           <div class="flex-row align-items-center mb-4">
@@ -139,7 +153,7 @@ const SignUp = () => {
                                 />
                               </div>
                             </div>
-                            <span className='text-danger'>{Erroremail ? <p>Field is required</p> : ''}</span>
+                            <span className='text-danger'>{Erroremail ? <p>In email must include @</p> : ''}</span>
 
                           </div>
 
@@ -160,7 +174,7 @@ const SignUp = () => {
                               </div>
                             </div>
                             <span className='text-danger'>
-                              {Errorpassword ? <p>Field is required</p> : ''}
+                              {Errorpassword ? <p>password must be greater than 7 digits</p> : ''}
                             </span>
 
                           </div>
@@ -172,11 +186,12 @@ const SignUp = () => {
                       <label class="form-label" for="form3Example4cd">Repeat your password</label>
                     </div>
                   </div> */}
+                   {Error && <p className=" text-red-600" >{Error}</p>}
 
                         <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
                           <button type="submit" 
                           className={`${
-                            isSubmitting || !formData.name || !formData.email  || !formData.password
+                            isSubmitting || Errorname || !formData.name  || Erroremail || !formData.email  || !formData.password  || Errorpassword
                               ? "bg-gray-200 pointer-events-none cursor-not-allowed text-gray-400"
                               : "bg-gradient-to-r from-indigo-500 to-pink-500 hover:bg-gradient-to-l hover:from-pink-500 hover:to-indigo-700 text-white"
                           } relative w-[80%] px-3 py-2 rounded-md font-semibold`}
@@ -187,8 +202,7 @@ const SignUp = () => {
                   ""
                 )}
                         </div>
-                       
-
+                      
                         </form>
 
                       </div>
