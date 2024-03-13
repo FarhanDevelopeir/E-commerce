@@ -30,6 +30,10 @@ const Products = () => {
     const [selectedPage, setselectedPage] = useState(1);
     const limit = 10
     const totalItems = useSelector(totalItemsCount)
+    const isSubmitting = useSelector(IsSubmitting);
+    const isAlert = useSelector(IsAlert);
+    console.log(isSubmitting);
+    const [SpecificId, setSpecificId] = useState("");
 
     axios.defaults.withCredentials = true;
 
@@ -39,10 +43,7 @@ const Products = () => {
         dispatch(allCartDataAsync())
         console.log(products)
     }, [selectedPage])
-  const isSubmitting = useSelector(IsSubmitting);
-  const isAlert = useSelector(IsAlert);
-  console.log(isSubmitting);
-  const [SpecificId, setSpecificId] = useState("");
+
   
   useEffect(() => {
     

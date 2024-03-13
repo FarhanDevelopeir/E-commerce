@@ -43,7 +43,7 @@ export function getAllProducts(filter, pagination, sort) {
   return new Promise(async (resolve, reject) => {
     try {
       const res = await axios.get(
-        "/products?" + queryString
+        "http://localhost:4000/products?" + queryString
       );
       const data = res.data;
       const totalItems = await res.headers.get('X-Total-Count');

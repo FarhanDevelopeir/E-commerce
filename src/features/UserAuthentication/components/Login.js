@@ -3,11 +3,12 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import loginpic from "../../../Images/loginpic3.png";
-import { loginUserAsync, selectLoggedInUser, setSubmitting, submitState } from "../authSlice";import axios from 'axios';
+import { displayError, emptyError, loginUserAsync, selectLoggedInUser, setSubmitting, submitState } from "../authSlice";import axios from 'axios';
 
 
 const Login = () => {
   const userdata = useSelector(selectLoggedInUser);
+  const Error = useSelector(displayError)
   const isSubmitting = useSelector(submitState);
   const dispatch = useDispatch();
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -19,9 +20,29 @@ const Login = () => {
 
     axios.defaults.withCredentials = true;
 
+    useEffect(()=>{
+      setTimeout(() => {
+        dispatch(emptyError())
+      }, 4000);
+    },[Error])
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+
+    // Clear all error states initially
+
+setErrorEmail(false);
+setErrorPassword(false);
+
+// Validate each field individually
+if (name === 'email' && !value.includes('@')) {
+  setErrorEmail(true);
+}
+
+if (name === 'password' && value.length < 8) {
+  setErrorPassword(true);
+}
   };
 
   const handleSubmit = (e) => {
@@ -88,7 +109,7 @@ const Login = () => {
                                 </div>
                               </div>
                               <span className="text-danger">
-                            {Erroremail ? <p>Field is required</p> : ""}
+                            {Erroremail ? <p>must include @</p> : ""}
                           </span>
 
                           <div class="d-flex flex-row align-items-center mb-4">
@@ -107,7 +128,7 @@ const Login = () => {
                             </div>
                           </div>
                           <span className="text-danger">
-                            {Errorpassword ? <p>Field is required</p> : ""}
+                            {/* {Errorpassword ? <p>Field is required</p> : ""} */}
                           </span>
 
                           {/* <div class="form-check d-flex justify-content-center mb-5">
@@ -123,13 +144,14 @@ const Login = () => {
 
 
                   </div> */}
+                          {Error && <p className=" text-red-600" >{Error}</p>}
                           <div 
                           class=" relative text-center text-lg-start mt-5 d-flex justify-content-center ">
                             <button
                               type="submit"
                             
                             className={`${
-                                isSubmitting 
+                                isSubmitting || !formData.email || Erroremail || !formData.password 
                                   ? "bg-gray-200 pointer-events-none cursor-not-allowed text-gray-400"
                                   : "bg-gradient-to-r from-indigo-500 to-pink-500 hover:bg-gradient-to-l hover:from-pink-500 hover:to-indigo-700 text-white"
                               } relative w-[80%] px-3 py-2 rounded-md font-semibold`}

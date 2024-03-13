@@ -93,7 +93,7 @@ const Filterproducts = () => {
       dispatch(allProductsAsync({ filter, sort }));
     }
     dispatch(allProductsAsync())
-  }, [dispatch , sort]);
+  }, [dispatch, filter , sort]);
 
  
 

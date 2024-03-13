@@ -16,7 +16,7 @@ export function createUser(user){
             resolve(data)
         } catch (error) {
             reject(error.response.data.message)
-            console.log(error.response.data.message)
+            // console.log(error.response.data.message)
            
         }
     })
@@ -29,6 +29,7 @@ export function LoginUser(user){
             const data = await res.data
             resolve(data)
         } catch (error) {
+            console.log(error)
             reject(error)
         }
     })
