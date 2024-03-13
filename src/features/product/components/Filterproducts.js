@@ -17,14 +17,18 @@ import {
 import { Button } from "@mui/material";
 import { MDBInput } from "mdb-react-ui-kit";
 import { allCategoriesAsync, allProductsAsync, allFetchedCategories, allFetchedProducts, selectCategory, selectedCategory, totalItemsCount } from '../productSlice';
-import { addCartAsync } from "../../cart/cartSlice";
+import { IsAlert, IsSubmitting, addCartAsync, setAlert, setSubmitting } from "../../cart/cartSlice";
 import { selectLoggedInUser } from "../../UserAuthentication/authSlice";
 import Header from "../../../pages/Header";
+import { Toaster, toast } from "sonner";
 
 
 const Filterproducts = () => {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
+  const isSubmitting = useSelector(IsSubmitting);
+  const isAlert = useSelector(IsAlert);
+  const [SpecificId, setSpecificId] = useState("");
   const totalItems = useSelector(totalItemsCount)
   const category1 = params.get("category");
   const category2 = useSelector(selectedCategory);
@@ -35,6 +39,7 @@ const Filterproducts = () => {
   );
   const filterproduct = useSelector((state) => state.product.filterproducts);
   const allfilterproducts1 = useSelector(allFetchedProducts);
+  console.log(allfilterproducts1)
   const Category = useSelector(allFetchedCategories);
   const User = useSelector(selectLoggedInUser);
   const { price } = allfilterproducts;
@@ -52,8 +57,20 @@ const Filterproducts = () => {
 
   axios.defaults.withCredentials = true;
  
+  useEffect(() => {
+    
+    if(isAlert){
+      toast.success("Product Successfully added to cart  ");
+    setTimeout(() => {
+      dispatch(setAlert(false));
+    }, 2000);
+    }
+  
+}, [isAlert]);
 
   const handleCart = (itemId) => {
+    dispatch(setSubmitting(true));
+    setSpecificId(itemId);
     const cartData = {
       productId: itemId,
       quantity: 1
@@ -75,7 +92,8 @@ const Filterproducts = () => {
     if (Object.keys(filter).length > 0) {
       dispatch(allProductsAsync({ filter, sort }));
     }
-  }, [dispatch, filter, sort]);
+    dispatch(allProductsAsync())
+  }, [dispatch , sort]);
 
  
 
@@ -145,66 +163,65 @@ const Filterproducts = () => {
                   />
                 </div>
 
-                <div className="card-body">
-                  <div className="d-flex justify-content-between mb-2">
-                    <h5 className="mb-0">{truncateTitle(item.title, 2)}</h5>
-                    <h5 className="text-dark mb-0">${item.price}</h5>
-                  </div>
+              <div className="card-body">
+                <div className="d-flex justify-content-between mb-2">
+                  <h5 className="mb-0">{}</h5>
+                  <h5 className="text-dark mb-0">${item.price}</h5>
+                </div>
 
-                  <div className="d-flex justify-content-between  ">
-                    <p className="text-muted mb-0">
-                      Available: <span className="fw-bold">6</span>
-                    </p>
-                    <div className="ms-auto text-warning">
-                      <i className="fa fa-star"></i>
-                      <i className="fa fa-star"></i>
-                      <i className="fa fa-star"></i>
-                      <i className="fa fa-star"></i>
-                      <i className="fa fa-star"></i>
-                    </div>
+                <div className="d-flex justify-content-between  ">
+                  <p className="text-muted mb-0">
+                    Available: <span className="fw-bold">{item.stock}</span>
+                  </p>
+                  <div className="ms-auto text-warning">
+                    <i className="fa fa-star"></i>
+                    <i className="fa fa-star"></i>
+                    <i className="fa fa-star"></i>
+                    <i className="fa fa-star"></i>
+                    <i className="fa fa-star"></i>
                   </div>
                 </div>
               </div>
-            </Link>
-            <div
-              className="w-75 mb-3 d-flex justify-content-between"
-              style={{ margin: "auto" }}
-            >
-              {!item.addedToCart ? (
+            </div>
+          </Link>
+          <div
+            className="w-full  mb-3 d-flex justify-center"
+            style={{ margin: "auto" }}
+          >
+            {!item.addedToCart ? (
+              <>
                 <button
                   type="button"
-                  className="btn btn-primary"
-                  onClick={() => {
-                    dispatch(() => handleCart(item._id));
-                    // Update the addedToCart property when the item is added to the cart
-                    dispatch(
-                      updateAddedToCart({
-                        productId: item.id,
-                        addedToCart: true,
-                      })
-                    );
-                  }}
+                  className={`${
+                    isSubmitting && SpecificId === item._id
+                      ? "bg-gray-200 pointer-events-none cursor-not-allowed text-gray-400"
+                      : "bg-gradient-to-r from-indigo-500 to-pink-500 hover:bg-gradient-to-l hover:from-pink-500 hover:to-indigo-700 text-white"
+                  } relative w-[80%] px-3 py-2 rounded-md font-semibold`}
+                  onClick={() => handleCart(item._id)}
                 >
                   Add to Cart
                 </button>
-              ) : (
-                <Link to={"/cart"}>
-                  <button type="button" className="btn btn-warning">
-                    View Cart
-                  </button>
-                </Link>
-              )}
-              <button
-                className="btn btn-warning"
-                onClick={() => {
-                  dispatch(addtowishlist(item));
-                }}
-              >
-                <i className="fas fa-heart m-1 me-md-2"></i>
-              </button>
-            </div>
+                {isSubmitting && SpecificId === item._id ? (
+                  <div className="absolute mt-[5px]  h-7 w-7 border-dashed border-4 border-gray-600 rounded-full animate-spin"></div>
+                ) : (
+                  ""
+                )}
+
+                {isAlert && <Toaster richColors position="top-right" />}
+              </>
+            ) : (
+              <Link to={"/cart"}>
+                <button type="button" className="btn btn-warning">
+                  View Cart
+                </button>
+              </Link>
+            )}
+            {/* <button className='btn btn-warning' onClick={() => { dispatch(addtowishlist(item)) }} >
+                            <i className="fas fa-heart m-1 me-md-2"></i>
+                        </button> */}
           </div>
         </div>
+      </div>
       );
     })
   );

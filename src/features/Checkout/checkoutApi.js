@@ -3,7 +3,7 @@ import axios from "axios";
 export function createOrder(orderData){
     return new Promise(async(resolve , reject) => {
         try{
-            const res = await axios.post("/orders/add", orderData);
+            const res = await axios.post("http://localhost:4000/orders/add", orderData);
             const data = res.data;
             resolve(data)
         }catch(error){
@@ -15,7 +15,7 @@ export function createOrder(orderData){
 export function getUserOrders(){
     return new Promise(async(resolve , reject) => {
         try{
-            const res = await axios.get(`/orders/user`);
+            const res = await axios.get(`http://localhost:4000/orders/user`);
             const data = res.data;
             resolve(data)
         }catch(error){
@@ -27,7 +27,7 @@ export function getUserOrders(){
 export function getAllOrders(){
     return new Promise(async(resolve , reject) => {
         try{
-            const res = await axios.get(`/orders`);
+            const res = await axios.get(`http://localhost:4000/orders`);
             const data = res.data;
             resolve(data)
         }catch(error){
@@ -40,7 +40,7 @@ export function getAllOrders(){
 export function updateOrder(updateData){
     return new Promise(async(resolve , reject) => {
         try{
-            const res = await axios.patch(`/orders/update/${updateData._id}`,updateData );
+            const res = await axios.patch(`http://localhost:4000/orders/update/${updateData._id}`,updateData );
             const data = res.data;
             resolve(data)
         }catch(error){

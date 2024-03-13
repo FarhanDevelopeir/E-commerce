@@ -12,17 +12,19 @@ import { decreasequantity, increasequantity, removefromcart, productPrice, updat
 import Addressform from '../Checkout/components/BasicDetails';
 import Stepper from '../Checkout/components/Stepper';
 import { useState } from 'react';
-import { allFetchedCartData } from './cartSlice';
+import { IsSubmitting, allFetchedCartData, setSubmitting } from './cartSlice';
 import { selectLoggedInUser } from '../UserAuthentication/authSlice';
 import { allCartDataAsync, updateCartAsync } from './cartSlice';
 import Header from '../../pages/Header';
 import { deleteCartAsync } from './cartSlice';
 import { addQuantity } from './cartSlice';
+import { Toaster } from 'sonner';
 import axios from 'axios';
 const Cart = () => {
-  
+  const isSubmitting = useSelector(IsSubmitting)
   const dispatch = useDispatch()
   const [checkout, setcheckout] = useState(false);
+  const [SpecificId, setSpecificId] = useState("");
   const Cart = useSelector(allFetchedCartData);
   const totalQuantity = Cart.products ? Cart.products.reduce((total, product) => {
     return total + product.quantity;
@@ -37,12 +39,16 @@ axios.defaults.withCredentials = true;
 
 
   const changeQuality = (id, decrease) => {
+
+    dispatch(setSubmitting(true))
+    
+    setSpecificId(id)
     const cartData = {
       productId : id,
       quantity: 1,
       decrease: decrease
     }
-    console.log(cartData)
+    // console.log(cartData)
     dispatch(updateCartAsync(cartData))
   }
 
@@ -61,6 +67,7 @@ axios.defaults.withCredentials = true;
 
 
   const displaycart = Cart.products ? Cart.products.map((item, index) => {
+  
     return (
       <div>
         <div className="row" key={index}>
@@ -94,24 +101,45 @@ axios.defaults.withCredentials = true;
 
         <div className="col-lg-4 col-md-6 mb-4 mb-lg-0">
 
-          <div className="d-flex mb-4" style={{ maxWidth: "300px" }}>
-            <button className="btn btn-primary px-3 me-2"
+          <div className=" relative  flex mb-4 " >
+            <button 
+            className={`${
+              isSubmitting && SpecificId === item.productId._id
+                ? "bg-gray-200 pointer-events-none cursor-not-allowed text-gray-400"
+                : "bg-gradient-to-r from-indigo-500 to-pink-500 hover:bg-gradient-to-l hover:from-pink-500 hover:to-indigo-700 text-white"
+            }  w-[80%] px-[1px] ms-2 py-2 rounded-md font-semibold shadow-xl`}
               onClick={() => dispatch(() => changeQuality(item.productId._id, true))}>
               <i className="fas fa-minus"></i>
+              {/* {isSubmitting && SpecificId === item.productId._id ?   <div className='absolute left-5 top-2   h-7 w-7 border-dashed border-4 border-gray-600 rounded-full animate-spin' ></div>:''} */}
             </button>
 
-            <div className="form-outline">
-              <input id="form1" min="0" name="quantity" value={item.quantity} type="number" className="form-control" />
+            <div className="form-outline ">
+              <input id="form1" min="0" name="quantity" value={item.quantity} 
+               className={`${
+                isSubmitting && SpecificId === item.productId._id
+                  ? " text-gray-300"
+                  : " "
+              }  w-[80%] px-[1px] ms-2 py-2  font-semibold text-center `}
+
+               />
               {/* <label className="form-label" for="form1">Quantity </label> */}
+              {isSubmitting && SpecificId === item.productId._id ?   <div className='  absolute m-auto left-6 top-2   h-7 w-7 border-dashed border-4 border-gray-600 rounded-full animate-spin' ></div>:''}
             </div>
 
-            <button className="btn btn-primary px-3 ms-2"
+            <button 
+            // className="btn btn-primary px-3 ms-2"
+            className={`${
+              isSubmitting && SpecificId === item.productId._id
+                ? "bg-gray-200 pointer-events-none cursor-not-allowed text-gray-400"
+                : "bg-gradient-to-r from-indigo-500 to-pink-500 hover:bg-gradient-to-l hover:from-pink-500 hover:to-indigo-700 text-white"
+            }  w-[80%] px-[1px] ms-2 py-2 rounded-md font-semibold shadow-xl`}
               onClick={() => {
                 dispatch(()=> changeQuality(item.productId._id, false));
 
               }}
-            >
+            > 
               <i className="fas fa-plus"></i>
+       
             </button>
           </div>
 

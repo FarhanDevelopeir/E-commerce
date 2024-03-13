@@ -1,13 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
-import { category, } from "../Redux/features/counter/ProductSlice";
+import { category } from "../Redux/features/counter/ProductSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { Toaster, toast } from 'sonner'
+
 // import { confirmAlert } from 'react-confirm-alert';
 // import 'react-confirm-alert/src/react-confirm-alert.css'
 import {
   ActivePage,
   AddProducts,
-  AddProductsAsync,
-
   SingleProductData,
   updateProduct,
 } from "./features/AdminSlice";
@@ -15,19 +15,35 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import AdminOrders from "./AdminOrders";
 import AdminProducts from "./AdminProducts";
 import AdminDashboard from "./AdminDashboard";
-import { updateProductAsync, EmptySelectedProduct } from "../features/product/productSlice";
+import {
+  updateProductAsync,
+  EmptySelectedProduct,
+  submitState,
+  setSubmitting,
+  AddProductsAsync,
+  Alert,
+  setAlert,
+} from "../features/product/productSlice";
+
+import useApiCall from "../Hooks/useApiCall";
 
 const AdminAddProducts = () => {
   const singleProduct = useSelector((state) => state.product1.editProduct);
   const [alertPopup, setalertPopup] = useState(false);
   const activePage = useSelector((state) => state.adminslice.activePage);
+  const isSubmitting = useSelector(submitState);
+  const alert = useSelector(Alert);
+  console.log(alert)
   const dispatch = useDispatch();
 
   // const [image1, setImage1] = useState(null);
   // const [image2, setImage2] = useState(null);
   // const [image3, setImage3] = useState(null);
   // const [thumbnailImage, setthumbnailImage] = useState(null);
-  const [editthumbnailImage, seteditthumbnailImage] = useState(singleProduct.thumbnailImage || "");
+  const [editthumbnailImage, seteditthumbnailImage] = useState(
+    singleProduct.thumbnailImage || ""
+  );
+  // const [isSubmitting, setIsSubmitting] = useState(false);
   const [chnagesMade, setchnagesMade] = useState(false);
   const [formData, setFormData] = useState({
     title: singleProduct.title || "",
@@ -41,8 +57,25 @@ const AdminAddProducts = () => {
     thumbnailImage: null,
     image1: null,
     image1: null,
-    image3: null
+    image3: null,
   });
+
+  
+  useEffect(() => {
+    
+    if(Object.keys(singleProduct).length !== 0 ){
+      toast.success('Successfully Updated');
+      setTimeout(() => {
+        dispatch(setAlert(false));
+      }, 3000);
+    }else{
+      toast.success('Product has been created');
+      setTimeout(() => {
+        dispatch(setAlert(false));
+      }, 3000);
+    }
+    
+  }, [alert]);
 
   useEffect(() => {
     if (Object.keys(singleProduct).length === 0) {
@@ -94,8 +127,12 @@ const AdminAddProducts = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
-    
+    // if(alert=== true){
+    //   toast.success('Product has been created')
+    // }
+
+    dispatch(setSubmitting("true"));
+
     if (Object.keys(singleProduct).length !== 0) {
       const Id = singleProduct._id;
       dispatch(updateProductAsync({ formData, Id }));
@@ -117,6 +154,7 @@ const AdminAddProducts = () => {
       console.log(SubmitFormData);
       dispatch(AddProductsAsync(SubmitFormData));
     }
+    // setIsSubmitting(false)
   };
 
   const handleChange = (e) => {
@@ -128,29 +166,27 @@ const AdminAddProducts = () => {
     const file = e.target.files[0];
     console.log(file);
     // setthumbnailImage(file);
-    setFormData({...formData, thumbnailImage: file});
+    setFormData({ ...formData, thumbnailImage: file });
     // setthumbnailImage(URL.createObjectURL(file)); // Display selected image
   };
 
   const handleimage1Change = (e) => {
     const file = e.target.files[0];
-    setFormData({...formData, image1: file});
+    setFormData({ ...formData, image1: file });
     // setThumbnail(URL.createObjectURL(file)); // Display selected image
   };
 
   const handleimage2Change = (e) => {
     const file = e.target.files[0];
-    setFormData({...formData, image2: file});
+    setFormData({ ...formData, image2: file });
     // setThumbnail(URL.createObjectURL(file)); // Display selected image
   };
 
   const handleimage3Change = (e) => {
     const file = e.target.files[0];
-    setFormData({...formData, image3: file});
+    setFormData({ ...formData, image3: file });
     // setThumbnail(URL.createObjectURL(file)); // Display selected image
   };
-
-
 
   return (
     <div>
@@ -447,46 +483,41 @@ const AdminAddProducts = () => {
             </div>
             <button
               type="submit"
-              className={`shadow-md mb-2 ${
+              className={`shadow-md mb-2  ${
                 // !formData.title ||
                 // !formData.brand ||
-                // // !formData.category ||
+                // !formData.category ||
                 // !formData.description ||
-                // !formData.discountPercentage ||
-                // !formData.price ||
-                // !formData.rating ||
-                // !formData.stock'*:
-                ""
-                  ? "bg-gray-200 pointer-events-none cursor-not-allowed text-gray-400"
+                !formData.discountPercentage || isSubmitting
+                  ? // !formData.price ||
+                    // !formData.rating ||
+                    // !formData.stock
+
+                    "bg-gray-200 pointer-events-none cursor-not-allowed text-gray-400"
                   : "bg-gradient-to-r from-indigo-500 to-pink-500 hover:bg-gradient-to-l hover:from-pink-500 hover:to-indigo-700 text-white"
-                } cursor-pointer inline-flex float-right font-semibold items-center px-5 py-2.5 mt-4 sm:mt-6 text-md text-center 
+                // isSubmitting ?
+                // "bg-gray-200 pointer-events-none cursor-not-allowed text-gray-400"
+                // :'bg-gradient-to-r from-indigo-500 to-pink-500 hover:bg-gradient-to-l hover:from-pink-500 hover:to-indigo-700 text-white'
+              } relative  cursor-pointer  flex justify-between float-right font-semibold  px-5 py-2.5 mt-4 sm:mt-6 text-md text-center 
   rounded-md focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900`}
+              disabled={isSubmitting}
             >
+              {isSubmitting ? (
+                <div className=" absolute left-[43%] h-7 w-7 border-dashed border-4 border-gray-700 rounded-full animate-spin ">
+                  {" "}
+                </div>
+              ) : (
+                ""
+              )}
               {Object.keys(singleProduct).length !== 0
                 ? "Update Product"
                 : "Add Product"}
             </button>
           </form>
-          {alertPopup && (
-            <div
-              className="fixed inset-0 bg-opacity-30
-    backdrop-blur-[7px]  bg-slate-900  
-    p-2 flex justify-center items-center"
-            >
-              <div className="bg-black border-2  w-[60%] shadow-2xl rounded-lg p-3">
-                <h5 className="text-white">
-                  Your changes are not saved. Are you sure you want to leave?
-                </h5>
-                <div className="float-right mt-3">
-                  <button className="text-white px-4 py-2 rounded mr-2 bg-gradient-to-r  from-indigo-500 to-pink-500 hover:bg-gradient-to-l hover:from-pink-500 hover:to-indigo-700">
-                    Cancel{" "}
-                  </button>
-                  <button className="bg-red-600   text-white px-4 py-2 rounded">
-                    Leave{" "}
-                  </button>
-                </div>
-              </div>
-            </div>
+          {alert && (
+   
+             
+            <Toaster richColors position="top-center" />
           )}
         </div>
       </section>

@@ -6,12 +6,13 @@ import { Link, useNavigate, Navigate } from 'react-router-dom'
 import signuppic from '../../../Images/signuppic.jpg'
 import axios from 'axios'
 import { Userdata } from '../../../Redux/features/counter/ProductSlice'
-import { createUserAsync, selectLoggedInUser } from '../authSlice'
+import { createUserAsync, selectLoggedInUser, setSubmitting, submitState } from '../authSlice'
 
 
 
 const SignUp = () => {
   const userdata = useSelector(selectLoggedInUser);
+  const isSubmitting = useSelector(submitState);
   const dispatch = useDispatch()
   const [formData, setFormData] = useState({ name: '', email: '', password: '' });
   const navigate = useNavigate()
@@ -41,6 +42,7 @@ const SignUp = () => {
 
 
   const handleSubmit = (e) => {
+    dispatch(setSubmitting("true"))
     e.preventDefault()
     setErrorName(false)
     setErrorEmail(false)
@@ -61,7 +63,7 @@ const SignUp = () => {
 
       // console.log(formData);
       // signupform(formData)
-      dispatch(createUserAsync(formData))
+      dispatch(createUserAsync(formData, dispatch))
     }
   }
 
@@ -171,10 +173,21 @@ const SignUp = () => {
                     </div>
                   </div> */}
 
-                          <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                            <button type="submit" class="btn btn-primary btn-lg">Register</button>
-                          </div>
-
+                        <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+                          <button type="submit" 
+                          className={`${
+                            isSubmitting || !formData.name || !formData.email  || !formData.password
+                              ? "bg-gray-200 pointer-events-none cursor-not-allowed text-gray-400"
+                              : "bg-gradient-to-r from-indigo-500 to-pink-500 hover:bg-gradient-to-l hover:from-pink-500 hover:to-indigo-700 text-white"
+                          } relative w-[80%] px-3 py-2 rounded-md font-semibold`}
+                          >Register</button>
+                           {isSubmitting  ? (
+                  <div className="absolute mt-[5px]  h-7 w-7 border-dashed border-4 border-gray-600 rounded-full animate-spin"></div>
+                ) : (
+                  ""
+                )}
+                        </div>
+                       
 
                         </form>
 

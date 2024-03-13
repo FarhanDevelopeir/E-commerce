@@ -1,5 +1,23 @@
 import axios from "axios";
 
+export function AddProducts(formData){
+  console.log("api working ")
+  return new Promise(async(resolve, reject)=>{
+      try{
+          const res = await axios.post('http://localhost:4000/products/create', formData,{
+              headers:{
+                  'Content-Type': 'multipart/form-data',
+              }
+          })
+          const data = res.data
+          resolve(data)
+      }
+      catch(error){
+          reject("Error", error)
+      }
+  })
+}
+
 export function getAllProducts(filter, pagination, sort) {
   let queryString = "";
   for (let key in filter) {
@@ -39,7 +57,7 @@ export function getAllProducts(filter, pagination, sort) {
 export function getOneProduct(id) {
   return new Promise(async (resolve, reject) => {
     try {
-      const res = await axios.get(`/products/${id}`);
+      const res = await axios.get(`http://localhost:4000/products/${id}`);
       const data = res.data;
       resolve(data);
     } catch (error) {
@@ -51,7 +69,7 @@ export function getOneProduct(id) {
 export function fetchCategories() {
   return new Promise(async (resolve, reject) => {
     try {
-      const res = await axios.get("/categories");
+      const res = await axios.get("http://localhost:4000/categories");
       const data = res.data;
       resolve(data);
     } catch (error) {
@@ -66,7 +84,7 @@ export function getUpdateProduct(formDataWithFiles, Id) {
   return new Promise(async (resolve, reject) => {
     try {
       const response = await axios.put(
-        `/products/update/${Id}`,
+        `http://localhost:4000/products/update/${Id}`,
         formDataWithFiles, {
           headers:{
             'Content-Type': 'multipart/form-data',
