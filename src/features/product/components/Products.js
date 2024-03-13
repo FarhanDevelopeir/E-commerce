@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
+import axios from 'axios';
 
 import { Link } from "react-router-dom";
 import {
@@ -10,7 +11,7 @@ import {
   updateAddedToCart,
 } from "../../../Redux/features/counter/ProductSlice";
 
-import { allProductsAsync, allFetchedProducts } from "../productSlice";
+import { allProductsAsync, allFetchedProducts, totalItemsCount } from "../productSlice";
 import {
   allCartDataAsync,
   addCartAsync,
@@ -23,24 +24,26 @@ import { selectLoggedInUser } from "../../UserAuthentication/authSlice";
 import { Toaster, toast } from "sonner";
 
 const Products = () => {
+    const products = useSelector(allFetchedProducts);
+    const dispatch = useDispatch()
+    const User = useSelector(selectLoggedInUser);
+    const [selectedPage, setselectedPage] = useState(1);
+    const limit = 10
+    const totalItems = useSelector(totalItemsCount)
+
+    axios.defaults.withCredentials = true;
+
+    useEffect(() => {
+        const pagination = { _page: selectedPage, _limit: limit }
+        dispatch(allProductsAsync({pagination} ))
+        dispatch(allCartDataAsync())
+        console.log(products)
+    }, [selectedPage])
   const isSubmitting = useSelector(IsSubmitting);
   const isAlert = useSelector(IsAlert);
   console.log(isSubmitting);
-  const products = useSelector(allFetchedProducts);
   const [SpecificId, setSpecificId] = useState("");
-  const dispatch = useDispatch();
-  const User = useSelector(selectLoggedInUser);
-  const [selectedPage, setselectedPage] = useState(1);
-  const limit = 10;
-  const totalItems = 20;
-
-  useEffect(() => {
-    const pagination = { _page: selectedPage, _limit: limit };
-    dispatch(allProductsAsync({ pagination }));
-    dispatch(allCartDataAsync(User.user._id));
-    console.log(products);
-  }, [selectedPage]);
-
+  
   useEffect(() => {
     
       if(isAlert){
@@ -57,7 +60,6 @@ const Products = () => {
     dispatch(setSubmitting(true));
     setSpecificId(itemId);
     const cartData = {
-      userId: User.user._id,
       productId: itemId,
       quantity: 1,
     };
@@ -69,21 +71,20 @@ const Products = () => {
     setselectedPage(page);
   };
 
-  const displaydata = products.map((item) => {
-    console.log(item);
-    return (
-      <div className=" col-sm-6 col-md-4 col-lg-3 mb-4 mt-3 mb-lg-0 ">
-        <div className="card pt-3 shadow border rounded hover-zoom ">
-          <Link to={`/productdetail/${item._id}`}>
-            <div style={{ textAlign: "center" }}>
-              <div className="hover-zoom">
-                <img
-                  src={"http://localhost:4000/images/" + item.thumbnailImage}
-                  className="card-img-top    "
-                  style={{ height: "150px", width: "150px", margin: "auto" }}
-                  alt="Laptop"
-                />
-              </div>
+    const displaydata = products.map((item) => {
+        return (
+            <div className=" col-sm-6 col-md-4 col-lg-3 mb-4 mt-3 mb-lg-0 ">
+
+                <div className="card pt-3 shadow border rounded hover-zoom ">
+
+                    <Link to={`/productdetail/${item._id}`}>
+                        <div style={{ textAlign: 'center' }}>
+
+
+                            <div className='hover-zoom'>
+                                <img src={item.thumbnailImage}
+                                    className="card-img-top    " style={{ height: '150px', width: '150px', margin: 'auto' }} alt="Laptop" />
+                            </div>
 
               <div className="card-body">
                 <div className="d-flex justify-content-between mb-2">

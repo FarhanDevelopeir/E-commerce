@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { createUser, LoginUser } from "./authApi";
+import { createUser, LoginUser, checkUser } from "./authApi";
 import { useDispatch } from "react-redux";
 
 
@@ -7,7 +7,8 @@ const initialState = {
   status: "",
   UserData: {},
   isSubmit: false,
-  error: ''
+  error: '',
+    userChecked: false
 };
 
 export const createUserAsync = createAsyncThunk(
@@ -29,6 +30,14 @@ export const loginUserAsync = createAsyncThunk(
   }
 );
 
+export const checkUserAsync = createAsyncThunk(
+    "user/checkUser",
+    async () => {
+        const data = await checkUser();
+        return data
+    }
+)
+
 export const authSlice = createSlice({
   name: "authentication",
   initialState,
@@ -45,6 +54,12 @@ export const authSlice = createSlice({
       state.error = action.payload
       console.log(state.error)
     }
+  },
+  setUser: (state, action) => {
+      state.UserData = action.payload;
+  },
+  clearUser: (state, action) => {
+      state.UserData = {};
   },
   extraReducers: (builder) => {
     builder
@@ -72,15 +87,28 @@ export const authSlice = createSlice({
       .addCase(loginUserAsync.rejected, (state) => {
         state.status = "rejected";
       });
+      .addCase(checkUserAsync.fulfilled, (state, action) => {
+        state.status = 'fulfilled'
+        state.UserData = action.payload
+        console.log('action => ', state.UserData)
+        state.userChecked = true
+    })
+    .addCase(checkUserAsync.rejected, (state) => {
+        state.status = 'rejected'
+        state.userChecked = true
+    })
   },
 });
 
 export const { setSubmitting, setError } = authSlice.actions;
 
+export const { setUser, clearUser} = authSlice.actions;
+
 export const selectLoggedInUser = (state) => state.auth.UserData;
 export const submitState = (state) => state.auth.isSubmit;
 export const displayError = (state) => state.auth.error;
 
+export const userCheckedStatus = (state) => state.auth.userChecked
 
 
 export default authSlice.reducer;

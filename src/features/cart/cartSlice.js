@@ -49,12 +49,12 @@ export const deletefullCartAsync = createAsyncThunk(
 );
 
 export const allCartDataAsync = createAsyncThunk(
-  "cart/allCart",
-  async (userId) => {
-    const data = await allCartData(userId);
-    return data;
-  }
-);
+    "cart/allCart",
+    async () => {
+        const data = await allCartData()
+        return data
+    }
+)
 
 export const cartSlice = createSlice({
   name: "cart",

@@ -311,20 +311,11 @@ const AdminAddProducts = () => {
                         id="thumbnail"
                         onChange={handleThumbnailChange}
                       ></input>
-                      {formData.thumbnailImage || editthumbnailImage ? (
-                        <img
-                          src={
-                            formData.thumbnailImage
-                              ? formData.thumbnailImage
-                              : "http://localhost:4000/images/" +
-                                editthumbnailImage
-                          }
-                          alt="Thumbnail"
-                          className="mt-2 h-12 w-12 rounded-full"
-                        />
-                      ) : (
-                        ""
-                      )}
+                      {formData.thumbnailImage || editthumbnailImage ? <img
+                        src={formData.thumbnailImage ? formData.thumbnailImage : '/images/' + editthumbnailImage}
+                        alt="Thumbnail"
+                        className="mt-2 h-12 w-12 rounded-full"
+                      />: ''}
                     </div>
                   </div>
                 </div>

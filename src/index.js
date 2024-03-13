@@ -54,12 +54,13 @@ const AppContainer = () => {
             <Route path="/productdetail/:id" element={<Protected><ProductDetail /></Protected>} />
             <Route path="/cart" element={<Protected><Cart /></Protected>} />
             <Route path="/wishlist" element={<Whishlist />} />
-            <Route path="/orders" element={<OrdersPage></OrdersPage>}/>
+            <Route path="/orders" element={<Protected><OrdersPage /></Protected>}/>
             <Route path="/checkout" element={<Addressform />} />
             <Route path="/ordercomplete" element={<Completeorder />} />
             <Route path="/filterproducts" element={<Protected><Filterproducts /></Protected>} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/adminpanel" element={<AdminMain />} />
 
             <Route path="*" element={<PageNotFound />} />
           </Routes>

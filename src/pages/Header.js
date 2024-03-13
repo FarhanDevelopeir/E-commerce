@@ -1,21 +1,33 @@
 import React, { useState } from "react";
 import logo from "../Images/bluelogo.png";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { MDBInput } from "mdb-react-ui-kit";
 import { allFetchedCartData } from "../features/cart/cartSlice";
+import { Navigate } from "react-router-dom";
+import { clearUser } from "../features/UserAuthentication/authSlice";
 
 const Header = () => {
   const cart = useSelector((state) => state.product.cart);
   const cart1 = useSelector(allFetchedCartData);
   const wishlist = useSelector((state) => state.product.wishlist);
   const userdata = useSelector((state) => state.product.Usersdata);
-  // console.log("header cart data => ", cart1);
+  const dispatch = useDispatch()
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+
+  const handlelogout = () => {
+    document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+
+    // Dispatch an action to clear user state in Redux
+    dispatch(clearUser());
+
+    // Redirect to login page
+    return <Navigate to="/login" replace />;
+  }
 
   const handleProfile = () => {};
 
@@ -118,6 +130,7 @@ const Header = () => {
                           role="menuitem"
                           tabIndex="-1"
                           id="user-menu-item-2"
+                          onClick={handlelogout}
                         >
                           Sign out
                         </a>
