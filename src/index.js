@@ -36,7 +36,7 @@ const AppContainer = () => {
         <BrowserRouter>
           <Provider store={store}>
             <Routes>
-              <Route path="/adminpanel/*" element={<AdminMain />} />
+              <Route path="/adminpanel/*" element={<Protected><AdminMain /></Protected>}  />
             </Routes>
           </Provider>
         </BrowserRouter>
@@ -60,7 +60,7 @@ const AppContainer = () => {
             <Route path="/filterproducts" element={<Protected><Filterproducts /></Protected>} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/adminpanel" element={<AdminMain />} />
+            <Route path="/adminpanel" element={<Protected><AdminMain /></Protected>}  />
 
             <Route path="*" element={<PageNotFound />} />
           </Routes>
