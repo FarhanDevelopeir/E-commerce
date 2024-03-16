@@ -7,6 +7,7 @@ import signuppic from '../../../Images/signuppic.jpg'
 import axios from 'axios'
 import { Userdata } from '../../../Redux/features/counter/ProductSlice'
 import { createUserAsync, displayError, emptyError, selectLoggedInUser, setSubmitting, submitState } from '../authSlice'
+import SignupRoles from './SignupRoles'
 
 
 
@@ -221,8 +222,9 @@ if (name === 'password' && value.length < 8) {
         </section>
       </div>}
       {isSelected ? '' : <div>
-        <button onClick={() => handleUserType('user')} >SignUp as User</button>
-        <button onClick={() => handleUserType('admin')}  >SignUp as Admin</button>
+        {/* <button onClick={() => handleUserType('user')} >SignUp as User</button>
+        <button onClick={() => handleUserType('admin')}  >SignUp as Admin</button> */}
+        <SignupRoles handleUserType={handleUserType} />
       </div>}
     </div>
   )

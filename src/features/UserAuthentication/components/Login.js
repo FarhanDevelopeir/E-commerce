@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import loginpic from "../../../Images/loginpic3.png";
 import { displayError, emptyError, loginUserAsync, selectLoggedInUser, setSubmitting, submitState } from "../authSlice";import axios from 'axios';
+import LoginRoles from "./LoginRoles";
 
 
 const Login = () => {
@@ -23,7 +24,7 @@ const Login = () => {
     useEffect(()=>{
       setTimeout(() => {
         dispatch(emptyError())
-      }, 4000);
+      }, 6000);
     },[Error])
 
   const handleChange = (e) => {
@@ -193,10 +194,9 @@ if (name === 'password' && value.length < 8) {
           </div>
         </section>
       </div>}
-      { isSelected ? '' : <div>
-                <button onClick={() => handleUserType('user')} >Login as User</button>
-                <button onClick={() => handleUserType('admin')}  >Login as Admin</button>
-            </div>}
+      { isSelected ? '' :
+               <LoginRoles handleUserType={handleUserType} />
+            }
     </div>
   );
 };
