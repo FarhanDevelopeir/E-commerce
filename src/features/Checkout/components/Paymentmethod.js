@@ -9,33 +9,26 @@ import { useNavigate } from 'react-router-dom';
 import { totalItemsInCart } from '../../cart/cartSlice';
 
 const Paymentmethod = () => {
-  const contactdetail = useSelector((state) => state.product.contactdetail)
-  const addressdetail = useSelector((state) => state.product.addressdetail)
   const address = useSelector(addressState)
   const totalCartItems = useSelector(totalItemsInCart)
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const User = useSelector(selectLoggedInUser)
   const Cart = useSelector(allFetchedCartData)
-  const [isformopen, setisformopen] = useState(false)
   const [selectedMethod, setSelectedMethod] = useState(null);
   const [displaydone, setdisplaydone] = useState(false)
+  const [displayCardButton, setdisplayCardButton] = useState(false)
 
 
 
 
   const handlepayment = (e) => {
-    setSelectedMethod(e.target.value);
-
-    if (e.target.value === 'online') {
-      setisformopen(true)
-      setdisplaydone(false)
-    }
-    else {
-      setisformopen(false)
+    console.log(e.target.value)
+    setSelectedMethod(e.target.value)
+    if(e.target.value === 'online'){
+      setdisplayCardButton(true)
+    } else {
       setdisplaydone(true)
-    }
-
+  } 
   }
 
   const handleOrder = () => {
@@ -50,6 +43,11 @@ const Paymentmethod = () => {
     console.log(orderData)
     dispatch(createOrderAsync(orderData))
     navigate('/ordercomplete');
+   
+  }
+
+  const handlePayment = () => {
+    navigate('/stripePayment');
   }
 
   useEffect(() => {
@@ -68,14 +66,14 @@ const Paymentmethod = () => {
         <div className='d-flex justify-content-between w-75 m-auto '>
           <button
             className={`btn ${selectedMethod === 'cod' ? 'btn-danger' : 'btn-secondary'}`}
-            onClick={handlepayment}
+            onClick={(e) => handlepayment(e)}
             value='cod'
           >
             Cash On Delivery
           </button>
           <button
             className={`btn ${selectedMethod === 'online' ? 'btn-danger' : 'btn-secondary'}`}
-            onClick={handlepayment}
+            onClick={(e) => handlepayment(e)}
             value='online'
           >
             Online Transaction
@@ -94,6 +92,19 @@ const Paymentmethod = () => {
             onClick={() => handleOrder()}
 
           >Finish</Button>}
+        {displayCardButton &&
+          <Button variant='contained'
+            sx={{
+              width: '25%',
+              margin: '20px auto',
+              textAlign: 'center',
+              position: 'absolute',
+              right: '20px',
+              marginTop: '40px',
+            }}
+            onClick={() => handlePayment()}
+
+          >Add Card Details</Button>}
       </div>
     </div>
   )

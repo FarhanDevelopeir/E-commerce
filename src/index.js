@@ -23,6 +23,7 @@ import Login from './features/UserAuthentication/components/Login';
 import AdminMain from './AdminComponents/AdminMain';
 import Protected from './features/UserAuthentication/components/protected';
 import OrdersPage from './pages/ordersPage';
+import CardPayment from './features/StripePayment/components/cardPayment';
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -58,6 +59,7 @@ const AppContainer = () => {
             <Route path="/checkout" element={<Addressform />} />
             <Route path="/ordercomplete" element={<Completeorder />} />
             <Route path="/filterproducts" element={<Protected><Filterproducts /></Protected>} />
+            <Route path="/stripePayment" element={<Protected><CardPayment/></Protected>} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/login" element={<Login />} />
             <Route path="/adminpanel" element={<Protected><AdminMain /></Protected>}  />
