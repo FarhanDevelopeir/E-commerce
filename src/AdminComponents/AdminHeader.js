@@ -6,6 +6,8 @@ import AdminProducts from "./AdminProducts";
 import AdminAddProducts from "./AdminAddProducts";
 import { ActivePage } from "./features/AdminSlice";
 import AdminProfile from "./AdminProfile";
+import { clearUser } from "../features/UserAuthentication/authSlice";
+import { Navigate } from "react-router-dom";
 
 const AdminHeader = () => {
   const activepage = useSelector((state)=>state.adminslice.activePage)
@@ -25,6 +27,13 @@ const AdminHeader = () => {
 
   const handleSignOut = () => {
     setIsMenuOpen(false)
+    document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+
+    // Dispatch an action to clear user state in Redux
+    dispatch(clearUser());
+
+    // Redirect to login page
+    return <Navigate to="/login" replace={true} />;
   }
 
   return (

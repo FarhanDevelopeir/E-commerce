@@ -1,19 +1,15 @@
 // import { TextField } from '@mui/material'
-import { TextField } from "@mui/material";
-import React, { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { Link, useNavigate, Navigate } from "react-router-dom";
-import signuppic from "../../../Images/signuppic.jpg";
-import axios from "axios";
-import { Userdata } from "../../../Redux/features/counter/ProductSlice";
-import {
-  createUserAsync,
-  displayError,
-  emptyError,
-  selectLoggedInUser,
-  setSubmitting,
-  submitState,
-} from "../authSlice";
+import { TextField } from '@mui/material'
+import React, { useEffect, useState } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { Link, useNavigate, Navigate } from 'react-router-dom'
+import signuppic from '../../../Images/signuppic.jpg'
+import axios from 'axios'
+import { Userdata } from '../../../Redux/features/counter/ProductSlice'
+import { createUserAsync, displayError, emptyError, selectLoggedInUser, setSubmitting, submitState } from '../authSlice'
+import SignupRoles from './SignupRoles'
+
+
 
 const SignUp = () => {
   const userdata = useSelector(selectLoggedInUser);
@@ -240,20 +236,17 @@ const SignUp = () => {
                 </div>
               </div>
             </div>
-          </section>
-        </div>
-      )}
-      {isSelected ? (
-        ""
-      ) : (
-        <div>
-          <button onClick={() => handleUserType("user")}>SignUp as User</button>
-          <button onClick={() => handleUserType("admin")}>
-            SignUp as Admin
-          </button>
-        </div>
-      )}
+         
+        </section>
+      
+      {isSelected ? '' : <div>
+        {/* <button onClick={() => handleUserType('user')} >SignUp as User</button>
+        <button onClick={() => handleUserType('admin')}  >SignUp as Admin</button> */}
+        <SignupRoles handleUserType={handleUserType} />
+      </div>}
     </div>
+  )}
+  </div>
   );
 };
 
