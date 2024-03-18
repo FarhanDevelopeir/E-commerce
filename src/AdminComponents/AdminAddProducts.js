@@ -153,6 +153,7 @@ const AdminAddProducts = () => {
       SubmitFormData.append("image3", formData.image3);
       console.log(SubmitFormData);
       dispatch(AddProductsAsync(SubmitFormData));
+
     }
     // setIsSubmitting(false)
   };
@@ -271,7 +272,7 @@ const AdminAddProducts = () => {
                       <option value="smartphones">smartphones</option>
                       <option value="Samsung">Samsung</option>
                       <option value="laptops">laptops</option>
-                      <option value="fragrances">fragrances</option>
+                      <option value="Camera">Camera</option>
                       <option value="groceries">groceries</option>
                       <option value="skincare">skincare</option>
                       {/* corrected value */}

@@ -4,22 +4,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useParams } from "react-router-dom";
 import { useNavigate, Navigate } from 'react-router-dom';
 import { Link } from "react-router-dom";
-import {
-  addtocart,
-  addtowishlist,
-  allproductsinfilter,
-  displayproducts,
-  category,
-  filter,
-  updateAddedToCart,
-  namecategory,
-} from "../../../Redux/features/counter/ProductSlice";
-import { Button } from "@mui/material";
-import { MDBInput } from "mdb-react-ui-kit";
 import { allCategoriesAsync, allProductsAsync, allFetchedCategories, allFetchedProducts, selectCategory, selectedCategory, totalItemsCount } from '../productSlice';
 import { IsAlert, IsSubmitting, addCartAsync, setAlert, setSubmitting } from "../../cart/cartSlice";
 import { selectLoggedInUser } from "../../UserAuthentication/authSlice";
 import Header from "../../../pages/Header";
+import Footer from '../../../pages/Footer'
 import { Toaster, toast } from "sonner";
 
 
@@ -229,9 +218,9 @@ const Filterproducts = () => {
   return (
     <div>
       <Header></Header>
-      <div className="mt-5 pt-5">
-        <div className="container d-flex">
-          <div className="" style={{ width: "20%", marginTop: "10px" }}>
+      <div className=" mt-[100px] lg:mt-5 pt-5 ">
+        <div className=" w-[98%]  md:w-[95%]  xl:w-[90%] m-auto md:flex  ">
+          <div className=" hidden md:block" style={{ width: "20%", marginTop: "10px" }}>
             <h3 className="mb-4">Filters</h3>
             <h5 className="mb-2">Category</h5>
 
@@ -258,13 +247,42 @@ const Filterproducts = () => {
           <div style={{ width: "96%" }}>
             <div>
               <div className="d-flex justify-content-between w-100">
-                <div>
+                <div className="hidden md:block">
                   <h5>Total products {totalItems}</h5>
+                </div>
+                <div className="block md:hidden">
+                  <h6 className=" ">Category</h6>
+                  <select
+                    class="form-select  form-select-sm mb-3"
+                    aria-label=".form-select-lg example"
+                    onClick={(e) => handleSort(e)}
+                  >
+                    <option value="" selected disabled>Select</option>
+                    {Category.map((item, i) => {
+              return (
+                <>
+                  <option>
+                    {/* <input
+                      type="radio"
+                      onChange={(e) => handlefilter(item.name)}
+                      class="form-check-input"
+                      name="category"
+                      checked={category2 === item.name}
+                    /> */}
+                    {item.name}
+                  </option>
+                  <br />
+                </>
+              );
+            })}
+                    
+                  </select>
                 </div>
 
                 <div>
+                  <h6 className="block md:hidden">Price</h6>
                   <select
-                    class="form-select  form-select-lg mb-3"
+                    class="form-select form-select-sm md:form-select-lg mb-3"
                     aria-label=".form-select-lg example"
                     onClick={(e) => handleSort(e)}
                   >
@@ -279,6 +297,8 @@ const Filterproducts = () => {
           </div>
         </div>
       </div>
+      <Footer/>
+      
     </div>
   );
 };
