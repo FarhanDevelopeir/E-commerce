@@ -9,6 +9,7 @@ export const theme = {
       customButtonBg: "#4a90e2", 
       customButtonHoverBg: "#357ae8", 
     },
+    
   },
 };
 export const plugins = [];

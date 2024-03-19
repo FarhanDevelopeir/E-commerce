@@ -71,6 +71,7 @@ export function fetchCategories() {
     try {
       const res = await axios.get("http://localhost:4000/categories");
       const data = res.data;
+      console.log(data)
       resolve(data);
     } catch (error) {
       reject(error);

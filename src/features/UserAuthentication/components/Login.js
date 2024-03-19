@@ -9,7 +9,7 @@ import GuestComponent from "./guest";
 
 const Login = () => {
   const userdata = useSelector(selectLoggedInUser);
-  const Error = useSelector(displayError)
+  const Error = useSelector(displayError);
   const isSubmitting = useSelector(submitState);
   const dispatch = useDispatch();
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -21,12 +21,13 @@ const Login = () => {
   const [userType, setUserType] = useState('');
 
   axios.defaults.withCredentials = true;
+  axios.defaults.withCredentials = true;
 
   useEffect(() => {
     setTimeout(() => {
-      dispatch(emptyError())
-    }, 6000);
-  }, [Error])
+      dispatch(emptyError());
+    }, 4000);
+  }, [Error]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -34,17 +35,17 @@ const Login = () => {
 
     // Clear all error states initially
 
-    setErrorEmail(false);
-    setErrorPassword(false);
+        setErrorEmail(false);
+        setErrorPassword(false);
 
-    // Validate each field individually
-    if (name === 'email' && !value.includes('@')) {
-      setErrorEmail(true);
-    }
+        // Validate each field individually
+        if (name === "email" && !value.includes("@")) {
+          setErrorEmail(true);
+        }
 
-    if (name === 'password' && value.length < 8) {
-      setErrorPassword(true);
-    }
+        if (name === "password" && value.length < 8) {
+          setErrorPassword(true);
+        }
   };
 
   const handleGuestLogin = () => {
@@ -59,7 +60,7 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     setUserType('actual')
-    dispatch(setSubmitting("true"))
+    dispatch(setSubmitting("true"));
     e.preventDefault();
     setErrorEmail(false);
     setErrorPassword(false);
@@ -74,14 +75,12 @@ const Login = () => {
   };
 
   const handleUserType = (type) => {
-
     setIsSelected(true);
-    if (type === 'user') {
-      setIsUser(true)
+    if (type === "user") {
+      setIsUser(true);
     } else {
-      setIsAdmin(true)
+      setIsAdmin(true);
     }
-
   };
 
   useEffect(() => {
@@ -125,24 +124,24 @@ const Login = () => {
                             {Erroremail ? <p>must include @</p> : ""}
                           </span>
 
-                          <div class="d-flex flex-row align-items-center mb-4">
-                            <i class="signup-icon fas fa-lock fa-lg me-3 fa-fw"></i>
-                            <div className=" w-100 ">
-                              <TextField
-                                type="text"
-                                id="form3Example1c"
-                                name="password"
-                                variant="standard"
-                                label="Password"
-                                fullWidth
-                                value={formData.password}
-                                onChange={handleChange}
-                              />
+                            <div class="d-flex flex-row align-items-center mb-4">
+                              <i class="signup-icon fas fa-lock fa-lg me-3 fa-fw"></i>
+                              <div className=" w-100 ">
+                                <TextField
+                                  type="text"
+                                  id="form3Example1c"
+                                  name="password"
+                                  variant="standard"
+                                  label="Password"
+                                  fullWidth
+                                  value={formData.password}
+                                  onChange={handleChange}
+                                />
+                              </div>
                             </div>
-                          </div>
-                          <span className="text-danger">
-                            {/* {Errorpassword ? <p>Field is required</p> : ""} */}
-                          </span>
+                            <span className="text-danger">
+                              {/* {Errorpassword ? <p>Field is required</p> : ""} */}
+                            </span>
 
                           
                           {Error && <p className=" text-red-600" >{Error}</p>}

@@ -6,6 +6,9 @@ import electronic from '../../../Images/electronic.jpg';
 import jewelry from '../../../Images/jewelry.jpg';
 import menclothing from '../../../Images/womenclothing.jpg';
 import womenclothing from '../../../Images/menclo.jpg';
+import fragrances from '../../../Images/menclo.jpg';
+import laptops from '../../../Images/menclo.jpg';
+
 import { Link } from 'react-router-dom';
 import { allCategoriesAsync, allFetchedCategories, selectCategory } from '../productSlice';
 import { useNavigate } from 'react-router-dom';
@@ -21,7 +24,9 @@ const Category = () => {
         electronic,
         jewelry,
         womenclothing,
-        menclothing
+        menclothing,
+        fragrances,
+        laptops
     ];
 
   
@@ -40,7 +45,7 @@ const Category = () => {
         console.log(categories)
     }
 
-    // Render your component based on the data from the Redux store
+    
     const cateNames = categories.map((item, i) => {
         // console.log("items => ", item, i)
         return (
