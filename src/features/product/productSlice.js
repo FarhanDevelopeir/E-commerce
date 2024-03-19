@@ -10,12 +10,13 @@ import {
 const initialState = {
   status: "",
   Products: [],
+  filterProducts: [],
   SingleProduct: {},
   selectedProduct: {},
   editProduct: {},
   Categories: [],
   totalItems: 0,
-  Category: "women's clothing",
+  Category: "Camera",
   isSubmit: false,
   alert: false,
 };
@@ -69,6 +70,18 @@ export const productSlice = createSlice({
       state.Category = action.payload;
       console.log(state.Category);
     },
+    getfilterProducts: (state, action)=>{
+      console.log(action.payload.sort._sort)
+      state.filterProducts.sort((a, b) => {
+        if (action.payload.sort._order === 'asc') {
+            return a[action.payload.sort._sort] - b[action.payload.sort._sort];
+        } else {
+            return b[action.payload.sort._sort] - a[action.payload.sort._sort];
+        }
+    });
+      const getfilterproduct = state.Products.filter((state)=> state.category===action.payload.filter.category)
+      state.filterProducts = getfilterproduct 
+    },
     productId: (state, action) => {
       const index = state.Products.findIndex(
         (product) => product._id === action.payload
@@ -103,6 +116,7 @@ export const productSlice = createSlice({
       .addCase(allProductsAsync.fulfilled, (state, action) => {
         state.status = "fulfilled";
         state.Products = action.payload.products;
+        state.filterProducts = action.payload.products
         state.totalItems = action.payload.totalItems
         console.log(action.payload.totalItems)
       })
@@ -146,6 +160,8 @@ export const {
   editproduct,
   setSubmitting,
   setAlert,
+  getfilterProducts,
+  
 } = productSlice.actions;
 
 export const allFetchedProducts = (state) => state.product1.Products;
@@ -156,5 +172,7 @@ export const allFetchedCategories = (state) => state.product1.Categories;
 export const selectedCategory = (state) => state.product1.Category;
 export const submitState = (state) => state.product1.isSubmit;
 export const Alert = (state) => state.product1.alert;
+export const filterproducts = (state) => state.product1.filterProducts;
+
 
 export default productSlice.reducer;
