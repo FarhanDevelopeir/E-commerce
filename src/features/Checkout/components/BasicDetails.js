@@ -74,15 +74,15 @@ const Addressform = (props) => {
 
     return (
         <div className="mt-4">
-            <div className='card border'>
-                <div className="card-header d-flex justify-content-between py-3">
-                    <h5 className="mb-0">Basic Details</h5>
+            <div className=' border rounded-lg shadow-sm'>
+                <div className="card-header d-flex justify-content-between py-3  ">
+                    <h5 className="mb-0 px-4 " >Basic Details</h5>
 
                 </div>
-                <div className='card-body'>
+                <div className='card-body p-3 '>
                     <form className=' ' onSubmit={handleform}>
 
-                        <div className='d-flex justify-content-between mb-3 w-100 '>
+                        <div className='d-flex justify-content-between mb-3 w-full '>
                             <div style={{ width: '48%' }} >
                                 <TextField
                                     label='First Name *'

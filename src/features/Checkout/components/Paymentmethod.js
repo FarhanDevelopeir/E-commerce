@@ -24,6 +24,8 @@ const Paymentmethod = () => {
   const handlepayment = (e) => {
     console.log(e.target.value)
     setSelectedMethod(e.target.value)
+    setdisplayCardButton(false)
+    setdisplaydone(false)
     if(e.target.value === 'online'){
       setdisplayCardButton(true)
     } else {
@@ -32,6 +34,8 @@ const Paymentmethod = () => {
   }
 
   const handleOrder = () => {
+ 
+
     const orderData = {
       products: Cart.products,
       status: 'pending',
@@ -58,21 +62,21 @@ const Paymentmethod = () => {
 
 
   return (
-    <div className='card mt-4 border'>
-      <div className='card-header'>
-        <h3>Payment Method</h3>
+    <div className=' relative mt-4 border rounded-lg shadow-sm'>
+      <div className='card-header py-3'>
+        <h3 className=' px-3 text-[16px] md:text-xl font-semibold'>Payment Method</h3>
       </div>
-      <div className='card-body'>
-        <div className='d-flex justify-content-between w-75 m-auto '>
+      <div className='card-body p-3'>
+        <div className='flex justify-around w-full md:w-75 m-auto '>
           <button
-            className={`btn ${selectedMethod === 'cod' ? 'btn-danger' : 'btn-secondary'}`}
+            className={` ${selectedMethod === 'cod' ?  'bg-red-700' : ' bg-gray-400'} text-[11px] lg:text-lg text-white px-3 py-2 rounded-lg`}
             onClick={(e) => handlepayment(e)}
             value='cod'
           >
             Cash On Delivery
           </button>
           <button
-            className={`btn ${selectedMethod === 'online' ? 'btn-danger' : 'btn-secondary'}`}
+            className={` ${selectedMethod === 'online' ? ' bg-red-700' : ' bg-gray-400'} text-[11px] lg:text-lg text-white px-3 py-2 rounded-lg`}
             onClick={(e) => handlepayment(e)}
             value='online'
           >
@@ -86,8 +90,8 @@ const Paymentmethod = () => {
               margin: '20px auto',
               textAlign: 'center',
               position: 'absolute',
-              right: '20px',
-              marginTop: '40px',
+              right: '10px',
+              marginTop: '64px',
             }}
             onClick={() => handleOrder()}
 
@@ -95,12 +99,13 @@ const Paymentmethod = () => {
         {displayCardButton &&
           <Button variant='contained'
             sx={{
-              width: '25%',
+              width: '40%',
               margin: '20px auto',
               textAlign: 'center',
+              fontSize: '10px',
               position: 'absolute',
-              right: '20px',
-              marginTop: '40px',
+              right: '10px',
+              marginTop: '64px',
             }}
             onClick={() => handlePayment()}
 

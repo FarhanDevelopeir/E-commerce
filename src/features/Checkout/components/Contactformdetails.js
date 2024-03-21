@@ -58,12 +58,12 @@ const Contactformdetails = (props) => {
 
     return (
         <div className=" mt-4">
-            <div className='card border'>
+            <div className='border rounded-lg shadow-sm'>
                 <div className="card-header d-flex justify-content-between py-3">
-                    <h5 className="mb-0">Address Details</h5>
+                    <h5 className="mb-0 px-4">Address Details</h5>
 
                 </div>
-                <div className='card-body'>
+                <div className='card-body p-3'>
                     <form className=' ' onSubmit={handleform}>
 
                         
