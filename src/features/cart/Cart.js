@@ -70,7 +70,7 @@ axios.defaults.withCredentials = true;
   
     return (
       <div>
-        <div className="row" key={index}>
+        <div className="row text-center " key={index}>
         <div className="col-lg-3 col-md-12 mb-4 mb-lg-0">
           {/* <!-- Image --> */}
           <div className="bg-image  hover-zoom ripple rounded" data-mdb-ripple-color="light">
@@ -85,7 +85,7 @@ axios.defaults.withCredentials = true;
 
         <div className="col-lg-5 col-md-6 mb-4 mb-lg-0">
 
-          <p><strong>{item.productId.description}</strong></p>
+          <p><strong>{item.productId.title}</strong></p>
           <p>Color: blue</p>
           <p>Size: M</p>
           <button type="button" onClick={() => deleteProduct(item.productId._id)} className="btn btn-danger btn-sm me-1 mb-2" data-mdb-toggle="tooltip"
@@ -159,33 +159,32 @@ axios.defaults.withCredentials = true;
   return (
     <div>
       <Header></Header>
-      <section className="h-100 gradient-custom bg-grey ">
+      <section className="  ">
         {Cart.length === 0 ? <h1 className='mt-40' >Your cart is empty </h1> :
-          <div className="container py-5">
-            <div className="row d-flex justify-content-center my-4">
+          <div className=" px-2 border md:p-10 mt-40 lg:mt-0">
+            <div className=" md:flex lg:ml-14  my-6">
               {checkout === true ?
                 <>
                   <Stepper />
 
                 </>
                 :
-                <div className="col-md-8">
-                  <div className="card mb-4">
-                    <div className="card-header d-flex justify-content-between py-3">
+                <div className="md:w-[60%] border rounded-lg shadow-sm mb-4  ">
+                  <div className=" mb-4">
+                    <div className="card-header flex justify-between py-3 px-4 mb-2">
                       <h5 className="mb-0">Cart - {Cart.products.length} items</h5>
                     </div>
-                    <div className="card-body">
-                      {/* <!-- Single item --''> */}
+                    <div className=" pr-1 pl-1 md:pr-4 md:pl-4 ">
                       {displaycart}
                     </div>
                   </div>
                 </div>}
-              <div className="col-md-4">
-                <div className="card mb-4">
-                  <div className="card-header py-3">
+              <div className=" md:fixed  right-10 col-md-4 shadow-sm border rounded-lg ">
+                <div className=" mb-4">
+                  <div className="card-header py-3 px-4">
                     <h5 className="mb-0">Summary</h5>
                   </div>
-                  <div className="card-body">
+                  <div className="card-body px-4">
                     <ul className="list-group list-group-flush">
                       <li
                         className="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
@@ -200,9 +199,7 @@ axios.defaults.withCredentials = true;
                         className="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">
                         <div>
                           <strong>Total amount</strong>
-                          {/* <strong>
-                             <p className="mb-0">(including VAT)</p>
-                           </strong> */}
+                        
                         </div>
                         <span><strong>{Cart.bill}</strong></span>
                       </li>

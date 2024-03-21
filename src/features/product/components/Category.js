@@ -45,13 +45,11 @@ const Category = () => {
         console.log(categories)
     }
 
-    
     const cateNames = categories.map((item, i) => {
         // console.log("items => ", item, i)
         return (
 
-
-            <div className='hover-shadow w-25 rounded'>
+            <div className='hover-shadow  rounded m-auto '>
                 <div onClick={() => handleClick(item.name)}  >
                     <div key={item} className=' p-1 w-100 rounded   text-center'>
 
@@ -61,8 +59,6 @@ const Category = () => {
                 </div>
             </div>
 
-
-
         );
     });
 
@@ -70,7 +66,7 @@ const Category = () => {
         <div className='mt-5'>
             <h3>Categories</h3>
             <div className=' rounded d-flex p-1 ' >
-                <div className='d-flex justify-content-around w-100'>
+                <div className=' grid grid-cols-4 md:grid-cols-6 gap-4   w-100'>
                     {cateNames}
                 </div>
             </div>

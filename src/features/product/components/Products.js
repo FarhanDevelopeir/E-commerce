@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
-import axios from 'axios';
+import axios from "axios";
 
 import { Link } from "react-router-dom";
 import {
@@ -11,7 +11,11 @@ import {
   updateAddedToCart,
 } from "../../../Redux/features/counter/ProductSlice";
 
-import { allProductsAsync, allFetchedProducts, totalItemsCount } from "../productSlice";
+import {
+  allProductsAsync,
+  allFetchedProducts,
+  totalItemsCount,
+} from "../productSlice";
 import {
   allCartDataAsync,
   addCartAsync,
@@ -22,42 +26,41 @@ import {
 } from "../../cart/cartSlice";
 import { selectLoggedInUser } from "../../UserAuthentication/authSlice";
 import { Toaster, toast } from "sonner";
+import Skeleton from "../../../Shared/Skeleton.js";
+
+
 
 const Products = () => {
-    const products = useSelector(allFetchedProducts);
-    const dispatch = useDispatch()
-    const User = useSelector(selectLoggedInUser);
-    const [selectedPage, setselectedPage] = useState(1);
-    const limit = 10
-    const totalItems = useSelector(totalItemsCount)
-    const isSubmitting = useSelector(IsSubmitting);
-    const isAlert = useSelector(IsAlert);
-    console.log(isSubmitting);
-    const [SpecificId, setSpecificId] = useState("");
+  const products = useSelector(allFetchedProducts);
+  const dispatch = useDispatch();
+  const User = useSelector(selectLoggedInUser);
+  const [selectedPage, setselectedPage] = useState(1);
+  const limit = 10;
+  const totalItems = useSelector(totalItemsCount);
+  const isSubmitting = useSelector(IsSubmitting);
+  const isAlert = useSelector(IsAlert);
+  console.log(isSubmitting);
+  const [SpecificId, setSpecificId] = useState("");
 
-    axios.defaults.withCredentials = true;
+  axios.defaults.withCredentials = true;
 
-    useEffect(() => {
-        const pagination = { _page: selectedPage, _limit: limit }
-        dispatch(allProductsAsync({pagination} ))
-        dispatch(allCartDataAsync())
-        console.log(products)
-    }, [selectedPage])
-
-  
   useEffect(() => {
-    
-      if(isAlert){
-        toast.success("Product Successfully added to cart  ");
+    const pagination = { _page: selectedPage, _limit: limit };
+    dispatch(allProductsAsync({ pagination }));
+    dispatch(allCartDataAsync());
+    console.log(products);
+  }, [selectedPage]);
+
+  useEffect(() => {
+    if (isAlert) {
+      toast.success("Product Successfully added to cart  ");
       setTimeout(() => {
         dispatch(setAlert(false));
       }, 2000);
-      }
-    
+    }
   }, [isAlert]);
 
   const handleCart = (itemId) => {
-    
     dispatch(setSubmitting(true));
     setSpecificId(itemId);
     const cartData = {
@@ -72,37 +75,48 @@ const Products = () => {
     setselectedPage(page);
   };
 
-    const displaydata = products.map((item) => {
-        return (
-            <div className=" col-sm-6 col-md-4 col-lg-3 mb-4 mt-3 mb-lg-0 ">
+  const displaydata = products.map((item) => {
+    return (
+      <div className="   ">
+        <div className=" border rounded-lg    ">
+          <Link to={`/productdetail/${item.id}`}>
+            <div style={{ textAlign: "center" }}>
+              <div className=" h-32 sm:h-40  ">
+                <img
+                  src={item.thumbnailImage}
+                  className=" h-full w-full  rounded-t-lg    "
+                  // style={{ height: "150px", width: "150px", margin: "auto" }}
+                  alt="Laptop"
+                />
+              </div>
 
-                <div className="card pt-3 shadow border rounded hover-zoom ">
-
-                    <Link to={`/productdetail/${item._id}`}>
-                        <div style={{ textAlign: 'center' }}>
-
-
-                            <div className='hover-zoom'>
-                                <img src={item.thumbnailImage}
-                                    className="card-img-top    " style={{ height: '150px', width: '150px', margin: 'auto' }} alt="Laptop" />
-                            </div>
-
-              <div className="card-body">
-                <div className="d-flex justify-content-between mb-2">
-                  <h5 className="mb-0">{}</h5>
-                  <h5 className="text-dark mb-0">${item.price}</h5>
+              <div className=" w-[90%] m-auto text-gray-500">
+                <div className="flex justify-between items-center my-2 text-xs ">
+                  <p className="mb-0">{item.title}</p>
+                  <p className="text-dark mb-0 text-sm hidden md:block">
+                    ${item.price}
+                  </p>
+                  <div className="items-center flex md:hidden text-warning">
+                    <p className="text-dark mb-0 text-sm  ">5</p>
+                    <i className="fa fa-star"></i>
+                  </div>
                 </div>
 
-                <div className="d-flex justify-content-between  ">
+                <div className="flex justify-between  text-sm my-2 items-center">
                   <p className="text-muted mb-0">
-                    Available: <span className="fw-bold">{item.stock}</span>
+                    Stock <span className="fw-bold">{item.stock}</span>
                   </p>
-                  <div className="ms-auto text-warning">
+                  <div className=" hidden md:block ms-auto text-warning">
                     <i className="fa fa-star"></i>
                     <i className="fa fa-star"></i>
                     <i className="fa fa-star"></i>
                     <i className="fa fa-star"></i>
                     <i className="fa fa-star"></i>
+                  </div>
+                  <div className="items-center flex md:hidden">
+                    <p className="text-dark mb-0 text-sm  md:hidden">
+                      ${item.price}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -120,17 +134,17 @@ const Products = () => {
                     isSubmitting && SpecificId === item._id
                       ? "bg-gray-200 pointer-events-none cursor-not-allowed text-gray-400"
                       : "bg-gradient-to-r from-indigo-500 to-pink-500 hover:bg-gradient-to-l hover:from-pink-500 hover:to-indigo-700 text-white"
-                  } relative w-[80%] px-3 py-2 rounded-md font-semibold`}
+                  } relative w-[80%] px-3 py-2 rounded-md font-semibold text-xs md:text-sm`}
                   onClick={() => handleCart(item._id)}
                 >
                   Add to Cart
                 </button>
+
                 {isSubmitting && SpecificId === item._id ? (
                   <div className="absolute mt-[5px]  h-7 w-7 border-dashed border-4 border-gray-600 rounded-full animate-spin"></div>
                 ) : (
                   ""
                 )}
-
                 {isAlert && <Toaster richColors position="top-right" />}
               </>
             ) : (
@@ -141,8 +155,8 @@ const Products = () => {
               </Link>
             )}
             {/* <button className='btn btn-warning' onClick={() => { dispatch(addtowishlist(item)) }} >
-                            <i className="fas fa-heart m-1 me-md-2"></i>
-                        </button> */}
+                              <i className="fas fa-heart m-1 me-md-2"></i>
+                          </button> */}
           </div>
         </div>
       </div>
@@ -153,20 +167,16 @@ const Products = () => {
     <div className="mb-5 ">
       <h2 className="mt-4   ">For You</h2>
       <section style={{ backgroundColor: "#fff" }}>
-        <div className="container  order mt-3 rounded  ">
-          <div className="row mb-3 ">
+        <div className="  order mt-3 rounded  ">
+          <div className=" mb-3 ">
             {products.length < 1 ? (
               <>
-                <div
-                  class="spinner-border text-danger m-auto d-inline"
-                  role="status"
-                >
-                  <span class="visually-hidden ">Loading...</span>
-                </div>
-                <h1 className="text-center">...loading</h1>
+                <Skeleton/>
               </>
             ) : (
-              <>{displaydata}</>
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-5  gap-2 mt-2">
+                {displaydata}
+              </div>
             )}
           </div>
           <div className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">

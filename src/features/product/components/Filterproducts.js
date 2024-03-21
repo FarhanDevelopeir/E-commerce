@@ -26,6 +26,7 @@ import { selectLoggedInUser } from "../../UserAuthentication/authSlice";
 import Header from "../../../pages/Header";
 import Footer from "../../../pages/Footer";
 import { Toaster, toast } from "sonner";
+import Skeleton from "../../../Shared/Skeleton.js";
 
 const Filterproducts = () => {
   const isSubmitting = useSelector(IsSubmitting);
@@ -206,9 +207,10 @@ const Filterproducts = () => {
   });
 
   return (
-    <div>
+    <div className="   flex flex-col justify-between  " >
+      <div>
       <Header></Header>
-      <div className=" mt-[100px] lg:mt-5 pt-5 ">
+      <div className=" mt-[100px] lg:mt-5 pt-5  ">
         <div className=" w-[95%]    xl:w-[90%] m-auto md:flex  ">
           <div className="  pr-10 pt-10 hidden md:block  ">
             <h3 className="mb-4 text-gray-500">Filters</h3>
@@ -290,18 +292,24 @@ const Filterproducts = () => {
               </h6>
             </div>
             {allfilterproducts1.length === 0 ? (
-              <div className="  w-full h-3/4 flex flex-col justify-center  ">
-                <div className=" m-auto h-10 w-10 rounded-full animate-[spin_2s_linear_infinite] border-4 border-dotted border-blue-800  "></div>
-              </div>
+              // <div className="  w-full h-3/4 flex flex-col justify-center  ">
+              //   <div className=" m-auto h-10 w-10 rounded-full animate-[spin_2s_linear_infinite] border-4 border-dotted border-blue-800  "></div>
+              // </div>
+              <>
+              <Skeleton/>
+              </>
             ) : (
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4  gap-2 mt-2">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-5  gap-2 mt-2">
                 {displaydata}
               </div>
             )}
           </div>
         </div>
       </div>
+      </div>
+      <div className="mt-5">
       <Footer />
+      </div>
     </div>
   );
 };
