@@ -1,9 +1,10 @@
 import axios from "axios";
+import { URL } from "../../constants/constants";
 
 export function createOrder(orderData){
     return new Promise(async(resolve , reject) => {
         try{
-            const res = await axios.post("http://localhost:4000/orders/add", orderData);
+            const res = await axios.post(`${URL}/orders/add`, orderData);
             const data = res.data;
             resolve(data)
         }catch(error){
@@ -15,7 +16,7 @@ export function createOrder(orderData){
 export function getUserOrders(){
     return new Promise(async(resolve , reject) => {
         try{
-            const res = await axios.get(`http://localhost:4000/orders/user`);
+            const res = await axios.get(`${URL}/orders/user`);
             const data = res.data;
             resolve(data)
         }catch(error){
@@ -27,7 +28,7 @@ export function getUserOrders(){
 export function getAllOrders(){
     return new Promise(async(resolve , reject) => {
         try{
-            const res = await axios.get(`http://localhost:4000/orders`);
+            const res = await axios.get(`${URL}/orders`);
             const data = res.data;
             resolve(data)
         }catch(error){
@@ -40,7 +41,7 @@ export function getAllOrders(){
 export function updateOrder(updateData){
     return new Promise(async(resolve , reject) => {
         try{
-            const res = await axios.patch(`http://localhost:4000/orders/update/${updateData._id}`,updateData );
+            const res = await axios.patch(`${URL}/orders/update/${updateData._id}`,updateData );
             const data = res.data;
             resolve(data)
         }catch(error){
