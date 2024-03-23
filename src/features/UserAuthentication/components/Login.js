@@ -89,12 +89,12 @@ const Login = () => {
 
   return (
 
-    <div>
+    <div className=" h-screen" >
       {userdata.token && isUser && <Navigate to={'/'} replace={true} ></Navigate>}
       {userdata.token && isAdmin && <Navigate to={'/adminpanel'} replace={true} ></Navigate>}
       {isSelected && <div className=''>
-        <section class="" style={{ backgroundColor: '#eee' }}>
-          <div class="container h-100 pt-5 pb-4">
+        <section class="   h-fit md:min-h-dvh  bg-gray-200 ">
+          <div class="container  pt-5 pb-4">
             <div class="signup row d-flex justify-content-center align-items-center h-100">
               <div class="col-lg-12 col-xl-11">
                 <div class="loginsignupbox card text-black  m-auto" style={{ borderRadius: '25px' }}>
