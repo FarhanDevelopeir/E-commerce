@@ -14,6 +14,7 @@ const Paymentmethod = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const Cart = useSelector(allFetchedCartData)
+  const User = useSelector(selectLoggedInUser)
   const [selectedMethod, setSelectedMethod] = useState(null);
   const [displaydone, setdisplaydone] = useState(false)
   const [displayCardButton, setdisplayCardButton] = useState(false)
@@ -45,7 +46,8 @@ const Paymentmethod = () => {
       totalItems: totalCartItems
     }
     console.log(orderData)
-    dispatch(createOrderAsync(orderData))
+    const token = User.token
+    dispatch(createOrderAsync({orderData, token}))
     navigate('/ordercomplete');
    
   }

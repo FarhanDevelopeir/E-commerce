@@ -48,7 +48,7 @@ const Products = () => {
     const pagination = { _page: selectedPage, _limit: limit };
     const token = User.token
     dispatch(allProductsAsync({ pagination, token }));
-    dispatch(allCartDataAsync());
+    dispatch(allCartDataAsync(User.token));
     console.log(products);
   }, [selectedPage]);
 
@@ -68,8 +68,9 @@ const Products = () => {
       productId: itemId,
       quantity: 1,
     };
+    const token = User.token
     console.log(cartData);
-    dispatch(addCartAsync(cartData));
+    dispatch(addCartAsync({cartData, token}));
   };
 
   const handlePage = (page) => {

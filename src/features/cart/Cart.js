@@ -1,5 +1,5 @@
 // import React, { useState } from 'react';
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   MDBRow,
@@ -22,6 +22,7 @@ import { Toaster } from 'sonner';
 import axios from 'axios';
 const Cart = () => {
   const isSubmitting = useSelector(IsSubmitting)
+  const User = useSelector(selectLoggedInUser)
   const dispatch = useDispatch()
   const [checkout, setcheckout] = useState(false);
   const [SpecificId, setSpecificId] = useState("");
@@ -48,20 +49,21 @@ axios.defaults.withCredentials = true;
       quantity: 1,
       decrease: decrease
     }
-    // console.log(cartData)
-    dispatch(updateCartAsync(cartData))
+    const token = User.token
+    dispatch(updateCartAsync({cartData, token}))
   }
 
   const deleteProduct = (id) => {
     const cartData = {
       productId : id,
     }
+    const token = User.token
     console.log(cartData)
-    dispatch(deleteCartAsync(cartData))
+    dispatch(deleteCartAsync({cartData, token}))
   }
 
-  useEffect(() => {
-    dispatch(allCartDataAsync())
+  useCallback(() => {
+    dispatch(allCartDataAsync(User.token))
     console.log(Cart);
   }, [Cart])
 

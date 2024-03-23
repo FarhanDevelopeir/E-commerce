@@ -18,24 +18,24 @@ const initialState = {
 
 export const addCartAsync = createAsyncThunk(
   "cart/addCart",
-  async (cartData) => {
-    const data = await addtocart(cartData);
+  async ({cartData, token}) => {
+    const data = await addtocart(cartData, token);
     return data;
   }
 );
 
 export const updateCartAsync = createAsyncThunk(
   "cart/updateCart",
-  async (cartData) => {
-    const data = await updatecart(cartData);
+  async ({cartData, token}) => {
+    const data = await updatecart(cartData, token);
     return data;
   }
 );
 
 export const deleteCartAsync = createAsyncThunk(
   "cart/deleteCart",
-  async (cartData) => {
-    const data = await deletecart(cartData);
+  async ({cartData, token}) => {
+    const data = await deletecart(cartData, token);
     return data;
   }
 );
@@ -50,8 +50,8 @@ export const deletefullCartAsync = createAsyncThunk(
 
 export const allCartDataAsync = createAsyncThunk(
     "cart/allCart",
-    async () => {
-        const data = await allCartData()
+    async (token) => {
+        const data = await allCartData(token)
         return data
     }
 )
