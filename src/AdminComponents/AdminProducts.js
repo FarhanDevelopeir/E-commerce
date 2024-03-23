@@ -12,9 +12,11 @@ import {
 import { ActivePage, AddProducts, ProductId, fetchData } from "./features/AdminSlice";
 import AdminProductDetails from "./AdminProductDetails";
 import { allFetchedProducts, allProductsAsync, getOneProductAsync, productId } from "../features/product/productSlice";
+import { selectLoggedInUser } from "../features/UserAuthentication/authSlice";
 
 const AdminProducts = () => {
   const getproducts = useSelector(allFetchedProducts)
+  const User = useSelector(selectLoggedInUser)
   console.log(getproducts)
 
 
@@ -29,7 +31,8 @@ const AdminProducts = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     // dispatch(fetchData());
-    dispatch(allProductsAsync({}))
+    const token = User.token
+    dispatch(allProductsAsync({token}))
     // const images = getproducts.map((product) => product.thumbnailImage);
     // setthumbnailImage(images);
     // console.log(images);
