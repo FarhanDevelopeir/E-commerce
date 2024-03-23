@@ -19,7 +19,7 @@ export function AddProducts(formData){
   })
 }
 
-export function getAllProducts(filter, pagination, sort) {
+export function getAllProducts(filter, pagination, sort, token) {
   let queryString = "";
   for (let key in filter) {
     if (queryString !== "") {
@@ -44,8 +44,14 @@ export function getAllProducts(filter, pagination, sort) {
   return new Promise(async (resolve, reject) => {
     try {
       const res = await axios.get(
-        `${URL}/products?` + queryString
-      );
+        `${URL}/products?` + queryString,
+        { headers: {
+          'Authorization': `Bearer ${token}`, // Include your JWT token here
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'withCredentials': true, // Include credentials (cookies)
+        }
+    });
       const data = res.data;
       const totalItems = await res.headers.get('X-Total-Count');
       resolve({ data: { products: data, totalItems: +totalItems } });

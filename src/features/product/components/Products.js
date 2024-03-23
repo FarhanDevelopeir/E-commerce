@@ -46,7 +46,8 @@ const Products = () => {
 
   useEffect(() => {
     const pagination = { _page: selectedPage, _limit: limit };
-    dispatch(allProductsAsync({ pagination }));
+    const token = User.token
+    dispatch(allProductsAsync({ pagination, token }));
     dispatch(allCartDataAsync());
     console.log(products);
   }, [selectedPage]);

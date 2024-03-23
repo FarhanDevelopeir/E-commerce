@@ -31,8 +31,8 @@ export const AddProductsAsync = createAsyncThunk(
 
 export const allProductsAsync = createAsyncThunk(
   "product/allProducts",
-  async ({ filter, pagination, sort }) => {
-    const res = await getAllProducts(filter, pagination, sort);
+  async ({ filter, pagination, sort, token }) => {
+    const res = await getAllProducts(filter, pagination, sort, token);
     return res.data
   }
 );
