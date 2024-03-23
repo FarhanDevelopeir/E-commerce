@@ -56,8 +56,9 @@ const ProductDetail = ({ item }) => {
       productId: itemId,
       quantity: quantity,
     };
+    const token = User.token
     console.log(cartData);
-    dispatch(addCartAsync(cartData));
+    dispatch(addCartAsync({cartData, token}));
   };
 
   // {Old code }

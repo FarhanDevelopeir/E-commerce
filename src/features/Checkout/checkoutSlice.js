@@ -16,16 +16,16 @@ const initialState = {
 
 export const createOrderAsync = createAsyncThunk(
   "order/createOrder",
-  async (orderData) => {
-    const data = await createOrder(orderData);
+  async ({orderData, token}) => {
+    const data = await createOrder(orderData, token);
     return data;
   }
 );
 
 export const getUserOrdersAsync = createAsyncThunk(
   "order/getUserOrders",
-  async () => {
-    const data = await getUserOrders();
+  async (token) => {
+    const data = await getUserOrders(token);
     return data;
   }
 );

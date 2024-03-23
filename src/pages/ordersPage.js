@@ -5,7 +5,6 @@ import {
 } from "../features/Checkout/checkoutSlice";
 import { useEffect, useState } from "react";
 import { selectLoggedInUser } from "../features/UserAuthentication/authSlice";
-import { checkUserAsync } from "../features/UserAuthentication/authSlice";
 import Header from "./Header";
 import axios from "axios";
 import EditProfile from "./EditProfile";
@@ -13,6 +12,7 @@ import EditProfile from "./EditProfile";
 const OrdersPage = () => {
 
   const userOrders = useSelector(fetchedUserAllOrders)
+  const User = useSelector(selectLoggedInUser)
   const profileData = useSelector(selectLoggedInUser);
   const [openModal, setOpenModal] = useState(false);
   const dispatch = useDispatch()
@@ -21,8 +21,7 @@ const OrdersPage = () => {
 
  
   useEffect(() => {
-    dispatch(getUserOrdersAsync());
-    dispatch(checkUserAsync());
+    dispatch(getUserOrdersAsync(User.token));
     console.log(profileData)
   }, []);
 

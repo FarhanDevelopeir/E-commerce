@@ -47,7 +47,8 @@ const Filterproducts = () => {
 
   useEffect(() => {
     if (allfilterproducts1.length === 0 && Object.keys(filter).length > 0) {
-      dispatch(allProductsAsync({ filter, sort }));
+      const token = User.token
+      dispatch(allProductsAsync({ filter, sort, token }));
     }
   }, [filter, sort]);
 
@@ -67,8 +68,9 @@ const Filterproducts = () => {
       productId: itemId,
       quantity: 1,
     };
+    const token = User.token
     console.log(cartData);
-    dispatch(addCartAsync(cartData));
+    dispatch(addCartAsync({cartData, token}));
   };
 
   useEffect(() => {
@@ -82,7 +84,8 @@ const Filterproducts = () => {
 
   useEffect(() => {
     if (Object.keys(filter).length > 0) {
-      dispatch(allProductsAsync({ filter, sort }));
+      const token = User.token
+      dispatch(allProductsAsync({ filter, sort, token }));
       // dispatch(getfilterProducts({ filter, sort }));
     }
   }, [dispatch, filter, sort]);

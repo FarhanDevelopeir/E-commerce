@@ -1,5 +1,5 @@
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
 import Category from './features/product/components/Category';
 import Products from './features/product/components/Products';
@@ -9,21 +9,19 @@ import Slider from './features/product/components/Slider'
 import Header from './pages/Header';
 
 import { useSelector, useDispatch } from 'react-redux'
-import { checkUserAsync, selectLoggedInUser } from './features/UserAuthentication/authSlice';
 import { allCartDataAsync } from './features/cart/cartSlice';
+import { selectLoggedInUser } from './features/UserAuthentication/authSlice';
 
 
 
 
 function App() {
-  // const stripepromise=loadStripe('pk_test_51NzIZSCBMDupYIZL2RuVb44yZr0MlJbvNFXcdjQ0CDBM4R4ZOivpXbsSA8IjfWUdaedTvTUa1gaPJAmBhAHcq32D00loCw2Rij');
-  // console.log(stripepromise)
+  const User = useSelector(selectLoggedInUser)
   
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(checkUserAsync())
-    dispatch(allCartDataAsync())
+    dispatch(allCartDataAsync(User.token))
   }, [])
   return (
 
