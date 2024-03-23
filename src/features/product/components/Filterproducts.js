@@ -122,7 +122,7 @@ const Filterproducts = () => {
     return (
       <div className="   ">
         <div className=" border rounded-lg    ">
-          <Link to={`/productdetail/${item.id}`}>
+          <Link to={`/productdetail/${item._id}`}>
             <div style={{ textAlign: "center" }}>
               <div className=" h-32 sm:h-40  ">
                 <img

@@ -1,36 +1,64 @@
-import axios from 'axios'
-import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { useParams } from 'react-router-dom'
-import { addtocart, productview } from '../../../Redux/features/counter/ProductSlice'
-import { singleProductFetched, getOneProductAsync } from '../productSlice'
-import { selectLoggedInUser } from '../../UserAuthentication/authSlice'
-import { addCartAsync } from '../../cart/cartSlice'
-import Header from '../../../pages/Header'
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import {
+  addtocart,
+  productview,
+} from "../../../Redux/features/counter/ProductSlice";
+import { singleProductFetched, getOneProductAsync } from "../productSlice";
+import { selectLoggedInUser } from "../../UserAuthentication/authSlice";
+import { IsAlert, IsSubmitting, addCartAsync, setAlert, setSubmitting } from "../../cart/cartSlice";
+import Header from "../../../pages/Header";
+import { Toaster, toast } from "sonner";
 
 const ProductDetail = ({ item }) => {
   const singleproduct = useSelector(singleProductFetched);
   const User = useSelector(selectLoggedInUser);
   const cart = useSelector((state) => state.product.cart);
-  const [quantity, setQuantity] = useState(1)
+  const [quantity, setQuantity] = useState(1);
+  const isSubmitting = useSelector(IsSubmitting);
+  const isAlert = useSelector(IsAlert);
 
-  const { price, image, title, description, rating, } = singleproduct || {}
-  console.log(price)
+
+  const { price, image, title, description, rating } = singleproduct || {};
+  console.log(singleproduct);
   const { id } = useParams();
   const dispatch = useDispatch();
 
   axios.defaults.withCredentials = true;
+  // const [selectedSize, setSelectedSize] = useState(null);
 
+  const [selectedImage, setSelectedImage] = useState(
+    singleproduct.thumbnailImage
+  );
 
+  const handleImageChange = (newImage) => {
+    setSelectedImage(newImage);
+  };
+
+  useEffect(() => {
+    if (isAlert) {
+      toast.success("Product Successfully added to cart  ");
+      setTimeout(() => {
+        dispatch(setAlert(false));
+      }, 2000);
+    }
+  }, [isAlert]);
+
+  // const handleSizeSelect = (size) => {
+  //   setSelectedSize(size);
+  // };
 
   const handleCart = (itemId) => {
+    dispatch(setSubmitting(true));
     const cartData = {
       productId: itemId,
-      quantity: quantity
-    }
-    console.log(cartData)
-    dispatch(addCartAsync(cartData))
-  }
+      quantity: quantity,
+    };
+    console.log(cartData);
+    dispatch(addCartAsync(cartData));
+  };
 
   // {Old code }
 
@@ -58,8 +86,8 @@ const ProductDetail = ({ item }) => {
   };
 
   useEffect(() => {
-    if (id && id !== '') dispatch(getOneProductAsync(id));
-  }, [id, singleProductFetched])
+    if (id && id !== "") dispatch(getOneProductAsync(id));
+  }, [id, singleProductFetched]);
 
   useEffect(() => {
     dispatch(productview({})); // Pass an empty object to reset the state
@@ -69,140 +97,199 @@ const ProductDetail = ({ item }) => {
   return (
     <div>
       <Header />
-      {singleproduct.length === 0 ? <h1 className='mt-5 pt-5'>...loading</h1> :
-        (
-          <section className="py-5">
-            <div className="container border p-3">
-              <div className="row gx-5">
-                <aside className="col-lg-6">
-                  <div className="border rounded-4 mb-3 d-flex justify-content-center">
-                    <a data-fslightbox="mygalley" className="rounded-4" target="_blank" data-type="image" href="#">
-                      <img style={{ maxWidth: "100%", maxHeight: '50vh', margin: 'auto' }} className="rounded-4 fit" src={singleproduct.thumbnailImage} />
-                    </a>
+      {singleproduct.length === 0 ? (
+        <h1 className="mt-5 pt-5">...loading</h1>
+      ) : (
+        <section className="py-5 mt-24">
+          <div className=" w-[97%] md:w-[90%] lg:w-[80%] m-auto  p-3">
+            <div className="md:flex gx-5">
+              <div class="lg:col-span-3 ">
+                <div className=" lg:items-start">
+                  <div className="lg:order-2 lg:ml-5">
+                    <div className="max-w-2xl overflow-hidden rounded-lg">
+                      <img
+                        className="h-full w-full max-w-full object-cover"
+                        src={selectedImage || singleproduct.thumbnailImage}
+                        alt=""
+                      />
+                    </div>
                   </div>
-                  {/* <div className="d-flex justify-content-center mb-3">
-          <a data-fslightbox="mygalley" className="border mx-1 rounded-2 item-thumb" target="_blank" data-type="image" href="#" >
-            <img width="60" height="60" className="rounded-2" src="https://bootstrap-ecommerce.com/bootstrap5-ecommerce/images/items/detail1/big1.webp" />
-          </a>
-          <a data-fslightbox="mygalley" className="border mx-1 rounded-2 item-thumb" target="_blank" data-type="image" href="#" >
-            <img width="60" height="60" className="rounded-2" src="https://bootstrap-ecommerce.com/bootstrap5-ecommerce/images/items/detail1/big2.webp" />
-          </a>
-          <a data-fslightbox="mygalley" className="border mx-1 rounded-2 item-thumb" target="_blank" data-type="image" href="#" >
-            <img width="60" height="60" className="rounded-2" src="https://bootstrap-ecommerce.com/bootstrap5-ecommerce/images/items/detail1/big3.webp" />
-          </a>
-          <a data-fslightbox="mygalley" className="border mx-1 rounded-2 item-thumb" target="_blank" data-type="image" href="#">
-            <img width="60" height="60" className="rounded-2" src="https://bootstrap-ecommerce.com/bootstrap5-ecommerce/images/items/detail1/big4.webp" />
-          </a>
-          <a data-fslightbox="mygalley" className="border mx-1 rounded-2 item-thumb" target="_blank" data-type="image" href="#" >
-            <img width="60" height="60" className="rounded-2" src="https://bootstrap-ecommerce.com/bootstrap5-ecommerce/images/items/detail1/big.webp" />
-          </a>
-        </div> */}
 
-                </aside>
-                <main className="col-lg-6">
-                  <div className="ps-lg-3">
-                    <h4 className="title text-dark">
-                      {singleproduct.title}
-                    </h4>
-                    <div className="d-flex flex-row my-3">
-                      {/* <div className="text-warning mb-1 me-2">
-              <i className="fa fa-star"></i>
-              <i className="fa fa-star"></i>
-              <i className="fa fa-star"></i>
-              <i className="fa fa-star"></i>
-              <i className="fas fa-star-half-alt"></i>
-              <span className="ms-1">
-                4.5
-              </span>
-            </div>
-            <span className="text-muted"><i className="fas fa-shopping-basket fa-sm mx-1"></i>{rating.count} orders</span>
-            <span className="text-success ms-2">In stock</span> */}
-                      {rating && rating.count ? (
-                        <div className="text-warning mb-1 me-2">
-                          <i className="fa fa-star"></i>
-                          <i className="fa fa-star"></i>
-                          <i className="fa fa-star"></i>
-                          <i className="fa fa-star"></i>
-                          <i className="fas fa-star-half-alt"></i>
-                          <span className="ms-1">{rating.count}</span>
-                        </div>
-                      ) : (
-                        <div className="text-muted">No rating available</div>
-                      )}
+                  <div className=" mt-2 lg:mt-0 w-full lg:order-1  lg:flex-shrink-0">
+                    <div className="flex justify-around  ">
+                      <button
+                        type="button"
+                        className={`flex-0 aspect-square mb-3  h-14  sm:h-16 lg:h-20 overflow-hidden rounded-lg  text-center ${
+                          selectedImage === singleproduct.thumbnailImage
+                            ? "border-2 border-yellow-600"
+                            : ""
+                        } `}
+                        onClick={() =>
+                          handleImageChange(singleproduct.thumbnailImage)
+                        }
+                      >
+                        <img
+                          className="h-full w-full object-cover"
+                          src={singleproduct.thumbnailImage}
+                          alt=""
+                        />
+                      </button>
+                      <button
+                        type="button"
+                        className={`flex-0 aspect-square mb-3 h-14  sm:h-16 lg:h-20 overflow-hidden rounded-lg  text-center ${
+                          selectedImage === singleproduct.image1
+                            ? "border-2 border-yellow-600"
+                            : ""
+                        } `}
+                        onClick={() => handleImageChange(singleproduct.image1)}
+                      >
+                        <img
+                          className="h-full w-full object-cover"
+                          src={singleproduct.image1}
+                          alt=""
+                        />
+                      </button>
+                      <button
+                        type="button"
+                        className={`flex-0 aspect-square mb-3 h-14  sm:h-16 lg:h-20 overflow-hidden rounded-lg  text-center ${
+                          selectedImage === singleproduct.image2
+                            ? "border-2 border-yellow-600"
+                            : ""
+                        } `}
+                        onClick={() => handleImageChange(singleproduct.image2)}
+                      >
+                        <img
+                          className="h-full w-full object-cover"
+                          src={singleproduct.image2}
+                          alt=""
+                        />
+                      </button>
+                      <button
+                        type="button"
+                        className={`flex-0 aspect-square mb-3 h-14  sm:h-16 lg:h-20 overflow-hidden rounded-lg  text-center ${
+                          selectedImage === singleproduct.image3
+                            ? "border-2 border-yellow-600"
+                            : ""
+                        } `}
+                        onClick={() => handleImageChange(singleproduct.image3)}
+                      >
+                        <img
+                          className="h-full w-full object-cover"
+                          src={singleproduct.image3}
+                          alt=""
+                        />
+                      </button>
                     </div>
-
-                    <div className="mb-3">
-                      <span className="h5">$ {singleproduct.price}</span>
-                      <span className="text-muted">/per box</span>
-                    </div>
-
-                    <p>
-                      {singleproduct.description}
-                    </p>
-
-                    <div className="row">
-                      <dt className="col-3">Type:</dt>
-                      <dd className="col-9">Regular</dd>
-
-                      <dt className="col-3">Color</dt>
-                      <dd className="col-9">Brown</dd>
-
-                      <dt className="col-3">Material</dt>
-                      <dd className="col-9">Cotton, Jeans</dd>
-
-                      <dt className="col-3">Brand</dt>
-                      <dd className="col-9">Reebook</dd>
-                    </div>
-
-                    <hr />
-
-                    <div className="row mb-4">
-                      <div className="col-md-4 col-6">
-                        <label className="mb-2">Size</label>
-                        <select className="form-select border border-secondary" style={{ height: "35px" }}>
-                          <option>Small</option>
-                          <option>Medium</option>
-                          <option>Large</option>
-                        </select>
-                      </div>
-
-                      <div className="col-md-4 col-6 mb-3">
-                        <label className="mb-2 d-block">Quantity</label>
-                        <div className="input-group " style={{ width: '170px' }}>
-                          <button onClick={() => changeQuality(true)}
-                            className="btn btn-white border border-secondary px-3"
-                            type="button"
-                            id="button-addon1"
-                            data-mdb-ripple-color="dark"
-                          >
-                            <i className="fas fa-minus"></i>
-                          </button>
-
-                          <h4 className='form-control text-center  '>
-                            {quantity}
-                          </h4>
-                          <button
-                            onClick={() => changeQuality(false)}
-                            className="btn btn-white border border-secondary px-3"
-                            type="button"
-                            id="button-addon2"
-                            data-mdb-ripple-color="dark">
-                            <i className="fas fa-plus"></i>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                    <a href="#" className="btn btn-warning shadow-0"> Buy now </a>
-                    <a href="#" onClick={() => handleCart(singleproduct._id)} className="btn btn-primary shadow-0"> <i className="me-1 fa fa-shopping-basket"></i> Add to cart </a>
-                    <a href="#" className="btn btn-light border border-secondary py-2 icon-hover px-3"> <i className="me-1 fa fa-heart fa-lg"></i> Save </a>
                   </div>
-                </main>
+                </div>
               </div>
-            </div>
-          </section>
-        )}
-    </div>
-  )
-}
+              <main className=" ml-3 col-lg-6">
+                <div className="ps-lg-3">
+                  <h4 className="title text-lg md:text-xl text-dark">{singleproduct.title}</h4>
+                  <h6 className=" hidden md:block title text-dark">
+                    {singleproduct.description}
+                  </h6>
+                  <div className="d-flex flex-row mt-3">
+                    <div className="text-warning mb-1 me-2">
+                      <i className="fa fa-star"></i>
+                      <i className="fa fa-star"></i>
+                      <i className="fa fa-star"></i>
+                      <i className="fa fa-star"></i>
+                      <i className="fas fa-star-half-alt"></i>
+                    </div>
+                    <span className="text-muted">
+                      <i className="fas fa-shopping-basket fa-sm mx-1"></i>
+                      {singleproduct.rating} rating
+                    </span>
+                  </div>
 
-export default ProductDetail
+                  <div className="">
+                    <span className="h5">
+                      ${singleproduct.discountPercentage}
+                    </span>
+                  </div>
+                  <div className="mb-1">
+                    <span className="text-sm line-through">
+                      ${singleproduct.price}
+                    </span>
+                  </div>
+
+                  <p>{/* {singleproduct.description} */}</p>
+
+                  <div className="row text-sm md:text-[15px]">
+                    <dt className="col-3">Brand</dt>
+                    <dd className="col-9">{singleproduct.brand}</dd>
+
+                    <dt className="col-3">Stock</dt>
+                    <dd className="col-9">{singleproduct.stock}</dd>
+
+                    <dt className="col-3 ">Category</dt>
+                    <dd className="col-9  m-auto px-4 sm:px-0">{singleproduct.category}</dd>
+                  </div>
+
+                  <hr />
+
+                  <div className="row mb-4">
+                    <div className="col-md-4 col-6 mb-3">
+                      <label className="mb-2 d-block font-semibold">Quantity</label>
+                      <div className="  flex justify-between items-center  " >
+                        
+                        <button
+                        onClick={() => changeQuality(true)}
+                          style={{borderRadius: '9999px'}}
+                          class="text-white h-8 w-8 md:h-10 md:w-10  bg-black hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-gray-500 font-medium rounded-full text-sm text-center items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                        >
+                          <i className="fas fa-minus m-auto"></i>
+                          
+                        </button>
+
+                        <p className=" font-semibold text-center m-auto   ">
+                          {quantity}
+                        </p>
+                        <button
+                        onClick={() => changeQuality(false)}
+                          style={{borderRadius: '9999px'}}
+                          class="text-white h-8 w-8 md:h-10 md:w-10 bg-black hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-gray-500 font-medium rounded-full text-sm text-center items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                        >
+                          <i className="fas fa-plus m-auto"></i>
+                          
+                        </button>
+                      
+                      </div>
+                    </div>
+                  </div>
+                
+                <div className=" relative ">
+                  
+                <button
+                  type="button"
+                  className={`${
+                    isSubmitting 
+                      ? "bg-gray-200 pointer-events-none cursor-not-allowed text-gray-400"
+                      : "bg-gradient-to-r from-indigo-500 to-pink-500 hover:bg-gradient-to-l hover:from-pink-500 hover:to-indigo-700 text-white"
+                  }   w-full sm:w-[80%] md:w-[60%] lg:w-[40%] m-auto md:m-0  px-3 py-3 rounded-md font-semibold text-xs md:text-sm`}
+                  onClick={() => handleCart(singleproduct._id)}
+                >
+                  <div className="text-[15px]">
+                  <i className="me-1 fa fa-shopping-basket"/> <span >Add to cart</span>
+                  </div>
+                </button>
+                {isSubmitting ? (
+                  <div className="absolute top-3 left-[47%] sm:left-[40%] md:left-[26%]  lg:left-[18%]   h-7 w-7 border-dashed border-4 border-gray-600 rounded-full animate-spin"></div>
+                ) : (
+                  ""
+                )}
+                {isAlert && <Toaster richColors position="top-right" />}
+                </div>
+                  
+                </div>
+              </main>
+            </div>
+          </div>
+        </section>
+      )}
+    </div>
+  );
+};
+
+export default ProductDetail;

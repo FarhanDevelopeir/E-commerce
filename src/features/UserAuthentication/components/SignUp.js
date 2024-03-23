@@ -1,15 +1,20 @@
 // import { TextField } from '@mui/material'
-import { TextField } from '@mui/material'
-import React, { useEffect, useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { Link, useNavigate, Navigate } from 'react-router-dom'
-import signuppic from '../../../Images/signuppic.jpg'
-import axios from 'axios'
-import { Userdata } from '../../../Redux/features/counter/ProductSlice'
-import { createUserAsync, displayError, emptyError, selectLoggedInUser, setSubmitting, submitState } from '../authSlice'
-import SignupRoles from './SignupRoles'
-
-
+import { TextField } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { Link, useNavigate, Navigate } from "react-router-dom";
+import signuppic from "../../../Images/signuppic.jpg";
+import axios from "axios";
+import { Userdata } from "../../../Redux/features/counter/ProductSlice";
+import {
+  createUserAsync,
+  displayError,
+  emptyError,
+  selectLoggedInUser,
+  setSubmitting,
+  submitState,
+} from "../authSlice";
+import SignupRoles from "./SignupRoles";
 
 const SignUp = () => {
   const userdata = useSelector(selectLoggedInUser);
@@ -100,7 +105,7 @@ const SignUp = () => {
       )}
       {isSelected && (
         <div className="">
-          <section class="" style={{ backgroundColor: "#eee" }}>
+          <section class=" h-fit md:min-h-dvh  bg-gray-200">
             <div class="container pt-5 pb-4">
               <div class="signup row d-flex justify-content-center align-items-center ">
                 <div class="col-lg-12 col-xl-11">
@@ -236,17 +241,14 @@ const SignUp = () => {
                 </div>
               </div>
             </div>
-         
-        </section>
+          </section>
+        </div>
+      )}
       
       {isSelected ? '' : <div>
-        {/* <button onClick={() => handleUserType('user')} >SignUp as User</button>
-        <button onClick={() => handleUserType('admin')}  >SignUp as Admin</button> */}
         <SignupRoles handleUserType={handleUserType} />
       </div>}
     </div>
-  )}
-  </div>
   );
 };
 
