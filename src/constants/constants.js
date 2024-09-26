@@ -1,5 +1,2 @@
-export const URL = 'http://localhost:4000';
+export const URL = 'https://ecommerce-backend-delta-six.vercel.app';
 
-// https://e-commerce-app-alpha-livid.vercel.app
-
-// http://localhost:4000
