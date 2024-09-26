@@ -39,7 +39,11 @@ axios.defaults.withCredentials = true;
   }
 
 
-  const changeQuality = (id, decrease) => {
+  const changeQuality = (id, decrease, quantity) => {
+
+    if(quantity === 1){
+      return
+    }
 
     dispatch(setSubmitting(true))
     
@@ -62,10 +66,11 @@ axios.defaults.withCredentials = true;
     dispatch(deleteCartAsync({cartData, token}))
   }
 
-  useCallback(() => {
+  useEffect(() => {
     dispatch(allCartDataAsync(User.token))
-    console.log(Cart);
-  }, [Cart])
+  }, [])
+
+  console.log('Cart', Cart)
 
 
   const displaycart = Cart.products ? Cart.products.map((item, index) => {
@@ -76,7 +81,7 @@ axios.defaults.withCredentials = true;
         <div className="col-lg-3 col-md-12 mb-4 mb-lg-0">
           {/* <!-- Image --> */}
           <div className="bg-image  hover-zoom ripple rounded" data-mdb-ripple-color="light">
-            <img src={item.productId.thumbnailImage}
+            <img src={item.productId?.thumbnailImage}
               className="w-100" alt="Blue Jeans Jacket" />
             <a href="#!">
               <div className="mask" style={{ backgroundColor: 'rgba(251, 251, 251, 0.2)' }}></div>
@@ -87,10 +92,10 @@ axios.defaults.withCredentials = true;
 
         <div className="col-lg-5 col-md-6 mb-4 mb-lg-0">
 
-          <p><strong>{item.productId.title}</strong></p>
+          <p><strong>{item.productId?.title}</strong></p>
           <p>Color: blue</p>
           <p>Size: M</p>
-          <button type="button" onClick={() => deleteProduct(item.productId._id)} className="btn btn-danger btn-sm me-1 mb-2" data-mdb-toggle="tooltip"
+          <button type="button" onClick={() => deleteProduct(item.productId?._id)} className="btn btn-danger btn-sm me-1 mb-2" data-mdb-toggle="tooltip"
             title="Remove item">
             <i className="fas fa-trash"></i>
           </button>
@@ -106,11 +111,11 @@ axios.defaults.withCredentials = true;
           <div className=" relative  flex mb-4 " >
             <button 
             className={`${
-              isSubmitting && SpecificId === item.productId._id
+              isSubmitting && SpecificId === item.productId?._id
                 ? "bg-gray-200 pointer-events-none cursor-not-allowed text-gray-400"
                 : "bg-gradient-to-r from-indigo-500 to-pink-500 hover:bg-gradient-to-l hover:from-pink-500 hover:to-indigo-700 text-white"
             }  w-[80%] px-[1px] ms-2 py-2 rounded-md font-semibold shadow-xl`}
-              onClick={() => dispatch(() => changeQuality(item.productId._id, true))}>
+              onClick={() => dispatch(() => changeQuality(item.productId._id, true, item.quantity))}>
               <i className="fas fa-minus"></i>
               {/* {isSubmitting && SpecificId === item.productId._id ?   <div className='absolute left-5 top-2   h-7 w-7 border-dashed border-4 border-gray-600 rounded-full animate-spin' ></div>:''} */}
             </button>
@@ -161,8 +166,8 @@ axios.defaults.withCredentials = true;
   return (
     <div>
       <Header></Header>
-      <section className="  ">
-        {Cart.length === 0 ? <h1 className='mt-40' >Your cart is empty </h1> :
+      <section className=''>
+        {Cart.length === 0 ? <h1 className='mt-40 flex justify-center align-middle' >Your cart is empty </h1> :
           <div className=" px-2 border md:p-10 mt-40 lg:mt-0">
             <div className=" md:flex lg:ml-14  my-6">
               {checkout === true ?

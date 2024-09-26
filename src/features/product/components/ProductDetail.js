@@ -110,7 +110,7 @@ const ProductDetail = ({ item }) => {
                     <div className="max-w-2xl overflow-hidden rounded-lg">
                       <img
                         className="h-full w-full max-w-full object-cover"
-                        src={selectedImage || singleproduct.thumbnailImage}
+                        src={singleproduct.thumbnailImage}
                         alt=""
                       />
                     </div>
